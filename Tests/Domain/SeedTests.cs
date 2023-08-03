@@ -2,7 +2,6 @@
 using FluentAssertions;
 using ObjectExtensions;
 using static Domain.Functions.Functions;
-using static Tests.StateFactory;
 
 namespace Tests.Domain;
 
@@ -12,18 +11,18 @@ public class SeedTests
     public void Seed_Single()
     {
         Seed((1, 2), Empty)
-            .Should()
-            .BeEquivalentTo(Empty with
-            {
-                Grid = new[]
+                .Should()
+                .BeEquivalentTo(Empty with
                 {
-                    new[]{ 0, 0, 0 },
-                    new[]{ 0, 0, 0 },
-                    new[]{ 0, 1, 0 },
-                }
-            });
+                    Grid = new[]
+                    {
+                        new[]{ 0, 0, 0 },
+                        new[]{ 0, 0, 1 },
+                        new[]{ 0, 0, 0 },
+                    }
+                });
     }
-    
+
     [Fact]
     public void Seed_Many()
     {
@@ -35,13 +34,13 @@ public class SeedTests
             .Pipe(partialSeed((2, 1)))
             .Pipe(partialSeed((0, 2)))
             .Should()
-            .BeEquivalentTo(Empty with // TODO: error message is not readable
+            .BeEquivalentTo(Empty with
             {
                 Grid = new[]
                 {
-                    new[]{ 0, 0, 0 },
-                    new[]{ 0, 1, 1 },
-                    new[]{ 1, 0, 0 },
+                    new[]{ 0, 0, 1 },
+                    new[]{ 0, 1, 0 },
+                    new[]{ 0, 1, 0 },
                 }
             });
     }
@@ -49,12 +48,17 @@ public class SeedTests
     [Fact]
     public void Reject_Given_OutOfBounds()
     {
-        // TODO: try again to use 2d array int[,]
-        var act = () => Seed((Empty.Grid.Bounds.MaxX, 0), Empty);
+        var act = () => Seed((Empty.GridBounds.MaxX, 0), Empty);
             
         act
             .Should()
             .Throw<ArgumentOutOfRangeException>()
             .WithMessage("Coordinate { X = 3, Y = 0 } was out of bounds(3, 3) (Parameter 'target')");
     }
+    
+    public static State Empty => new(0, Parse("""
+        0 0 0
+        0 0 0
+        0 0 0
+        """));
 }

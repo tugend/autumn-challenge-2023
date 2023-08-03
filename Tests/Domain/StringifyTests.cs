@@ -9,12 +9,12 @@ public class StringifyTests
     [Fact]
     public void Sanity()
     {
-        var grid = Grid.Of(new[]
+        var grid = new[]
         {
             new[]{ 1, 0, 0 },
             new[]{ 0, 2, 0 },
             new[]{ 0, 0, 3 },
-        });
+        };
 
         Stringify(grid)
             .Should().Be(

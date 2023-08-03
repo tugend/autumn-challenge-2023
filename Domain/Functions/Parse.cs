@@ -4,7 +4,7 @@ namespace Domain.Functions;
 
 public static partial class Functions
 {
-    public static readonly Func<string, Grid> Parse = input =>
+    public static readonly Func<string, int[][]> Parse = input =>
     {
         var cells = input
             .Trim()
@@ -19,6 +19,6 @@ public static partial class Functions
         if (cells.DistinctBy(row => row.Length).Count() != 1)
             throw new Exception("Jagged arrays are not allowed!");
 
-        return Grid.Of(cells);
+        return cells;
     };
 }

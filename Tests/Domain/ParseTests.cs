@@ -1,4 +1,3 @@
-using Domain.Models;
 using FluentAssertions;
 using static Domain.Functions.Functions;
 
@@ -17,12 +16,12 @@ public class ParseTests
 
         Parse(repr)
             .Should()
-            .BeEquivalentTo(Grid.Of(new[]
+            .BeEquivalentTo(new[]
             {
                 new[]{ 1, 0, 0 },
                 new[]{ 0, 2, 0 },
                 new[]{ 0, 0, 3 },
-            }));
+            });
     }
         
     [Fact]
@@ -36,12 +35,12 @@ public class ParseTests
         
         Parse(repr)
             .Should()
-            .BeEquivalentTo(Grid.Of(new[]
+            .BeEquivalentTo(new[]
             {
                 new[]{ 1, 0, 0 },
                 new[]{ 0, 2, 0 },
                 new[]{ 0, 0, 3 },
-            }));    
+            });    
     }
 
     [Fact]
