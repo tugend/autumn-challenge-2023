@@ -1,34 +1,6 @@
-﻿using LanguageExt;
-using static LanguageExt.Prelude;
+﻿using Domain.Contracts;
 
-namespace Domain;
-
-/// <summary>
-/// Board is a matrix of integers where 0 indicate a dead cell,
-/// and for a positive value x, value indicates a live cell that was born x turns ago.
-/// </summary>
-public record State(int Turns, int[][] Grid);
-
-/// <summary>
-/// Given a coordinate (x, y) returns a new state where said cell is set to be newborn. 
-/// </summary>
-public record Seed(Func<(int X, int Y), State> Apply)
-{
-    public static implicit operator Seed(Func<(int X, int Y), State> value) => new(value);
-}
-
-/// <summary>
-/// Given a state of the game, returns a new state representing the state one turn later.
-/// </summary>
-public record Next(Func<State, State> Apply)
-{
-    public static implicit operator Next(Func<State, State> value) => new(value);
-}
-
-/// <summary>
-/// Returns a simple string representation of the board state for debugging purposes.
-/// </summary>
-public record Stringer(Func<State, string> Stringify, Func<string, State> Parse);
+namespace Domain.Models;
 
 /// <summary>
 /// A simple stateful encapsulation of a game
@@ -37,29 +9,29 @@ public class Game
 {
     private State _state;
     private readonly Next _next;
+    private readonly Stringify _stringify;
     private readonly Seed _seed;
-    private readonly Stringer _stringer;
 
-    private Game(Seed seed, Next next, Stringer stringer, State state) 
+    private Game(Seed seed, Next next, Stringify stringify, State state) 
     {
         _seed = seed;
         _next = next;
-        _stringer = stringer;
+        _stringify = stringify;
         _state = state;
     }
-    
-    public static Func<State, Game> Init(Seed seed, Next next, Stringer stringer) => state => 
-        new Game(seed, next, stringer, state);
 
-    public Game Apply((int x, int y) cell)
+    public static Func<State, Game> Init(Seed seed, Stringify stringify, Next next) => state => 
+        new Game(seed, next, stringify, state);
+
+    public Game Seed((int x, int y) cell)
     {
-        _state = _seed.Apply(cell);
+        _state = _seed(cell, _state);
         return this;
     }
 
     public Game Next()
     {
-        _state = _next.Apply(_state);
+        _state = _next(_state);
         return this;
     }
     
@@ -70,6 +42,6 @@ public class Game
 
     public override string ToString()
     {
-        return _stringer.Stringify(_state);
+        return _state.ToString();
     }
 }
