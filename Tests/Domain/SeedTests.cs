@@ -48,6 +48,7 @@ public class SeedTests
     [Fact]
     public void Reject_Given_OutOfBounds()
     {
+        
         var act = () => Seed((Empty.GridBounds.MaxX, 0), Empty);
             
         act

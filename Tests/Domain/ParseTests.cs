@@ -1,4 +1,5 @@
 using FluentAssertions;
+using Tests.CustomAssertions;
 using static Domain.Functions.Functions;
 
 namespace Tests.Domain;

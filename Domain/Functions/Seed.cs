@@ -8,7 +8,8 @@ public static partial class Functions
     {
         if (target.IsNotIn(state.Grid))
         {
-            throw new ArgumentOutOfRangeException(nameof(target), $"{target} was out of bounds{state.GridBounds}");
+            var bounds = state.GridBounds;
+            throw new ArgumentOutOfRangeException(nameof(target), $"{target} was out of bounds{bounds}");
         }
         
         return state with
