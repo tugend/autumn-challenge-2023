@@ -1,0 +1,66 @@
+﻿body {
+    background: beige;
+}
+
+main {
+    width: 500px;
+    text-align: center;
+    height: 350px;
+    margin: auto;
+}
+
+div {
+    user-select: none;
+}
+
+#turn {
+    font-size: 30px;
+}
+
+#state{
+    margin: auto;
+    width: 180px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    border: 1px solid gray;
+}
+
+#state > div
+{
+    text-align: center;
+    height: 60px;
+    line-height: 60px;;
+    width: 60px;
+    box-sizing: border-box;
+    border: 1px solid gray;
+    background: aliceblue;
+}
+
+#state > div:hover {
+    background: lightblue;
+}
+
+/*--TODO: align outer elmeent wrapper rather than the individual inner elements, probably something with flex box instead*/
+#controls{
+    margin: auto; 
+    width: 180px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border: 1px solid gray;
+}
+
+#controls > div
+{
+    text-align: center;
+    height: 60px;
+    line-height: 60px;;
+    width: 180px;
+    box-sizing: border-box;
+    border: 1px solid gray;
+    background: lightblue;
+    cursor: pointer;
+}
+
+#controls > div:hover {
+    font-weight: bold;
+}
