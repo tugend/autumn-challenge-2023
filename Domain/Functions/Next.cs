@@ -1,30 +1,33 @@
 ﻿using Domain.Models;
+using EnumerableExtensions;
 
-namespace Domain.Functions;
+// ReSharper disable once CheckNamespace
+namespace Domain;
 
 public static partial class Functions
 {
-    public static int[][] Next(int[][] grid) => 
-        grid.Select((row, x) => row
-                .Select((cell, y) => 
-                    NeighbourCountOf(new Coordinate(x, y), grid) switch
-                    {
-                        0 => 0,
-                        1 => 0,
-                        2 when cell > 0 => cell+1,
-                        3 => cell + 1,
-                        _ => 0
-                    })
-            .ToArray())
-            .ToArray();
+    public static IEnumerable<IEnumerable<int>> Next(int[][] grid) => grid
+        .Map((coordinate, cell) => AliveNeighbours(coordinate, grid).Count() switch
+        {
+            2 when cell > 0 => cell+1,
+            3 => cell + 1,
+            _ => 0
+        });
 
-    private static int NeighbourCountOf(Coordinate cell, int[][] grid) =>
+    private static IEnumerable<Coordinate> AliveNeighbours(Coordinate cell, int[][] grid) =>
+        from neighbour in NeighboursWithinGrid(cell, grid)
+        let value = grid[neighbour.X][neighbour.Y]
+        where value > 0
+        select neighbour;
+
+    private static IEnumerable<Coordinate> NeighboursWithinGrid(Coordinate cell, int[][] grid) =>
+        from delta in AdjacencyMatrix()
+        let neighbour = new Coordinate(cell.X + delta.Dx, cell.Y + delta.Dy)
+        where neighbour.IsIn(grid)
+        select neighbour;
+    
+    private static IEnumerable<(int Dx, int Dy)> AdjacencyMatrix() =>
         new[] { -1, 0, 1 }
-            .SelectMany(deltaX => new[] { -1, 0, 1 }.Select(yDelta => new Coordinate(cell.X + deltaX, cell.Y + yDelta)))
-            .Count(neighbour => 
-                neighbour.IsIn(grid) 
-                && neighbour != cell
-                && grid[neighbour.X][neighbour.Y] > 0); // TODO: update coordinate to make lookup easier
-
-
+            .Product(new[] { -1, 0, 1 }, (dx, dy) => (dx, dy))
+            .Where(delta => delta != (0, 0));
 }

@@ -1,7 +1,8 @@
 ﻿using ObjectExtensions;
 using static System.Linq.Enumerable;
 
-namespace Domain.Functions;
+// ReSharper disable once CheckNamespace
+namespace Domain;
 
 public static partial class Functions
 {

@@ -1,47 +1,33 @@
-﻿using Domain.Contracts;
+﻿using EnumerableExtensions;
 
-namespace Domain.Models;
+namespace Domain;
 
-/// <summary>
-/// A simple stateful encapsulation of a game
-/// </summary>
-public class Game
+public record Game
 {
-    private State _state;
-    private readonly Next _next;
-    private readonly Stringify _stringify;
-    private readonly Seed _seed;
+    public int Turn { get; }
+    public int[][] Grid { get; }
 
-    private Game(Seed seed, Next next, Stringify stringify, State state) 
+    private Game(int turn, int[][] grid)
     {
-        _seed = seed;
-        _next = next;
-        _stringify = stringify;
-        _state = state;
+        Turn = turn;
+        Grid = grid;
     }
 
-    public static Func<State, Game> Init(Seed seed, Stringify stringify, Next next) => state => 
-        new Game(seed, next, stringify, state);
-
-    public Game Seed((int x, int y) cell)
-    {
-        _state = _seed(cell, _state);
-        return this;
-    }
-
-    public Game Next()
-    {
-        _state = _next(_state);
-        return this;
-    }
+    public static Game Init(string initialSeed) => 
+        new(1, Functions.Parse(initialSeed));
     
-    public Game Next(State state, int turns) => 
-        Enumerable
-            .Range(0, turns)
-            .Aggregate(this, (_1, _2) => Next());
-
-    public override string ToString()
+    public static Game Init(int turns, int[][] grid) => 
+        new(turns, grid);
+    
+    public IEnumerable<Game> Play()
     {
-        return _state.ToString();
+        var stopCriteria = (Game xs, Game ys) => xs.Grid
+            .Flatten()
+            .SequenceEqual(ys.Grid.Flatten());
+
+        var next = (Game game) => 
+            new Game(game.Turn + 1, Functions.Next(game.Grid).ToArrays());
+
+        return Functions.Play(this, next, stopCriteria);
     }
 }

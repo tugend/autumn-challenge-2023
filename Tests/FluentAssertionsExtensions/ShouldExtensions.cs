@@ -1,4 +1,4 @@
-﻿namespace Tests.CustomAssertions;
+﻿namespace Tests.FluentAssertionsExtensions;
 
 public static class ShouldExtensions 
 {

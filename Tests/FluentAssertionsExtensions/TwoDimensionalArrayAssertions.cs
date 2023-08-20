@@ -1,9 +1,9 @@
 ﻿using FluentAssertions;
 using FluentAssertions.Execution;
 using FluentAssertions.Primitives;
-using static Domain.Functions.Functions;
+using static Domain.Functions;
 
-namespace Tests.CustomAssertions;
+namespace Tests.FluentAssertionsExtensions;
 
 public class TwoDimensionalArrayAssertions<T> : ReferenceTypeAssertions<T[][], TwoDimensionalArrayAssertions<T>>
 {

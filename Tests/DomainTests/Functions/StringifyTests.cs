@@ -1,8 +1,7 @@
-using Domain.Models;
 using FluentAssertions;
-using static Domain.Functions.Functions;
+using static Domain.Functions;
 
-namespace Tests.Domain;
+namespace Tests.DomainTests;
 
 public class StringifyTests
 {

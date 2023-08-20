@@ -1,8 +1,8 @@
 using FluentAssertions;
-using Tests.CustomAssertions;
-using static Domain.Functions.Functions;
+using Tests.FluentAssertionsExtensions;
+using static Domain.Functions;
 
-namespace Tests.Domain;
+namespace Tests.DomainTests;
 
 public class ParseTests
 {
