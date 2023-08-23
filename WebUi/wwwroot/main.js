@@ -1,85 +1,137 @@
-﻿const main = async () => {
-    /**
-     * @typedef {object} Game
-     * @property {number} turn
-     * @property {number[][]} grid
-     *
-     * @param {Game} seed
-     */
-    const seed = {
-        "turn": 1,
-        "grid": [
-            [1, 1, 0],
-            [1, 0, 0],
-            [0, 0, 0]
-        ]
-    };
+﻿/**
+ * @typedef {object} State
+ * @property {number} turn
+ * @property {number[][]} grid
+ *
+ * @param {State} seed
+ */
+const initialSeed = {
+    "turn": 1,
+    "grid": [
+        [1, 1, 0],
+        [1, 0, 0],
+        [0, 0, 0]
+    ]
+};
+
+/**
+ * @param { Response } response
+ */
+const asJson = response => response.json()
+
+/**
+ * @param { Object } content
+ * @returns { RequestInit }
+ */
+const postRequest = (content) => ({ 
+    method: "POST", 
+    headers: {'Content-Type': 'application/json'}, 
+    body: JSON.stringify(content) 
+});
+
+/**
+ * @param { State } seed
+ * @return { Promise<State[]> }
+ */
+const fetchStates = (seed) => 
+    fetch("/api/conway", postRequest(seed)).then(asJson);
+
+/**
+ * @param { Number[][] } grid
+ * @param {function(Number, Number, Number): string} map
+ * @returns { String[] }
+ */
+const flatMap = (grid, map) => grid
+    .map((row, i) => row.map((entry, j) => map(i, j, entry)))
+    .flat();
+
+/**
+ * @function
+ * @param { Number } i row index
+ * @param { Number } j column index
+ * @param { Number } value cell value
+ * @return { String }
+ */
+const cellHtmlFactory = (i, j, value) => 
+    `<div onclick="onCellClick(${i}, ${j})">${value}</div>`;
+
+const renderContainerElm = (innerHtml) => document
+    .querySelector("#state")
+    .innerHTML = innerHtml;
+
+const renderTurnCountElm = (turnCount) => document
+    .querySelector("#turn > span")
+    .innerText = turnCount;
+
+const renderTogglePlayBtn = (buttonText) => document
+    .getElementById('pause-btn')
+    .innerText = buttonText;
+
+async function startLoop() {
+    let nextIndex = window.conway.index++;
+    if (nextIndex >= window.conway.states.length) return;
+
+    const state = window.conway.states[nextIndex];
+    renderTurnCountElm(state.turn);
+    renderContainerElm(flatMap(state.grid, cellHtmlFactory).join(""));
+
+    unpause();
+}
+
+const unpause = () => 
+    window.conway.timeoutId = setTimeout(startLoop, 2000);
+
+const pause = ()=> {
+    clearTimeout(conway.timeoutId)
+    conway.timeoutId = null;
+}
+
+const isPaused = () =>
+    window.conway.timeoutId == null
+
+const togglePlay = () => {
+    if (isPaused()) unpause();
+    else pause();
+}
+
+const onTogglePause = () => {
+    togglePlay()
     
-    // TODO: enable paging (at 5 states left, try fetch next if more exists), 
+    const buttonText = isPaused() ? "Continue" : "Pause";
+    renderTogglePlayBtn(buttonText);
+}
+
+const onReset = async () => {
+    window.conway.index = 0;
+    pause();
+    await startLoop();
+}
+
+const main = async () => {
+    // TODO: enable paging (at 5 states left, try fetch run if more exists), 
     // TODO: enable pausing (stop fetching states, and stop play, click again -> continue)
     // TODO: enable seeding (prompt for new state given new seed, animate from there)
     // TODO: add reset button (clear all and toggle pause)
-
-    /**
-     * @param {Game[]} data
-     */
-    const data = await fetch("/api/conway", {
-        method: "POST",
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(seed)
-    }).then(response => response.json());
-
-    const turnElm = document.querySelector("#turn > span");
-    const stateElm = document.querySelector("#state");
-
-    /**
-     * @param {number[][]} grid
-     */
-    const stringify = (grid) => grid
-        .map((line, i) => line
-            .map((value, j) => `<div onclick="onCellClick(${i}, ${j})">${value}</div>`)
-            .join(""))
-        .join("")
-
-    const gameState = { foo: undefined, index: 0, update: null }
-    window.gameState = gameState;
-    function update()
-    {
-        let index = gameState.index++;
-        if (index >= data.length) return;
-        
-        console.debug("Update", index);
-        const state = data[index];
-        turnElm.innerText = state.turn;
-        stateElm.innerHTML = stringify(state.grid);
-        window.gameState.foo = setTimeout(() => update(), 3000);
-    }
-    window.update = update;
-    update();
+    const states = await fetchStates(initialSeed)
+    window.conway = { index: 0, states, timeoutId: null, seed: initialSeed };
+    await startLoop();
 };
 
-function onCellClick(i, j) {
-    console.log('TODO: handle cell click with coordinates', i, j)
-}
+const onCellClick = async (i, j) => {
+    if (!isPaused()) onTogglePause();
 
-function onTogglePause(i, j) {
-    console.log('TODO: Toggle pause feature');
+    let newSeed = { grid: window.conway.states[window.conway.index].grid } // TODO: do a proper copy here
+    newSeed.grid[i][j] = 1; // TODO: this is a bit of a fragile mess and turn counter should not be reset!
     
-    const elm = document.getElementById('pause-btn');
+    window.conway.index = 0;
+    window.conway.seed = newSeed;
+    window.conway.states = await fetchStates(newSeed);
     
-    elm.innerText = elm.innerText.toLowerCase() === "pause" 
-        ? "Continue" 
-        : "Pause";
-    
-    // TODO: clean up the dirty state management with window...    
-    if (window.gameState.foo !== null)
-    {
-        clearTimeout(window.gameState.foo);
-        window.gameState.foo = null;
-    }
-    else {
-        window.update()
-    }
+    console.log('cell click!', window.conway.seed)
+
+    const state = window.conway.states[window.conway.index]; // TODO: for some reason we get turn: 0 on replies!
+    renderTurnCountElm(state.turn);
+    renderContainerElm(flatMap(state.grid, cellHtmlFactory).join(""));
 }
 
 _ = main()
