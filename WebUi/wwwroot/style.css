@@ -40,7 +40,7 @@ div {
     background: lightblue;
 }
 
-/*--TODO: align outer elmeent wrapper rather than the individual inner elements, probably something with flex box instead*/
+
 #controls{
     margin: auto; 
     width: 180px;

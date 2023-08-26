@@ -5,6 +5,9 @@
     <title>Document</title>
     <link rel="icon" href="data:,">
     <link rel="stylesheet" href="./style.css">
+    <script src="./game-factory.js" type="application/javascript"></script>
+    <script src="./backend-client.js" type="application/javascript"></script>
+    <script src="./dom-client.js" type="application/javascript"></script>
     <script src="./main.js" type="application/javascript"></script>
 </head>
 <body>
@@ -24,8 +27,8 @@
     </div>
     <br />
     <div id="controls">
-        <div id="pause-btn" onclick="onTogglePause()">Pause</div>
-        <div id="reset-btn" onclick="onReset()">Reset</div>
+        <div id="pause-btn" onclick="onPauseBtnClick()">Pause</div>
+        <div id="reset-btn" onclick="onResetBtnClick()">Reset</div>
     </div>
 </main>
 </body>

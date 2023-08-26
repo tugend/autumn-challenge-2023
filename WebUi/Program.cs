@@ -23,6 +23,3 @@ namespace WebUi
     public partial class Program { }
 
 }
-
-// TODO: make an api test
-// TODO: add guid, then make a guid test
