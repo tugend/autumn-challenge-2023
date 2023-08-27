@@ -5,30 +5,34 @@
     <title>Document</title>
     <link rel="icon" href="data:,">
     <link rel="stylesheet" href="./style.css">
-    <script src="./game-factory.js" type="application/javascript"></script>
-    <script src="./backend-client.js" type="application/javascript"></script>
-    <script src="./dom-client.js" type="application/javascript"></script>
-    <script src="./main.js" type="application/javascript"></script>
+    <script src="./scripts/game-factory.js" type="application/javascript"></script>
+    <script src="./scripts/backend-client.js" type="application/javascript"></script>
+    <script src="./scripts/dom-client.js" type="application/javascript"></script>
+    <script src="./scripts/controller-factory.js" type="application/javascript"></script>
+    
+    <script type="application/javascript">
+        (async () => {
+            console.log('init game', window.conway)
+
+            const initialSeed = {
+                turn: 0,
+                grid: [[1, 1, 0], [1, 0, 0], [0, 0, 0]]
+            };
+
+            window.conway.controllers = conway.controllerFactory(window.conway.backendClient, window.conway.domClient, window.conway.gameFactory, initialSeed);
+            await window.conway.controllers.start()
+        })();
+    </script>
 </head>
 <body>
 <main>
     <h1>Conways Game of Life</h1>
     <h5 id="turn">Turn <span>1</span></h5>
-    <div id="state">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-    </div>
+    <div id="state"></div>
     <br />
     <div id="controls">
-        <div id="pause-btn" onclick="onPauseBtnClick()">Pause</div>
-        <div id="reset-btn" onclick="onResetBtnClick()">Reset</div>
+        <div id="pause-btn" onclick="window.conway.controllers.onPauseBtnClick()">Pause</div>
+        <div id="reset-btn" onclick="window.conway.controllers.onResetBtnClick()">Reset</div>
     </div>
 </main>
 </body>

@@ -33,13 +33,11 @@ div {
     width: 60px;
     box-sizing: border-box;
     border: 1px solid gray;
-    background: aliceblue;
 }
 
-#state > div:hover {
-    background: lightblue;
+#state > .life:hover {
+    opacity: 80%;
 }
-
 
 #controls{
     margin: auto; 
@@ -63,4 +61,36 @@ div {
 
 #controls > div:hover {
     font-weight: bold;
+}
+
+.life-0 {
+    background-color: lightgray;
+}
+
+.life-1 {
+    background-color: lightcyan;
+}
+
+.life-2 {
+    background-color: lightblue;
+}
+
+.life-3 {
+    background-color: aqua;
+}
+
+.life-4 {
+    background-color: aquamarine;
+}
+
+
+.life-5 {
+    background-color: mediumaquamarine;
+}
+
+.life-6,
+.life-7,
+.life-8,
+.life-9 {
+    background-color: cadetblue;
 }

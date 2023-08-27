@@ -1,8 +1,6 @@
 ﻿window.conway = window.conway || {};
 
 window.conway.domClient = (() => {
-    const that = {};
-
     /**
      * @param { Number[][] } grid
      * @param {function(Number, Number, Number): string} map
@@ -12,15 +10,15 @@ window.conway.domClient = (() => {
         .map((row, i) => row.map((entry, j) => map(i, j, entry)))
         .flat();
     
-    that.renderContainerElm = (innerHtml) => document
+    const renderContainerElm = (innerHtml) => document
         .querySelector("#state")
         .innerHTML = innerHtml;
 
-    that.renderTurnCountElm = (turnCount) => document
+    const renderTurnCountElm = (turnCount) => document
         .querySelector("#turn > span")
         .innerText = turnCount;
 
-    that.renderTogglePlayBtn = (isPaused) => document
+    const renderTogglePlayBtn = (isPaused) => document
         .getElementById('pause-btn')
         .innerText = isPaused ? "Continue" : "Pause";
 
@@ -31,15 +29,20 @@ window.conway.domClient = (() => {
      * @param { Number } value cell value
      * @return { String }
      */
-    that.cellHtmlFactory = (i, j, value) =>
-        `<div onclick="onCellClick(${i}, ${j})">${value}</div>`;
+    // TODO: use events and a click handler instead or somethign like that...
+    // I want to inject an async handler in the dom client
+    const cellHtmlFactory = (i, j, value) =>
+        `<div 
+            onclick="window.conway.controllers.onCellClick(${i}, ${j}, ${value})"
+            class="life life-${ Math.min(value, 10) }">
+            ${value}
+        </div>`;
 
-    that.render = (state, isPaused) => {
-        console.log('render!', state, isPaused)
-        that.renderTogglePlayBtn(isPaused);
-        that.renderTurnCountElm(state.turn+1);
-        that.renderContainerElm(flatMap(state.grid, that.cellHtmlFactory).join(""));
+    const render = (state, isPaused) => {
+        renderTogglePlayBtn(isPaused);
+        renderTurnCountElm(state.turn+1);
+        renderContainerElm(flatMap(state.grid, cellHtmlFactory).join(""));
     }
     
-    return that;
+    return { render };
 })();
