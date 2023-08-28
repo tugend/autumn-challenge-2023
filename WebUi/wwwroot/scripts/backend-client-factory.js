@@ -1,5 +1,6 @@
 ﻿window.conway = window.conway || {};
-window.conway.backendClient = (() => {
+
+window.conway.backendClientFactory = (fetchUrl) => {
     /**
      * @param { Response } response
      */
@@ -28,8 +29,7 @@ window.conway.backendClient = (() => {
      * @return { Promise<State[]> }
      */
     const fetchStates = (seed) =>
-        fetch("/api/conway", postRequest(seed)).then(asJson);
-
+        fetch(fetchUrl, postRequest(seed)).then(asJson);
     
     return { fetchStates };
-})();
+}
