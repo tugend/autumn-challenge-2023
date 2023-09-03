@@ -45,8 +45,6 @@ window.conway.controllerFactory = ((backendClientFactory, domClientFactory, game
     return { start }
 });
 
-// TODO: fix bug    : Reset should reset to initial
-
 // TODO: fix bug    : Seed should not reset other cells 
 // TODO: cleanup    : Add/fix/update JSDOCs
 // TODO: tests      : Add test coverage
