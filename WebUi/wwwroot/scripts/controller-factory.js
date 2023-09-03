@@ -4,6 +4,7 @@ window.conway.controllerFactory = ((backendClientFactory, domClientFactory, game
     let game = null;
     let backendClient = null;
     let domClient = null;
+    let initialSeed = null;
     
     const onCellClick = async (i, j) => {
         game.pause()
@@ -19,10 +20,17 @@ window.conway.controllerFactory = ((backendClientFactory, domClientFactory, game
     const onPauseBtnClick = () =>
         game.togglePause()
 
-    const onResetBtnClick = async () =>
-        game.reset();
+    const onResetBtnClick = async () => {
+        game.pause()
+
+        const states = await backendClient.fetchStates(initialSeed);
+        game = gameFactory(states, domClient.render)
+        game.init();
+        return game;
+    }
     
     const start = async (containerId, seed) => {
+        initialSeed = seed;
         backendClient = backendClientFactory("/api/conway");
         domClient = domClientFactory(onCellClick, onPauseBtnClick, onResetBtnClick);
         
@@ -38,6 +46,7 @@ window.conway.controllerFactory = ((backendClientFactory, domClientFactory, game
 });
 
 // TODO: fix bug    : Reset should reset to initial
+
 // TODO: fix bug    : Seed should not reset other cells 
 // TODO: cleanup    : Add/fix/update JSDOCs
 // TODO: tests      : Add test coverage
