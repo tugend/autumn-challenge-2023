@@ -10,6 +10,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Codeuctivity.ImageSharpCompare" Version="3.0.183" />
         <PackageReference Include="FluentAssertions" Version="6.11.0" />
         <PackageReference Include="FluentAssertions.Analyzers" Version="0.21.0">
           <PrivateAssets>all</PrivateAssets>
@@ -36,6 +37,10 @@
       <ProjectReference Include="..\ObjectExtensions\ObjectExtensions.csproj" />
       <ProjectReference Include="..\TaskExtensions\TaskExtensions.csproj" />
       <ProjectReference Include="..\WebUi\WebUi.csproj" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <Folder Include="UserInterfacesTests\WebUiTests\StyleTestScreenshots\" />
     </ItemGroup>
 
     <Target Name="BeforeBuild">
