@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using ObjectExtensions;
+using TaskExtensions;
 using Tests.UserInterfacesTests.WebUiTests.Tools;
 
 // https://www.benday.com/2021/07/19/asp-net-core-integration-tests-with-selenium-webapplicationfactory/
@@ -138,9 +139,8 @@ public sealed class SmokeTests
         var initialState = client
             .GetMainAsString();
 
-        var fourthState = await client
-            .WaitForTurnOrFail(4)
-            .MapAsync(x => x.GetMainAsString());
+        var fourthState = await TaskExtensions.TaskExtensions.MapAsync(client
+                .WaitForTurnOrFail(4), x => x.GetMainAsString());
 
         var resetState = client
             .ClickResetButton()

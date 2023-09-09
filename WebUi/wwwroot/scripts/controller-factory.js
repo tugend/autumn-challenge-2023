@@ -46,7 +46,7 @@ window.conway.controllerFactory = ((backendClientFactory, domClientFactory, game
 });
 
 // TODO: cleanup    : Add/fix/update JSDOCs
-// TODO: tests      : Add test coverage
+// TODO: devops     : add github test workflow
 // TODO: tag        : version 1.0.0
 
 // TODO: refactor   : replace function factories with classes?
