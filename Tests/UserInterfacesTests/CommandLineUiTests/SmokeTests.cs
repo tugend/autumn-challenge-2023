@@ -45,8 +45,8 @@ public class SmokeTests
 
         await process
             .Enter()
-            .MapAsync(x => x.WaitForExitAsync())
-            .MapAsync(x => x.HasExited.Should().BeTrue("Should exist on ENTER"));
+            .Then(x => x.WaitForExitAsync())
+            .Then(x => x.HasExited.Should().BeTrue("Should exist on ENTER"));
             
         read()
             .Should().Be("Thanks for playing. Goodbye.");
