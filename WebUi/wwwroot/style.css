@@ -63,34 +63,13 @@ div {
     font-weight: bold;
 }
 
-.life-0 {
-    background-color: lightgray;
-}
-
-.life-1 {
-    background-color: lightcyan;
-}
-
-.life-2 {
-    background-color: lightblue;
-}
-
-.life-3 {
-    background-color: aqua;
-}
-
-.life-4 {
-    background-color: aquamarine;
-}
-
-
-.life-5 {
-    background-color: mediumaquamarine;
-}
-
-.life-6,
-.life-7,
-.life-8,
-.life-9 {
-    background-color: cadetblue;
-}
+.life-9 { background-color: #57bb8a; }
+.life-8 { background-color: #57bb8a; }
+.life-7 { background-color: #84bb7b; }
+.life-6 { background-color: #b0be6e; }
+.life-5 { background-color: #e2c965; }
+.life-4 { background-color: #e9b861; }
+.life-3 { background-color: #e9a268; }
+.life-2 { background-color: #e2886c; }
+.life-1 { background-color: #e0816d; }
+.life-0 { background-color: #d3d3d3; }

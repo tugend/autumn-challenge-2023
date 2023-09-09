@@ -56,7 +56,7 @@ public class VisualBenchmark
         
         screenshot.SaveAsFile(_actualPath, ScreenshotImageFormat.Png);
         
-        Assert.Fail($"Expected benchmark to match! Difference was {diff.PixelErrorPercentage}%");
+        Assert.Fail($"Expected benchmark to match! Difference was {double.Round(diff.PixelErrorPercentage, 2)}%");
     }
 
     private static Action<IImageProcessingContext> CreateOverlayDiff( byte[] benchmark, byte[] screenshot) => context =>

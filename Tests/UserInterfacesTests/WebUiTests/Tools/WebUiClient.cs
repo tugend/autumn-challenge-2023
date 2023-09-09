@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
+using System.Text.Encodings.Web;
 using FluentAssertions;
+using Newtonsoft.Json;
 using ObjectExtensions;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -20,15 +22,17 @@ public sealed class WebUiClient : IDisposable
         _process = process;
     }
 
-    public static async Task<WebUiClient> Init(string testNamePrefix)
+    public static async Task<WebUiClient> Init(string testNamePrefix, object? seedObject = null)
     {
         Process? process = null;
         ChromeDriver? driver = null;
-        
+
+        var seed = EncodeSeed(seedObject);
+
         try
         {
             process = await WebUiRunner.Start();
-            driver = ChromiumRunner.Start("http://localhost:5089/resources/index.html");
+            driver = ChromiumRunner.Start("http://localhost:5089/resources/index.html#" + seed);
             return new WebUiClient(testNamePrefix, driver, process);
         }
         catch (Exception)
@@ -37,6 +41,14 @@ public sealed class WebUiClient : IDisposable
             driver?.Dispose();
             throw;
         }
+    }
+
+    private static string EncodeSeed(object? seed)
+    {
+        if (seed == null) return string.Empty;
+        var seedAsString = JsonConvert.SerializeObject(seed);
+        var seedAsUrlComponent = UrlEncoder.Default.Encode(seedAsString);
+        return seedAsUrlComponent;
     }
 
     public async Task Benchmark(string name)
@@ -63,7 +75,8 @@ public sealed class WebUiClient : IDisposable
 
     public async Task<WebUiClient> SkipToTurn(int targetTurn)
     {
-        if (GetState() is RunState.Paused) ClickPauseButton();
+        if (GetState() is RunState.Paused) 
+            ClickPauseButton();
         
         while (GetTurnCount() < targetTurn)
         {
@@ -86,10 +99,41 @@ public sealed class WebUiClient : IDisposable
             .Text
             .Map(int.Parse);
 
-    public void ClickPauseButton()
+    public WebUiClient ClickPauseButton()
     {
-        var pauseBtn = _driver.FindElement(By.Id("pause-btn"));
-        pauseBtn.Click();
+        GetPauseButton()
+            .Click();
+
+        return this;
+    }
+
+    public IWebElement GetPauseButton() =>
+        _driver.FindElement(By.Id("pause-btn"));
+    
+    public string GetMainAsString() =>
+        _driver
+            .FindElement(By.TagName("main"))
+            .Text;
+
+    public WebUiClient ClickCell(int i, int j)
+    {
+        GetCell(i, j).Click();
+        
+        return this;
+    }
+
+    public IWebElement GetCell(int i, int j) =>
+        _driver
+            .FindElement(By.Id("state"))
+            .FindElement(By.CssSelector($".life:nth-child({i * j + j + 1})"));
+
+    public WebUiClient ClickResetButton()
+    {
+        _driver
+            .FindElement(By.Id("reset-btn"))
+            .Click();
+
+        return this;
     }
 
     public void Dispose()

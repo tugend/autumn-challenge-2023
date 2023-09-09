@@ -1,6 +1,7 @@
 ﻿window.conway = window.conway || {};
 
 window.conway.gameFactory = (states, onStateChange) => {
+    let turnInMs = 1000;
     let timeoutId = null;
     let index = 0;
 
@@ -23,11 +24,11 @@ window.conway.gameFactory = (states, onStateChange) => {
             index = Math.min(states.length -1, index + 1);
             onStateChange(states[index], isPaused());
             nextTurn();
-        }, 2000);
+        }, turnInMs);
     }
 
     const unpause = () => {
-        timeoutId = setTimeout(nextTurn, 2000);
+        timeoutId = setTimeout(nextTurn, turnInMs);
         onStateChange(current(), isPaused())
     }
     

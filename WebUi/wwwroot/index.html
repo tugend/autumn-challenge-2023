@@ -21,17 +21,21 @@
     (async () => {
         console.log('init game', conway)
 
-        const initialSeed = {
+        const defaultSeed = {
             turn: 0,
             grid: [[1, 1, 4], [1, 0, 0], [0, 0, 0]]
         };
-
+        
+        const optionalUrlSeedEncoded = location.hash.replace("#", "");
+        const optionalUrlSeed = optionalUrlSeedEncoded && JSON.parse(decodeURIComponent(optionalUrlSeedEncoded));
+        const seed = optionalUrlSeed || defaultSeed;        
+        
         const controller = conway.controllerFactory(
             conway.backendClientFactory,
             conway.domClientFactory,
             conway.gameFactory);
 
-        await controller.start('conway', initialSeed)
+        await controller.start('conway', seed)
     })();
 </script>
 </html>

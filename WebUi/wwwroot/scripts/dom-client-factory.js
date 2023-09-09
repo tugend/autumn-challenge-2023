@@ -15,7 +15,7 @@ window.conway.domClientFactory = (onCellClick, onTogglePlayBtnClick, onResetBtnC
         const cellHtmlFactory = (i, j, value) => {
             const elm = document.createElement('div')
             elm.innerText = `${value}`;
-            elm.className = `life life-${Math.min(value, 10)}`;
+            elm.className = `life life-${Math.min(value, 9)}`;
             elm.onclick = () => onClick(i, j, value);
             return elm;
         }
