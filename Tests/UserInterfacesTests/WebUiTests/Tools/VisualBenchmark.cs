@@ -6,12 +6,14 @@ namespace Tests.UserInterfacesTests.WebUiTests.Tools;
 
 public class VisualBenchmark
 {
+    private readonly string _name;
     private readonly string _actualPath;
     private readonly string _diffPath;
     private readonly string _benchmarkPath;
 
-    private VisualBenchmark(string actualPath, string diffPath, string benchmarkPath)
+    private VisualBenchmark(string name, string actualPath, string diffPath, string benchmarkPath)
     {
+        _name = name;
         _actualPath = actualPath;
         _diffPath = diffPath;
         _benchmarkPath = benchmarkPath;
@@ -24,7 +26,7 @@ public class VisualBenchmark
         var diffPath = Path.Join(folder, $"{name}.diff.png");
         var benchmarkPath = Path.Join(folder, $"{name}.benchmark.png");
 
-        return new VisualBenchmark(actualPath, diffPath, benchmarkPath);
+        return new VisualBenchmark(name, actualPath, diffPath, benchmarkPath);
     }
     
     public VisualBenchmark SaveAsBenchmark(Screenshot screenshot)
@@ -56,7 +58,7 @@ public class VisualBenchmark
         
         screenshot.SaveAsFile(_actualPath, ScreenshotImageFormat.Png);
         
-        Assert.Fail($"Expected benchmark to match! Difference was {double.Round(diff.PixelErrorPercentage, 2)}%");
+        Assert.Fail($"Expected benchmark {_name} to match! Difference was {double.Round(diff.PixelErrorPercentage, 2)}%");
     }
 
     private static Action<IImageProcessingContext> CreateOverlayDiff( byte[] benchmark, byte[] screenshot) => context =>

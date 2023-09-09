@@ -73,25 +73,15 @@ public sealed class WebUiClient : IDisposable
         };
     }
 
-    public async Task<int> TrySkipToTurn(int targetTurn)
+    public async Task<int> WaitForTurn(int targetTurn)
     {
-        var resetPauseState = false;
-        if (GetState() is RunState.Paused)
-        {
-            resetPauseState = true;
-            ClickPauseButton();
-        }
-
         var timer = Stopwatch.StartNew();
-        while (GetTurnCount() < targetTurn && timer.Elapsed < TimeSpan.FromSeconds(3*targetTurn))
+        var initialTurn = GetTurnCount();
+        while (GetTurnCount() < targetTurn && timer.Elapsed < TimeSpan.FromSeconds(3*(targetTurn - initialTurn)))
         {
             await Task.Delay(100);
         }
 
-        if (resetPauseState)
-        {
-            ClickPauseButton();
-        }
         return GetTurnCount();
     }
     

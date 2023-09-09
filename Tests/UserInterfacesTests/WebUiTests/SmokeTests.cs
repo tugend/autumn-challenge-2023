@@ -46,7 +46,6 @@ public sealed class SmokeTests
             .Benchmark("Should be paused");
     }
 
-    // TODO: control initial state to avoid hardcoded init state
     [Fact]
     public async Task KillLivingCell()
     {
@@ -59,9 +58,10 @@ public sealed class SmokeTests
         
         using var client = await WebUiClient.Init(nameof(VisualTests), seed);
 
+        client.ClickPauseButton();
+        
         // Act
         client
-            .ClickPauseButton()
             .GetCell(0, 0).Text.Should().Be("1", "Initial state should be alive");
 
         client
@@ -81,9 +81,10 @@ public sealed class SmokeTests
         
         using var client = await WebUiClient.Init(nameof(VisualTests), seed); // TODO: reuse client to improve performance?
 
+        client.ClickPauseButton();
+        
         // Act
         client
-            .ClickPauseButton()
             .GetCell(1, 2).Text.Should().Be("0", "Initial state should be dead");
 
         client
@@ -104,19 +105,21 @@ public sealed class SmokeTests
         using var client = await WebUiClient.Init(nameof(VisualTests), seed);
 
         // Act
-        client.GetTurnCount().Should().Be(1);
+        await client
+            .TurnCountShouldBe(1)
+            .PauseButtonShouldBe("Pause", "initial state should be un-paused")
+            .WaitForTurnOrFail(2);
 
-        client.GetPauseButton().Text.Should().Be("Pause", "initial state should be running");
-        await client.TrySkipToTurn(2, expectedTurn: 2);
-
-        client.ClickPauseButton();
-        client.GetTurnCount().Should().Be(2);
-        client.GetPauseButton().Text.Should().Be("Continue", "click should pause the game");
-        await client.TrySkipToTurn(4, expectedTurn: 2);
+        await client
+            .ClickPauseButton()
+            .TurnCountShouldBe(2)
+            .PauseButtonShouldBe("Continue", "click should have paused")
+            .WaitForTurnOrFail(4, expectedTurn: 2);
         
-        client.ClickPauseButton();
-        client.GetPauseButton().Text.Should().Be("Pause", "click should unpause the game");
-        await client.TrySkipToTurn(4, expectedTurn: 4);
+        await client
+            .ClickPauseButton()
+            .PauseButtonShouldBe("Pause", "click should have un-paused")
+            .WaitForTurnOrFail(4, expectedTurn: 4);
     }
     
     [Fact]
@@ -133,15 +136,15 @@ public sealed class SmokeTests
 
         // Act
         var initialState = client
-            .ClickPauseButton()
             .GetMainAsString();
 
         var fourthState = await client
-            .SkipToTurn(4)
+            .WaitForTurnOrFail(4)
             .MapAsync(x => x.GetMainAsString());
 
         var resetState = client
             .ClickResetButton()
+            .ClickPauseButton()
             .GetMainAsString();
 
         // Assert
@@ -157,7 +160,7 @@ public sealed class SmokeTests
                 5
                 6
 
-                Continue
+                Pause
                 Reset
                 """)
             .And.NotBe(fourthState)
@@ -169,20 +172,32 @@ file static class WebUiClientExtensions
 {
     public static async Task BenchmarkTurn(this WebUiClient instance, int targetTurn)
     {
-        await instance.TrySkipToTurn(targetTurn);
+        await instance.WaitForTurn(targetTurn);
         await instance.Benchmark($"Turn{targetTurn}");
     }
 
-    public static async Task TrySkipToTurn(this WebUiClient instance, int targetTurn, int expectedTurn)
+    public static async Task<WebUiClient> WaitForTurnOrFail(this WebUiClient instance, int targetTurn, int? expectedTurn = null)
     {
-        var endTurn = await instance.TrySkipToTurn(targetTurn);
-        endTurn.Should().Be(expectedTurn);
+        var endTurn = await instance.WaitForTurn(targetTurn);
+        endTurn.Should().Be(expectedTurn ?? targetTurn);
+        return instance;
     }
-
-    public static async Task<WebUiClient> SkipToTurn(this WebUiClient instance, int targetTurn)
+    
+    public static WebUiClient TurnCountShouldBe(this WebUiClient instance, int expected, string? because = null)
     {
-        var endTurn = await instance.TrySkipToTurn(targetTurn);
-        endTurn.Should().Be(targetTurn);
+        instance
+            .GetTurnCount()
+            .Should().Be(expected, because);
+
+        return instance;
+    }
+    
+    public static WebUiClient PauseButtonShouldBe(this WebUiClient instance, string expected, string because)
+    {
+        instance
+            .GetPauseButton()
+            .Text.Should().Be(expected, because);
+
         return instance;
     }
 }
