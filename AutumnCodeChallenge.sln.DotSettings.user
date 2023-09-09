@@ -6,14 +6,9 @@
     &lt;TestId&gt;xUnit::3824CCD8-CC0D-4FF5-B0AB-685614BB40FC::net7.0::Tests.UserInterfacesTests.WebUiTests.SmokeTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=688ff562_002D9266_002D4823_002Da26f_002Dbeedd793e488/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="VisualTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;ProjectFile&gt;3824CCD8-CC0D-4FF5-B0AB-685614BB40FC/d:UserInterfacesTests/d:WebUiTests/f:SmokeTests.cs&lt;/ProjectFile&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=6d831a2a_002D2bf0_002D45ee_002Dadae_002Da16838542243/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="KillLivingCell" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::3824CCD8-CC0D-4FF5-B0AB-685614BB40FC::net7.0::Tests.UserInterfacesTests.WebUiTests.SmokeTests.KillLivingCell&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
+	
+	
+	
 	
 	
 	

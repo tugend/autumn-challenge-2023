@@ -73,25 +73,28 @@ public sealed class WebUiClient : IDisposable
         };
     }
 
-    public async Task<WebUiClient> SkipToTurn(int targetTurn)
+    public async Task<int> TrySkipToTurn(int targetTurn)
     {
-        if (GetState() is RunState.Paused) 
-            ClickPauseButton();
-        
-        while (GetTurnCount() < targetTurn)
+        var resetPauseState = false;
+        if (GetState() is RunState.Paused)
         {
-            await Task.Delay(500);
+            resetPauseState = true;
+            ClickPauseButton();
         }
-        
-        ClickPauseButton();
 
-        GetTurnCount()
-            .Should()
-            .Be(targetTurn);
+        var timer = Stopwatch.StartNew();
+        while (GetTurnCount() < targetTurn && timer.Elapsed < TimeSpan.FromSeconds(3*targetTurn))
+        {
+            await Task.Delay(100);
+        }
 
-        return this;
+        if (resetPauseState)
+        {
+            ClickPauseButton();
+        }
+        return GetTurnCount();
     }
-
+    
     public int GetTurnCount() => 
         _driver
             .FindElement(By.Id("turn"))

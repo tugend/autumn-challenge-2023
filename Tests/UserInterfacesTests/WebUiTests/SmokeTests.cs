@@ -98,22 +98,25 @@ public sealed class SmokeTests
         var seed = new
         {
             turn = 0,
-            grid = new [] { new [] { 0 } } 
+            grid = new [] { new [] { 1, 1, 1 }, new [] { 1, 0, 0 } }
         };
         
         using var client = await WebUiClient.Init(nameof(VisualTests), seed);
 
         // Act
-        client
-            .GetPauseButton().Text.Should().Be("Pause", "Initial state should be running");
-            
-        client
-            .ClickPauseButton()
-            .GetPauseButton().Text.Should().Be("Continue", "Click should pause the game");
+        client.GetTurnCount().Should().Be(1);
+
+        client.GetPauseButton().Text.Should().Be("Pause", "initial state should be running");
+        await client.TrySkipToTurn(2, expectedTurn: 2);
+
+        client.ClickPauseButton();
+        client.GetTurnCount().Should().Be(2);
+        client.GetPauseButton().Text.Should().Be("Continue", "click should pause the game");
+        await client.TrySkipToTurn(4, expectedTurn: 2);
         
-        client
-            .ClickPauseButton()
-            .GetPauseButton().Text.Should().Be("Pause", "Click should unpause the game");
+        client.ClickPauseButton();
+        client.GetPauseButton().Text.Should().Be("Pause", "click should unpause the game");
+        await client.TrySkipToTurn(4, expectedTurn: 4);
     }
     
     [Fact]
@@ -122,7 +125,7 @@ public sealed class SmokeTests
         // Startup
         var seed = new
         {
-            turn = 3,
+            turn = 2, /* UI is 1 indexed but state is 0 indexed */
             grid = new [] { new [] { 1, 2, 3 },  new [] { 4, 5, 6 } }
         };
         
@@ -135,30 +138,30 @@ public sealed class SmokeTests
 
         var fourthState = await client
             .SkipToTurn(4)
-            .Map(x => x.GetMainAsString());
+            .MapAsync(x => x.GetMainAsString());
 
         var resetState = client
-            .ClickPauseButton()
             .ClickResetButton()
             .GetMainAsString();
 
         // Assert
-        initialState.Should().Be("""
-            Conways Game of Life
-            Turn 1
-            1
-            2
-            3
-            4
-            5
-            6
+        initialState
+            .Should()
+            .Be("""
+                Conways Game of Life
+                Turn 3
+                1
+                2
+                3
+                4
+                5
+                6
 
-            Continue
-            Reset
-            """);
-        
-        initialState.Should().NotBe(fourthState);
-        initialState.Should().Be(resetState);
+                Continue
+                Reset
+                """)
+            .And.NotBe(fourthState)
+            .And.Be(resetState);
     }
 }
 
@@ -166,7 +169,20 @@ file static class WebUiClientExtensions
 {
     public static async Task BenchmarkTurn(this WebUiClient instance, int targetTurn)
     {
-        await instance.SkipToTurn(targetTurn);
+        await instance.TrySkipToTurn(targetTurn);
         await instance.Benchmark($"Turn{targetTurn}");
+    }
+
+    public static async Task TrySkipToTurn(this WebUiClient instance, int targetTurn, int expectedTurn)
+    {
+        var endTurn = await instance.TrySkipToTurn(targetTurn);
+        endTurn.Should().Be(expectedTurn);
+    }
+
+    public static async Task<WebUiClient> SkipToTurn(this WebUiClient instance, int targetTurn)
+    {
+        var endTurn = await instance.TrySkipToTurn(targetTurn);
+        endTurn.Should().Be(targetTurn);
+        return instance;
     }
 }
