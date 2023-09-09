@@ -24,7 +24,7 @@ window.conway.domClientFactory = (onCellClick, onTogglePlayBtnClick, onResetBtnC
         
         document
             .querySelector("#state")
-            .replaceChildren(...children);
+            .replaceChildren(...children); // TODO: figure out how to get my line breaks back! :/
     };
 
     const renderTurnCountElm = (turnCount) => document

@@ -7,7 +7,7 @@ namespace Domain;
 public static partial class Functions
 {
     public static IEnumerable<IEnumerable<int>> Next(int[][] grid) => grid
-        .Map((coordinate, cell) => AliveNeighbours(coordinate, grid).Count() switch
+        .MatrixSelect((coordinate, cell) => AliveNeighbours(coordinate, grid).Count() switch
         {
             2 when cell > 0 => cell+1,
             3 => cell + 1,

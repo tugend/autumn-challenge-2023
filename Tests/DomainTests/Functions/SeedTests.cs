@@ -3,7 +3,7 @@ using FluentAssertions;
 using ObjectExtensions;
 using static Domain.Functions;
 
-namespace Tests.DomainTests;
+namespace Tests.DomainTests.Functions;
 
 public class SeedTests
 {
@@ -30,9 +30,9 @@ public class SeedTests
             (State state) => Seed(coordinate, state);
         
         Empty
-            .Pipe(partialSeed((1, 1)))
-            .Pipe(partialSeed((2, 1)))
-            .Pipe(partialSeed((0, 2)))
+            .Map(partialSeed((1, 1)))
+            .Map(partialSeed((2, 1)))
+            .Map(partialSeed((0, 2)))
             .Should()
             .BeEquivalentTo(Empty with
             {

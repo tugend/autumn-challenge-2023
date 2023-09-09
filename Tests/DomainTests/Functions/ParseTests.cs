@@ -2,7 +2,7 @@ using FluentAssertions;
 using Tests.FluentAssertionsExtensions;
 using static Domain.Functions;
 
-namespace Tests.DomainTests;
+namespace Tests.DomainTests.Functions;
 
 public class ParseTests
 {

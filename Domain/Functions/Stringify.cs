@@ -12,7 +12,7 @@ public static partial class Functions
     private static string Stringify<T>(T[][] input, string indent) => 
         indent + input
             .Select(Join<T>(' '))
-            .Pipe(Join<string>(Environment.NewLine + indent));
+            .Map(Join<string>(Environment.NewLine + indent));
 
     private static Func<IEnumerable<T>, string> Join<T>(char separator) => row => 
         string.Join(separator, row);
