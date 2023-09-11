@@ -1,15 +1,18 @@
 ﻿window.conway = window.conway || {};
 
 window.conway.domClientFactory = (onCellClick, onTogglePlayBtnClick, onResetBtnClick) => {
+
     /**
-     * @param { Number[][] } grid
-     * @param {function(Number, Number, Number): T} map
-     * @returns { T[] }
-     */
-    const flatMap = (grid, map) => grid
-        .map((row, i) => row.map((entry, j) => map(i, j, entry)))
-        .flat();
+     * @typedef OnCellClick
+     * @param { number } i
+     * @param { number } j
+     * @param { number } value 
+     */  
     
+    /**
+     * @param {State} state 
+     * @param {OnCellClick} onClick 
+     */
     const renderStateElm = (state, onClick) => {
 
         const cellHtmlFactory = (i, j, value) => {
@@ -20,13 +23,18 @@ window.conway.domClientFactory = (onCellClick, onTogglePlayBtnClick, onResetBtnC
             return elm;
         }
 
-        const children = flatMap(state.grid, cellHtmlFactory)
+        const children = state.grid
+            .map((row, i) => row.map((value, j) => cellHtmlFactory(i, j, value)))
+            .flat();
         
         document
             .querySelector("#state")
-            .replaceChildren(...children); // TODO: figure out how to get my line breaks back! :/
+            .replaceChildren(...children);
     };
 
+    /**
+     * @param {number} turnCount
+     */
     const renderTurnCountElm = (turnCount) => document
         .querySelector("#turn > span")
         .innerText = turnCount;
@@ -41,14 +49,21 @@ window.conway.domClientFactory = (onCellClick, onTogglePlayBtnClick, onResetBtnC
         const elm = document.getElementById('reset-btn');
         elm.onclick = onResetBtnClick;
     };
-    
+
+    /**
+     * @param {State} state
+     * @param {boolean} isPaused
+     */
     const render = (state, isPaused) => {
         renderTogglePlayBtn(isPaused, onTogglePlayBtnClick);
         renderTurnCountElm(state.turn+1);
         renderStateElm(state, onCellClick);
         renderResetBtn();
     }
-    
+
+    /**
+     * @param {string} containerId
+     */
     const init = (containerId) => {
         document
             .getElementById(containerId)

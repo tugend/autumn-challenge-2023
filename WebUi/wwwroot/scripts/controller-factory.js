@@ -1,11 +1,72 @@
 ﻿window.conway = window.conway || {};
 
+/**
+ * @typedef {object} State
+ * @property {number[][]} grid
+ * @property {turn} number
+ */
+
+/**
+ * @typedef SeedFunction
+ * @param {number} o
+ * @param {number} j
+ * @returns { State }
+ */
+
+/**
+ * @typedef CurrentFunction
+ * @returns { State }
+ */
+
+/**
+ * @typedef {object} Game
+ * @property {function} init
+ * @property {function} pause
+ * @property {function} togglePause
+ * @property {function} unpause
+ * @property {SeedFunction} seed
+ * @property {CurrentFunction} current
+ */
+
+/**
+ * @typedef FetchStatesFunction
+ * @param { State } seed
+ */
+
+/**
+ * @typedef { object } BackendClient
+ * @property { FetchStatesFunction } fetchStates
+ */
+
+/**
+ * @typedef InitFunction
+ * @param { string } containerId
+ */
+
+/**
+ * @typedef {object} DomClient
+ * @property { function } render
+ * @property { InitFunction } init
+ */
+
 window.conway.controllerFactory = ((backendClientFactory, domClientFactory, gameFactory) => {
+    /** @type {Game | null} */
     let game = null;
+
+    /** @type {BackendClient | null} */
     let backendClient = null;
+
+    /** @type {DomClient | null} */
     let domClient = null;
+
+    /** @type {State | null} */
     let initialSeed = null;
-    
+
+    /**
+     * @param { number } i
+     * @param { number } j
+     * @returns { Promise<void> }
+     */
     const onCellClick = async (i, j) => {
         game.pause()
         
@@ -17,18 +78,30 @@ window.conway.controllerFactory = ((backendClientFactory, domClientFactory, game
         game.init();
     }
 
+    /**
+     * @returns { Promise<void> }
+     */
     const onPauseBtnClick = () =>
         game.togglePause()
 
+    /**
+     * @returns { Promise<Game> }
+     */
     const onResetBtnClick = async () => {
         game.pause()
 
+        if (initialSeed == null) throw Error("Whoops. Seed was null!");
         const states = await backendClient.fetchStates(initialSeed);
         game = gameFactory(states, domClient.render)
         game.init();
         return game;
     }
     
+    /**
+     * @param { string } containerId
+     * @param { State } seed
+     * @returns { Game } game
+     */
     const start = async (containerId, seed) => {
         initialSeed = seed;
         backendClient = backendClientFactory("/api/conway");
@@ -45,8 +118,7 @@ window.conway.controllerFactory = ((backendClientFactory, domClientFactory, game
     return { start }
 });
 
-// TODO: cleanup    : Add/fix/update JSDOCs
-// TODO: devops     : add github test workflow
+// TODO: cleanup    : Add/fix/update JSDOC
 // TODO: tag        : version 1.0.0
 
 // TODO: refactor   : replace function factories with classes?

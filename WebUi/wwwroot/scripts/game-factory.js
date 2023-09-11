@@ -1,10 +1,19 @@
 ﻿window.conway = window.conway || {};
 
 window.conway.gameFactory = (states, onStateChange) => {
+    /** @type { number } */
     let turnInMs = 1000;
+    
+    /** @type { number | null } */
     let timeoutId = null;
+
+    /** @type { number } */
     let index = 0;
 
+    /**
+     * @param { Object } instance
+     * @returns { Object } 
+     */
     const deepCopy = (instance) =>
         JSON.parse(JSON.stringify(instance));
     
@@ -35,6 +44,11 @@ window.conway.gameFactory = (states, onStateChange) => {
     const current = () =>
         states[index];
     
+    /** 
+     * @param { number } i
+     * @param { number } j
+     * @returns {Promise<State>} 
+     */
     const seed = async (i, j) => {
         let seededState = deepCopy(current())
         seededState.grid[i][j] = seededState.grid[i][j] > 0 ? 0 : 1;

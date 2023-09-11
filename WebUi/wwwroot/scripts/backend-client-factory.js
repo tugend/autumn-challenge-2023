@@ -1,5 +1,8 @@
 ﻿window.conway = window.conway || {};
 
+/**
+ * @param {Request | string | URL} fetchUrl
+ */
 window.conway.backendClientFactory = (fetchUrl) => {
     /**
      * @param { Response } response
