@@ -34,11 +34,6 @@
  */
 
 /**
- * @typedef { object } BackendClient
- * @property { FetchStatesFunction } fetchStates
- */
-
-/**
  * @typedef InitFunction
  * @param { string } containerId
  */
@@ -49,12 +44,12 @@
  * @property { InitFunction } init
  */
 
-window.conway.controllerFactory = ((backendClientFactory, domClientFactory, gameFactory) => {
+window.conway.controllerFactory = ((_backendClient, domClientFactory, gameFactory) => {
     /** @type {Game | null} */
     let game = null;
 
-    /** @type {BackendClient | null} */
-    let backendClient = null;
+    /** @type {BackendClient} */
+    let backendClient = _backendClient;
 
     /** @type {DomClient | null} */
     let domClient = null;
@@ -104,7 +99,6 @@ window.conway.controllerFactory = ((backendClientFactory, domClientFactory, game
      */
     const start = async (containerId, seed) => {
         initialSeed = seed;
-        backendClient = backendClientFactory("/api/conway");
         domClient = domClientFactory(onCellClick, onPauseBtnClick, onResetBtnClick);
         
         domClient.init(containerId)
@@ -118,9 +112,7 @@ window.conway.controllerFactory = ((backendClientFactory, domClientFactory, game
     return { start }
 });
 
-// TODO: cleanup    : Add/fix/update JSDOC
-// TODO: tag        : version 1.0.0
-
+// TODO: fix        : memory leak (resources not disposed)
 // TODO: refactor   : replace function factories with classes?
 // TODO: feature    : long running games by automated paging in slices of 1o states
 // TODO: feature    : bigger grids!

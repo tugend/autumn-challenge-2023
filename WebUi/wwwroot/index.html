@@ -6,7 +6,7 @@
     <link rel="icon" href="data:,">
     <link rel="stylesheet" href="./style.css">
     <script src="./scripts/game-factory.js" type="application/javascript"></script>
-    <script src="./scripts/backend-client-factory.js" type="application/javascript"></script>
+    <script src="./scripts/backend-client.js" type="application/javascript"></script>
     <script src="./scripts/dom-client-factory.js" type="application/javascript"></script>
     <script src="./scripts/controller-factory.js" type="application/javascript"></script>
 </head>
@@ -31,7 +31,7 @@
         const seed = optionalUrlSeed || defaultSeed;        
         
         const controller = conway.controllerFactory(
-            conway.backendClientFactory,
+            new conway.BackendClient("/api/conway"),
             conway.domClientFactory,
             conway.gameFactory);
 
