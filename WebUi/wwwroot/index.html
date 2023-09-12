@@ -8,7 +8,7 @@
     <script src="./scripts/game-factory.js" type="application/javascript"></script>
     <script src="./scripts/backend-client.js" type="application/javascript"></script>
     <script src="./scripts/dom-client-factory.js" type="application/javascript"></script>
-    <script src="./scripts/controller-factory.js" type="application/javascript"></script>
+    <script src="scripts/controller.js" type="application/javascript"></script>
 </head>
 <body>
 <main>
@@ -30,7 +30,7 @@
         const optionalUrlSeed = optionalUrlSeedEncoded && JSON.parse(decodeURIComponent(optionalUrlSeedEncoded));
         const seed = optionalUrlSeed || defaultSeed;        
         
-        const controller = conway.controllerFactory(
+        const controller = new conway.Controller(
             new conway.BackendClient("/api/conway"),
             conway.domClientFactory,
             conway.gameFactory);

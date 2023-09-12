@@ -1,14 +1,10 @@
 ﻿window.conway = window.conway || {};
 
 window.conway.BackendClient = class {
-    /**
-     * @type {string}
-     */
+    /** @type {string} */
     #fetchUrl;
         
-    /**
-     * @param {string} fetchUrl
-     */
+    /** @param {string} fetchUrl */
     constructor(fetchUrl) {
         this.#fetchUrl = fetchUrl;
     }
@@ -19,7 +15,7 @@ window.conway.BackendClient = class {
      */
     fetchStates = (seed) => 
         fetch(this.#fetchUrl, this.#postRequest(seed))
-        .then(this.#asJson);
+            .then(this.#asJson);
 
     /**
      * @param { Response } response
