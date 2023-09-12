@@ -74,6 +74,7 @@ window.conway.Controller = class {
      * @returns { Game } game
      */
     start = async (containerId, seed) => {
+        // TODO: figure out how to de-spaghetti-fy this, suggestion, refactor to static functions instead?
         this.#initialSeed = seed;
         this.#domClient = this.#domClientFactory(this.#onCellClick, this.#onPauseBtnClick, this.#onResetBtnClick);
 

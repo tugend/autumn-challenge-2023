@@ -5,7 +5,7 @@
     <title>Document</title>
     <link rel="icon" href="data:,">
     <link rel="stylesheet" href="./style.css">
-    <script src="./scripts/game-factory.js" type="application/javascript"></script>
+    <script src="scripts/game.js" type="application/javascript"></script>
     <script src="./scripts/backend-client.js" type="application/javascript"></script>
     <script src="./scripts/dom-client-factory.js" type="application/javascript"></script>
     <script src="scripts/controller.js" type="application/javascript"></script>
@@ -30,10 +30,12 @@
         const optionalUrlSeed = optionalUrlSeedEncoded && JSON.parse(decodeURIComponent(optionalUrlSeedEncoded));
         const seed = optionalUrlSeed || defaultSeed;        
         
+        const gameFactory = (states, onStateChange) => new conway.Game(states, onStateChange);
+        
         const controller = new conway.Controller(
             new conway.BackendClient("/api/conway"),
             conway.domClientFactory,
-            conway.gameFactory);
+            gameFactory);
 
         await controller.start('conway', seed)
     })();
