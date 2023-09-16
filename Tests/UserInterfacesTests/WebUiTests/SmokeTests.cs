@@ -9,45 +9,6 @@ namespace Tests.UserInterfacesTests.WebUiTests;
 public sealed class SmokeTests
 {
     [Fact]
-    public async Task VisualTests()
-    {
-        // Startup
-        var seed = new
-        {
-            turn = 0,
-            grid = new [] { new [] { 1, 1, 4 },  new [] { 1, 0, 0 },  new [] { 0, 0, 0 } } 
-        };
-            
-        using var client = await WebUiClient.Init(nameof(VisualTests), seed);
-
-        // Act
-        for (var i = 1; i < 10; i++)
-        {
-            await client.BenchmarkTurn(i);
-        }   
-        
-        await client
-            .ClickCell(0, 0)
-            .Benchmark("Should have seeded 2,2");
-        
-        await client
-            .ClickCell(2, 1)
-            .Benchmark("Should have killed 2,0");
-        
-        await client
-            .ClickResetButton()
-            .Benchmark("Should be reset");
-        
-        await client
-            .ClickPauseButton()
-            .Benchmark("Should be running");
-        
-        await client
-            .ClickPauseButton()
-            .Benchmark("Should be paused");
-    }
-
-    [Fact]
     public async Task KillLivingCell()
     {
         // Startup
@@ -166,6 +127,45 @@ public sealed class SmokeTests
                 """)
             .And.NotBe(fourthState)
             .And.Be(resetState);
+    }
+    
+    [Fact]
+    public async Task VisualTests()
+    {
+        // Startup
+        var seed = new
+        {
+            turn = 0,
+            grid = new [] { new [] { 1, 1, 4 },  new [] { 1, 0, 0 },  new [] { 0, 0, 0 } } 
+        };
+            
+        using var client = await WebUiClient.Init(nameof(VisualTests), seed);
+
+        // Act
+        for (var i = 1; i < 10; i++)
+        {
+            await client.BenchmarkTurn(i);
+        }   
+        
+        await client
+            .ClickCell(0, 0)
+            .Benchmark("Should have seeded 2,2");
+        
+        await client
+            .ClickCell(2, 1)
+            .Benchmark("Should have killed 2,0");
+        
+        await client
+            .ClickResetButton()
+            .Benchmark("Should be reset");
+        
+        await client
+            .ClickPauseButton()
+            .Benchmark("Should be running");
+        
+        await client
+            .ClickPauseButton()
+            .Benchmark("Should be paused");
     }
 }
 

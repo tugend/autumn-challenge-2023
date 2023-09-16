@@ -1,19 +1,19 @@
 ﻿window.conway = window.conway || {};
 
-window.conway.gameFactory = (states, onStateChange) => {
-    /** @type { number } */
+window.conway.gameFactory = (states) => {
     let turnInMs = 1000;
-    
-    /** @type { number | null } */
     let timeoutId = null;
-
-    /** @type { number } */
     let index = 0;
+    const initialStates = states;
+    
+    let onStateChange = () => {};
 
-    /**
-     * @param { Object } instance
-     * @returns { Object } 
-     */
+    const setState = (_states) => {
+        states = _states.map(x => { x.turn = states[index].turn + x.turn; return x; });
+        index = 0;
+        triggerUpdate()
+    }
+    
     const deepCopy = (instance) =>
         JSON.parse(JSON.stringify(instance));
     
@@ -21,34 +21,32 @@ window.conway.gameFactory = (states, onStateChange) => {
         timeoutId == null;
 
     const pause = () => {
-        if (isPaused()) return;
+        if (isPaused()) return that;
         
         clearTimeout(timeoutId)
         timeoutId = null;
-        onStateChange(current(), isPaused())
+        onStateChange()
+        
+        return that;
     }
 
     const nextTurn = () => {
         timeoutId = setTimeout(() => {
             index = Math.min(states.length -1, index + 1);
-            onStateChange(states[index], isPaused());
+            onStateChange();
             nextTurn();
         }, turnInMs);
     }
 
     const unpause = () => {
         timeoutId = setTimeout(nextTurn, turnInMs);
-        onStateChange(current(), isPaused())
+        onStateChange()
+        return that;
     }
     
     const current = () =>
         states[index];
     
-    /** 
-     * @param { number } i
-     * @param { number } j
-     * @returns {Promise<State>} 
-     */
     const seed = async (i, j) => {
         let seededState = deepCopy(current())
         seededState.grid[i][j] = seededState.grid[i][j] > 0 ? 0 : 1;
@@ -62,22 +60,28 @@ window.conway.gameFactory = (states, onStateChange) => {
             : pause();
     
     const reset = () => {
-        pause();
+        states = initialStates;
         index = 0;
-        onStateChange(current(), isPaused())
+        onStateChange()
     }
     
-    const init = () => 
-        onStateChange(current(), isPaused())
+    const triggerUpdate = () => {
+        onStateChange()
+        return that;
+    }
 
-    return {
-        init,
+    const that = {
+        triggerUpdate,
+        setState,
         pause,
         isPaused,
         unpause,
         current,
         seed,
         togglePause,
-        reset
+        reset,
+        subscribe: { toChanged: (f) => onStateChange = () => f(current(), isPaused()) }
     };
+    
+    return that;
 } 

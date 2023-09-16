@@ -1,18 +1,15 @@
 ﻿window.conway = window.conway || {};
 
-window.conway.domClientFactory = (onCellClick, onTogglePlayBtnClick, onResetBtnClick) => {
+window.conway.domClientFactory = () => {
 
-    /**
-     * @typedef OnCellClick
-     * @param { number } i
-     * @param { number } j
-     * @param { number } value 
-     */  
+    let onCellClick = () => {};
+    let onTogglePlayBtnClick = () => {};
+    let onResetBtnClick = () => {}
+
+    const subscribeToCellClick = (f) => onCellClick = f;
+    const subscribeToTogglePlayBtnClick = (f) => onTogglePlayBtnClick = f;
+    const subscribeToResetBtnClick = (f) => onResetBtnClick = f;
     
-    /**
-     * @param {State} state 
-     * @param {OnCellClick} onClick 
-     */
     const renderStateElm = (state, onClick) => {
 
         const cellHtmlFactory = (i, j, value) => {
@@ -50,21 +47,15 @@ window.conway.domClientFactory = (onCellClick, onTogglePlayBtnClick, onResetBtnC
         elm.onclick = onResetBtnClick;
     };
 
-    /**
-     * @param {State} state
-     * @param {boolean} isPaused
-     */
-    const render = (state, isPaused) => {
+    const rerender = (state, isPaused) => {
         renderTogglePlayBtn(isPaused, onTogglePlayBtnClick);
         renderTurnCountElm(state.turn+1);
         renderStateElm(state, onCellClick);
         renderResetBtn();
+        return that;
     }
 
-    /**
-     * @param {string} containerId
-     */
-    const init = (containerId) => {
+    const renderTo = (containerId) => {
         document
             .getElementById(containerId)
             .innerHTML = `
@@ -75,7 +66,18 @@ window.conway.domClientFactory = (onCellClick, onTogglePlayBtnClick, onResetBtnC
                     <div id="pause-btn">Pause</div>
                     <div id="reset-btn">Reset</div>
                 </div>`;
+        
+        return that;
     }
     
-    return { init, render };
+    const that = { 
+        renderTo, 
+        rerender,
+        subscribe: {
+            toCellClick: subscribeToCellClick,
+            toResetBtnClick: subscribeToResetBtnClick,
+            toTogglePlayBtnClick: subscribeToTogglePlayBtnClick
+        }};
+    
+    return that;
 }

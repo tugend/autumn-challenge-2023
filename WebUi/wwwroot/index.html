@@ -8,7 +8,7 @@
     <script src="./scripts/game-factory.js" type="application/javascript"></script>
     <script src="./scripts/backend-client-factory.js" type="application/javascript"></script>
     <script src="./scripts/dom-client-factory.js" type="application/javascript"></script>
-    <script src="./scripts/controller-factory.js" type="application/javascript"></script>
+    <script src="./scripts/initialize.js" type="application/javascript"></script>
 </head>
 <body>
 <main>
@@ -19,23 +19,13 @@
 
 <script type="application/javascript">
     (async () => {
-        console.log('init game', conway)
-
-        const defaultSeed = {
-            turn: 0,
-            grid: [[1, 1, 4], [1, 0, 0], [0, 0, 0]]
-        };
-        
         const optionalUrlSeedEncoded = location.hash.replace("#", "");
         const optionalUrlSeed = optionalUrlSeedEncoded && JSON.parse(decodeURIComponent(optionalUrlSeedEncoded));
-        const seed = optionalUrlSeed || defaultSeed;        
+        const initialSeed = optionalUrlSeed || { turn: 0, grid: [[1, 1, 4], [1, 0, 0], [0, 0, 0]] };        
         
-        const controller = conway.controllerFactory(
-            conway.backendClientFactory,
-            conway.domClientFactory,
-            conway.gameFactory);
-
-        await controller.start('conway', seed)
-    })();
+        const game = await conway.initialize('conway', "/api/conway", initialSeed);
+        
+        game.unpause();
+})();
 </script>
 </html>
