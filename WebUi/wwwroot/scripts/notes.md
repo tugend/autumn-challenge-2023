@@ -7,6 +7,11 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules
 
 Reconsider JSDOC, classes and typescript after that.
 
+### TODO: fix dangling processes
+
+Introduce a web factory fixture, try catch some more, 
+figure out why processes does not shut down correctly
+
 ### Pending refinement
 * TODO: feature    : long running games by automated paging in slices of 1o states
 * TODO: feature    : bigger grids!
