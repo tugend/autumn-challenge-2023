@@ -1,13 +1,17 @@
 ﻿using FluentAssertions;
-using ObjectExtensions;
 using TaskExtensions;
 using Tests.UserInterfacesTests.WebUiTests.Tools;
+using Xunit.Abstractions;
 
 // https://www.benday.com/2021/07/19/asp-net-core-integration-tests-with-selenium-webapplicationfactory/
 namespace Tests.UserInterfacesTests.WebUiTests;
 
 public sealed class SmokeTests
 {
+    private readonly ITestOutputHelper _outputHelper;
+
+    public SmokeTests(ITestOutputHelper outputHelper) => _outputHelper = outputHelper;
+
     [Fact]
     public async Task KillLivingCell()
     {
@@ -18,7 +22,7 @@ public sealed class SmokeTests
             grid = new [] { new [] { 1 } } 
         };
         
-        using var client = await WebUiClient.Init(nameof(VisualTests), seed);
+        using var client = await WebUiClient.Init(_outputHelper, nameof(VisualTests), seed);
 
         client.ClickPauseButton();
         
@@ -41,7 +45,7 @@ public sealed class SmokeTests
             grid = new [] { new [] { 1, 2, 3 },  new [] { 4, 0, 5 } }
         };
         
-        using var client = await WebUiClient.Init(nameof(VisualTests), seed); // TODO: reuse client to improve performance?
+        using var client = await WebUiClient.Init(_outputHelper, nameof(VisualTests), seed);
 
         client.ClickPauseButton();
         
@@ -64,7 +68,7 @@ public sealed class SmokeTests
             grid = new [] { new [] { 1, 1, 1 }, new [] { 1, 0, 0 } }
         };
         
-        using var client = await WebUiClient.Init(nameof(VisualTests), seed);
+        using var client = await WebUiClient.Init(_outputHelper, nameof(VisualTests), seed);
 
         // Act
         await client
@@ -94,7 +98,7 @@ public sealed class SmokeTests
             grid = new [] { new [] { 1, 2, 3 },  new [] { 4, 5, 6 } }
         };
         
-        using var client = await WebUiClient.Init(nameof(VisualTests), seed);
+        using var client = await WebUiClient.Init(_outputHelper, nameof(VisualTests), seed);
 
         // Act
         var initialState = client
@@ -139,7 +143,7 @@ public sealed class SmokeTests
             grid = new [] { new [] { 1, 1, 4 },  new [] { 1, 0, 0 },  new [] { 0, 0, 0 } } 
         };
             
-        using var client = await WebUiClient.Init(nameof(VisualTests), seed);
+        using var client = await WebUiClient.Init(_outputHelper, nameof(VisualTests), seed);
 
         // Act
         for (var i = 1; i < 10; i++)

@@ -23,6 +23,7 @@
         const optionalUrlSeed = optionalUrlSeedEncoded && JSON.parse(decodeURIComponent(optionalUrlSeedEncoded));
         const initialSeed = optionalUrlSeed || { turn: 0, grid: [[1, 1, 4], [1, 0, 0], [0, 0, 0]] };        
         
+        console.log("Initializing Conway's game of life")
         const game = await conway.initialize('conway', "/api/conway", initialSeed);
         
         game.unpause();
