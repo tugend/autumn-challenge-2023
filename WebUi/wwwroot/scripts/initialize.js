@@ -1,11 +1,11 @@
 ﻿window.conway = window.conway || {};
 
-window.conway.initialize = async (containerId, fetchPath, initialSeed) => {
+window.conway.initialize = async (containerId, fetchPath, turnSpeedInMs, initialSeed) => {
     const backendClient = conway.backendClientFactory(fetchPath);
     const initialStates = await backendClient.fetchStates(initialSeed)
 
     const domClient = conway.domClientFactory().renderTo(containerId);
-    const game = conway.gameFactory(initialStates);
+    const game = conway.gameFactory(turnSpeedInMs, initialStates);
 
     domClient.subscribe.toCellClick(async (i, j) =>
         await game

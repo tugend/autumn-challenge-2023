@@ -22,7 +22,7 @@ public sealed class SmokeTests
             grid = new [] { new [] { 1 } } 
         };
         
-        using var client = await WebUiClient.Init(_outputHelper, nameof(VisualTests), seed);
+        using var client = await WebUiClient.Init(_outputHelper, nameof(VisualTests), TimeSpan.FromMilliseconds(1000), seed);
 
         client.ClickPauseButton();
         
@@ -45,7 +45,7 @@ public sealed class SmokeTests
             grid = new [] { new [] { 1, 2, 3 },  new [] { 4, 0, 5 } }
         };
         
-        using var client = await WebUiClient.Init(_outputHelper, nameof(VisualTests), seed);
+        using var client = await WebUiClient.Init(_outputHelper, nameof(VisualTests), TimeSpan.FromMilliseconds(1000), seed);
 
         client.ClickPauseButton();
         
@@ -68,7 +68,7 @@ public sealed class SmokeTests
             grid = new [] { new [] { 1, 1, 1 }, new [] { 1, 0, 0 } }
         };
         
-        using var client = await WebUiClient.Init(_outputHelper, nameof(VisualTests), seed);
+        using var client = await WebUiClient.Init(_outputHelper, nameof(VisualTests), TimeSpan.FromMilliseconds(1000), seed);
 
         // Act
         await client
@@ -98,7 +98,7 @@ public sealed class SmokeTests
             grid = new [] { new [] { 1, 2, 3 },  new [] { 4, 5, 6 } }
         };
         
-        using var client = await WebUiClient.Init(_outputHelper, nameof(VisualTests), seed);
+        using var client = await WebUiClient.Init(_outputHelper, nameof(VisualTests), TimeSpan.FromMilliseconds(1000), seed);
 
         // Act
         var initialState = client
@@ -143,7 +143,7 @@ public sealed class SmokeTests
             grid = new [] { new [] { 1, 1, 4 },  new [] { 1, 0, 0 },  new [] { 0, 0, 0 } } 
         };
             
-        using var client = await WebUiClient.Init(_outputHelper, nameof(VisualTests), seed);
+        using var client = await WebUiClient.Init(_outputHelper, nameof(VisualTests), TimeSpan.FromMilliseconds(1000), seed);
 
         // Act
         for (var i = 1; i < 10; i++)

@@ -27,8 +27,7 @@ public sealed class WebUiClient : IDisposable
         _process = process;
     }
 
-    public static async Task<WebUiClient> Init(ITestOutputHelper testOutputHelper, string testNamePrefix,
-        object? seedObject = null)
+    public static async Task<WebUiClient> Init(ITestOutputHelper testOutputHelper, string testNamePrefix, TimeSpan turnSpeed, object? seedObject = null)
     {
         Process? process = null;
         ChromeDriver? driver = null;
@@ -38,7 +37,8 @@ public sealed class WebUiClient : IDisposable
         try
         {
             process = await WebUiRunner.Start();
-            driver = ChromiumRunner.Start("http://localhost:5089/resources/index.html#" + seed);
+            driver = ChromiumRunner.Start($"http://localhost:5089/resources/index.html?turn-speed={turnSpeed.TotalMilliseconds}#{seed}");
+            
             return new WebUiClient(testNamePrefix, testOutputHelper, driver, process);
         }
         catch (Exception)

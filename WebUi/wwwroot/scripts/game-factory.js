@@ -1,7 +1,7 @@
 ﻿window.conway = window.conway || {};
 
-window.conway.gameFactory = (states) => {
-    let turnInMs = 1000;
+window.conway.gameFactory = (turnSpeedInMs, states) => {
+    const turnInMs = turnSpeedInMs;
     let timeoutId = null;
     let index = 0;
     const initialStates = states;
