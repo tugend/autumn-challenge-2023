@@ -21,10 +21,10 @@ public class VisualBenchmark
 
     public static VisualBenchmark Init(string name)
     {
-        var folder = RelativePaths.VisualBenchmarkPath("UserInterfacesTests", "WebUITests", "Benchmarks");
+        var folder = RelativePaths.VisualBenchmarkPath("UserInterfacesTests", "WebUITests", nameof(VisualSmokeTests));
         var actualPath = Path.Join(folder, $"{name}.actual.png");
         var diffPath = Path.Join(folder, $"{name}.diff.png");
-        var benchmarkPath = Path.Join(folder, $"{name}.benchmark.png");
+        var benchmarkPath = Path.Join(folder, $"{name}.bench.png");
 
         return new VisualBenchmark(name, actualPath, diffPath, benchmarkPath);
     }

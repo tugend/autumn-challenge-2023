@@ -1,52 +1,51 @@
-﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
+﻿using System.Diagnostics;
+using System.Reflection;
 using System.Text.Encodings.Web;
-using FluentAssertions;
 using Newtonsoft.Json;
 using ObjectExtensions;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
 using Xunit.Abstractions;
+using Xunit.Sdk;
 
 namespace Tests.UserInterfacesTests.WebUiTests.Tools;
 
-public sealed class WebUiClient : IDisposable
+public sealed class WebUiClient
 {
-    private readonly string _testNamePrefix;
-    private readonly ITestOutputHelper _output;
     private readonly ChromeDriver _driver;
-    private readonly Process _process;
-    private IEnumerable<IDisposable> _disposables => new IDisposable[] { _driver, _process};
+    private readonly WebDriverWait _wait ;
+    private ITestOutputHelper? _output;
 
-    private WebUiClient(string testNamePrefix, ITestOutputHelper output, ChromeDriver driver, Process process)
+    internal WebUiClient(ChromeDriver driver)
     {
-        _testNamePrefix = testNamePrefix;
-        _output = output;
         _driver = driver;
-        _process = process;
+        _wait = new WebDriverWait(_driver, TimeSpan.FromMilliseconds(100));
     }
 
-    public static async Task<WebUiClient> Init(ITestOutputHelper testOutputHelper, string testNamePrefix, TimeSpan turnSpeed, object? seedObject = null)
+    private void PrintLogs()
     {
-        Process? process = null;
-        ChromeDriver? driver = null;
+        _driver
+            .Manage().Logs
+            .GetLog(LogType.Browser).ToList()
+            .ForEach(entry => _output?.WriteLine(entry.ToString()));
+    }
 
+    public LogContext StartNewConwaysGame(object? seedObject = null, TimeSpan? turnSpeed = null) =>
+        StartNewConwaysGame(null, seedObject, turnSpeed);
+    
+    public LogContext StartNewConwaysGame(string? context, object? seedObject = null, TimeSpan? turnSpeed = null)
+    {
         var seed = EncodeSeed(seedObject);
-
-        try
-        {
-            process = await WebUiRunner.Start();
-            driver = ChromiumRunner.Start($"http://localhost:5089/resources/index.html?turn-speed={turnSpeed.TotalMilliseconds}#{seed}");
-            
-            return new WebUiClient(testNamePrefix, testOutputHelper, driver, process);
-        }
-        catch (Exception)
-        {
-            process?.Dispose();
-            driver?.Dispose();
-            throw;
-        }
+        var speed = turnSpeed ?? TimeSpan.FromMilliseconds(200);
+        
+        var id = Guid.NewGuid().ToString();
+        var url = $"http://localhost:5089/resources/index.html?id={id}&turn-speed={speed.TotalMilliseconds}#{seed}";
+        
+        _driver .Navigate().GoToUrl(url);
+        _wait.Until(_ => _driver.ExecuteScript("return window.conway.isMainLoopRunning"));
+        
+        return new LogContext(PrintLogs);
     }
 
     private static string EncodeSeed(object? seed)
@@ -60,23 +59,17 @@ public sealed class WebUiClient : IDisposable
     public async Task Benchmark(string name)
     {
         var screenshot = _driver.GetScreenshot();
-        var benchmark = VisualBenchmark.Init(_testNamePrefix + "__" + name);
+        
+        // <start> Bit of hacky reflection here
+        var type = _output?.GetType();
+        var testMember = type?.GetField("test", BindingFlags.Instance | BindingFlags.NonPublic);
+        var test = (XunitTest?) testMember?.GetValue(_output);
+        var context = test?.DisplayName ?? throw new ApplicationException("Unknown context!");
+        // <end>
+        
+        var benchmark = VisualBenchmark.Init($"{context}.{name}");
         if (benchmark.IsEmpty()) benchmark.SaveAsBenchmark(screenshot);
         else await benchmark.AssertBenchmarkMatches(screenshot);
-    }
-
-    private RunState GetState()
-    {
-        var text = _driver
-            .FindElement(By.Id("pause-btn"))
-            .Text;
-        
-        return text switch
-        {
-            "Continue" => RunState.Paused,
-            "Pause" => RunState.Running,
-            _ => throw new ArgumentOutOfRangeException(text)
-        };
     }
 
     public async Task<int> WaitForTurn(int targetTurn)
@@ -85,7 +78,7 @@ public sealed class WebUiClient : IDisposable
         var initialTurn = GetTurnCount();
         while (GetTurnCount() < targetTurn && timer.Elapsed < TimeSpan.FromSeconds(3*(targetTurn - initialTurn)))
         {
-            await Task.Delay(100);
+            await Task.Delay(50);
         }
 
         return GetTurnCount();
@@ -114,17 +107,24 @@ public sealed class WebUiClient : IDisposable
             .FindElement(By.TagName("main"))
             .Text;
 
-    public WebUiClient ClickCell(int i, int j)
+    public WebUiClient ClickCell(int flatZeroIndexedCellIndex)
     {
-        GetCell(i, j).Click();
-        
+        try
+        {
+            GetCell(flatZeroIndexedCellIndex).Click();
+        }
+        catch (StaleElementReferenceException)
+        {
+            // retry in case we hit a fetch/click in the middle of a rerender
+            GetCell(flatZeroIndexedCellIndex).Click();
+        }
+
         return this;
     }
 
-    public IWebElement GetCell(int i, int j) =>
+    public IWebElement GetCell(int flatZeroIndexedCellIndex) =>
         _driver
-            .FindElement(By.Id("state"))
-            .FindElement(By.CssSelector($".life:nth-child({i * j + j + 1})"));
+            .FindElement(By.CssSelector($"#state .life:nth-child({flatZeroIndexedCellIndex+1})"));
 
     public WebUiClient ClickResetButton()
     {
@@ -134,20 +134,18 @@ public sealed class WebUiClient : IDisposable
 
         return this;
     }
+
+    public void Inject(ITestOutputHelper output) => 
+        _output = output;
     
-    public ReadOnlyCollection<LogEntry> GetLogs() => 
-        _driver.Manage().Logs.GetLog(LogType.Browser);
-
-    public void Dispose()
+    public class LogContext : IDisposable
     {
-        foreach (var disposable in _disposables)
-        {
-            disposable.Dispose();
-        }
-    }
+        private readonly Action _printLogs;
 
-    private enum RunState
-    {
-        Running, Paused
+        public LogContext(Action PrintLogs) => 
+            _printLogs = PrintLogs;
+
+        public void Dispose() => 
+            _printLogs();
     }
 }

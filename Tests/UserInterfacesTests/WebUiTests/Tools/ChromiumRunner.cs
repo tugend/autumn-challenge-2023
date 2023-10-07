@@ -1,14 +1,14 @@
 ﻿using ObjectExtensions;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using Polly;
 using Size = System.Drawing.Size;
 
 namespace Tests.UserInterfacesTests.WebUiTests.Tools;
 
-// TODO: maybe better setup? https://stackoverflow.com/questions/18261338/get-chromes-console-log
 public static class ChromiumRunner
 {
-    public static ChromeDriver Start(string uri)
+    public static async Task<ChromeDriver> Start()
     {
         var options = new ChromeOptions()
             .Tap(x => x.AddArgument("--headless"))
@@ -20,10 +20,14 @@ public static class ChromiumRunner
             .Manage()
             .Window.Size = new Size(900, 900);
         
-        driver
-            .Navigate()
-            .GoToUrl(uri);
+        await Policy
+            .Handle<WebDriverException>()
+            .WaitAndRetryAsync(10, _ => TimeSpan.FromMilliseconds(10), OnRetry)
+            .ExecuteAsync(() => Task.Run(() => driver.Navigate().GoToUrl("http://localhost:5089/resources/index.html")));
         
         return driver;
     }
+    
+    private static void OnRetry(Exception exception, TimeSpan timeSpan, int count, Context context) => 
+        Console.WriteLine($"Retry {count} {exception.Message}");
 }

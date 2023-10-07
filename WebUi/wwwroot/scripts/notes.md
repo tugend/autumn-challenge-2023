@@ -25,7 +25,7 @@ figure out why processes does not shut down correctly
 ### Kill dangling port hugging process
 ```cmd
 netstat -ano | findstr :<PORT>
-taskkill /PID <PID> /F
+taskkill /F /PID <PID>
 
 npx kill-port 8080
 ```
