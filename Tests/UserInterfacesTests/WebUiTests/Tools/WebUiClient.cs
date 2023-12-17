@@ -107,6 +107,21 @@ public sealed class WebUiClient
             .FindElement(By.TagName("main"))
             .Text;
 
+    public string OnlyOneOrZero(string value) =>
+        int.Parse(value)
+            .Map(x => Math.Min(x, 1).ToString());
+
+    public string GetStateAsString(int width, int padding, bool onlyOnesAndZeros) =>
+        GetMainAsString()
+            .Split(Environment.NewLine)
+            .Skip(2)
+            .TakeWhile(x => int.TryParse(x, out _))
+            .Select(x => onlyOnesAndZeros ? OnlyOneOrZero(x) : x)
+            .Chunk(width)
+            .Select(xs => xs.Select(x => x.PadLeft(padding, ' ')))
+            .Select(xs => string.Join(" ", xs))
+            .Map(xs => string.Join(Environment.NewLine, xs));
+
     public WebUiClient ClickCell(int flatZeroIndexedCellIndex)
     {
         try

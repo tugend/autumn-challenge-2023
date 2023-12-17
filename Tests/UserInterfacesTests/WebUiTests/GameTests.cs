@@ -1,0 +1,89 @@
+﻿using Domain.Catalog;
+using FluentAssertions;
+using TaskExtensions;
+using Tests.UserInterfacesTests.WebUiTests.Tools;
+using Xunit.Abstractions;
+using static Domain.Functions;
+
+namespace Tests.UserInterfacesTests.WebUiTests;
+
+[Collection(nameof(UICollection))]
+public class GameTests
+{
+    private readonly WebUiClient _client;
+
+    public GameTests(WebUiTestFixture fixture, ITestOutputHelper outputHelper) => 
+        _client = fixture.Inject(outputHelper).Client;
+    
+    [Theory]
+    [InlineData(nameof(StillLife.Block))]
+    [InlineData(nameof(StillLife.Beehive))]
+    [InlineData(nameof(StillLife.Loaf))]
+    [InlineData(nameof(StillLife.Boat))]
+    [InlineData(nameof(StillLife.Tub))]
+    public async Task Still(string name)
+    {
+        var input = StillLife.Get(name);
+        
+        var state = await GameAfter(input, targetTurn: 10);
+
+        state.Should().BeEquivalentTo(input, because: $"{name} should be a still life");
+    }
+
+    [Theory]
+    [InlineData(nameof(Oscillators.Blinker))]
+    [InlineData(nameof(Oscillators.Toad))]
+    public async Task Oscillating(string name)
+    {
+        var input = Oscillators.Get(name);
+        
+        var state = await GameAfter(input, 1, 2, 3).ToListAsync();
+
+        state.Should().BeEquivalentTo(input, because: $"{name} should be a still life");
+    }
+    
+    private async Task<string> GameAfter(string input, int targetTurn)
+    {
+        var width = input
+            .Split(Environment.NewLine)
+            .First()
+            .Replace(" ", "")
+            .Length;
+        
+        using var _ = _client.StartNewConwaysGame(new
+        {
+            turn = 0,
+            grid = Parse(input)
+        });
+
+        await _client
+            .Chain()
+            .Then(x => x.WaitForTurn(targetTurn))
+            .Then(x => x.ClickPauseButton());
+        
+        return _client.GetStateAsString(width: width, padding: 1, onlyOnesAndZeros: true);
+    }
+    
+    private async IAsyncEnumerable<string> GameAfter(string input, params int[] targetTurns)
+    {
+        var width = input
+            .Split(Environment.NewLine)
+            .First()
+            .Replace(" ", "")
+            .Length;
+        
+        using var _ = _client.StartNewConwaysGame(new
+        {
+            turn = 0,
+            grid = Parse(input)
+        });
+
+        foreach (var turn in targetTurns)
+        {
+            await _client.WaitForTurn(turn);
+            _client.ClickPauseButton();
+            yield return _client.GetStateAsString(width: width, padding: 1, onlyOnesAndZeros: true);
+            _client.ClickPauseButton();
+        }
+    }
+}
