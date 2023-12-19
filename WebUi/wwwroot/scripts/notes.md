@@ -29,3 +29,6 @@ taskkill /F /PID <PID>
 
 npx kill-port 8080
 ```
+
+Windows -> open resource manager, click cpu then search for the locked file
+Windows task manager -> WebUi -> close

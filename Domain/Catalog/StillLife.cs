@@ -41,6 +41,16 @@ public static class StillLife
                               0 0 0 0 0
                               """;
 
+    public static IEnumerable<KeyValuePair<string, string>> All =>
+        new[]
+        {
+            nameof(Block),
+            nameof(Beehive),
+            nameof(Loaf),
+            nameof(Boat),
+            nameof(Tub)
+        }.Select(name => KeyValuePair.Create(name, Get(name)));
+    
     public static string Get(string name) =>
         typeof(StillLife).GetField(name)?.GetValue(null) as string ?? throw new InvalidOperationException();
 }
