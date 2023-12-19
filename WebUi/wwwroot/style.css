@@ -21,7 +21,6 @@ div {
     margin: auto;
     width: 180px;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
     border: 1px solid gray;
 }
 
@@ -73,3 +72,7 @@ div {
 .life-2 { background-color: #e2886c; }
 .life-1 { background-color: #e0816d; }
 .life-0 { background-color: #d3d3d3; }
+
+#input-catalog select {
+    width: 180px;
+}

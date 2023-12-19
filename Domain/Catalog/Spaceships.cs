@@ -1,6 +1,6 @@
 ﻿namespace Domain.Catalog;
 
-public class Spaceships
+public static class Spaceships
 {
     public const string Glider = """
                                  0 0 0 0 0
@@ -35,7 +35,12 @@ public class Spaceships
                                     0 1 1 1 1 1 0
                                     0 0 0 0 0 0 0
                                     """;       
-
+    
+    public static string Get(string name) =>
+        typeof(Spaceships)
+            .GetField(name)?
+            .GetValue(null) as string ?? throw new InvalidOperationException();
+    
     public static IEnumerable<KeyValuePair<string, string>> All =>
         new[]
         {
@@ -44,7 +49,4 @@ public class Spaceships
             nameof(MiddleWeightSpaceship),
             nameof(HeavyWeightSpaceship),
         }.Select(name => KeyValuePair.Create(name, Get(name)));
-    
-    public static string Get(string name) =>
-        typeof(Oscillators).GetField(name)?.GetValue(null) as string ?? throw new InvalidOperationException();
 }

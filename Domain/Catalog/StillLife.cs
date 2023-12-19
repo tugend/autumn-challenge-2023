@@ -40,7 +40,12 @@ public static class StillLife
                               0 0 1 0 0
                               0 0 0 0 0
                               """;
-
+    
+    public static string Get(string name) =>
+        typeof(StillLife)
+            .GetField(name)?
+            .GetValue(null) as string ?? throw new InvalidOperationException();
+    
     public static IEnumerable<KeyValuePair<string, string>> All =>
         new[]
         {
@@ -50,7 +55,4 @@ public static class StillLife
             nameof(Boat),
             nameof(Tub)
         }.Select(name => KeyValuePair.Create(name, Get(name)));
-    
-    public static string Get(string name) =>
-        typeof(StillLife).GetField(name)?.GetValue(null) as string ?? throw new InvalidOperationException();
 }

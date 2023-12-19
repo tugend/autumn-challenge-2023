@@ -16,6 +16,12 @@ window.conway.backendClientFactory = (fetchUrl) => {
         body: JSON.stringify(content)
     });
 
+    const getRequest = (content) => ({
+        method: "GET",
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(content)
+    });
+
     /**
      * @typedef {object} State
      * @property {number} turn
@@ -29,7 +35,10 @@ window.conway.backendClientFactory = (fetchUrl) => {
      * @return { Promise<State[]> }
      */
     const fetchStates = (seed) =>
-        fetch(fetchUrl, postRequest(seed)).then(asJson);
+        fetch(fetchUrl + "/states", postRequest(seed)).then(asJson);
+
+    const getCatalog = () =>
+        fetch(fetchUrl + "/catalog", getRequest()).then(asJson);
     
-    return { fetchStates };
+    return { fetchStates, getCatalog };
 }

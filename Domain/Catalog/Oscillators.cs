@@ -64,7 +64,12 @@ public static class Oscillators
                                   0 0 0 0 0 0 0 0 0 0 0  
                                   0 0 0 0 0 0 0 0 0 0 0  
                                   """;      
-
+    
+    public static string Get(string name) =>
+        typeof(Oscillators)
+            .GetField(name)?
+            .GetValue(null) as string ?? throw new InvalidOperationException();
+    
     public static IEnumerable<KeyValuePair<string, string>> All =>
         new[]
         {
@@ -74,7 +79,4 @@ public static class Oscillators
             nameof(Pulsar),
             nameof(Pentadecathlon),
         }.Select(name => KeyValuePair.Create(name, Get(name)));
-    
-    public static string Get(string name) =>
-        typeof(Oscillators).GetField(name)?.GetValue(null) as string ?? throw new InvalidOperationException();
 }
