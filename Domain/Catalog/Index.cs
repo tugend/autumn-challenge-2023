@@ -6,6 +6,5 @@ public static class Index
         .Empty<KeyValuePair<string, string>>()
         .Concat(StillLife.All)
         .Concat(Oscillators.All)
-        .Concat(Spaceships.All)
-        .ToDictionary(x => x.Key, x => x.Value);
+        .Concat(Spaceships.All);
 }

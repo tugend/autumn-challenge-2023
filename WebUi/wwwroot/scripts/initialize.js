@@ -1,11 +1,21 @@
-﻿window.conway = window.conway || {};
+﻿const transformSeedToState = (seed) => (
+    { 
+        turn: 0, 
+        grid: seed.value.split(/\r?\n/).map(row => row.split(" ")) 
+    });
 
-window.conway.initialize = async (containerId, fetchPath, turnSpeedInMs, initialSeed) => {
+window.conway = window.conway || {};
+
+window.conway.initialize = async (containerId, fetchPath, turnSpeedInMs, optionalSeedOverride) => {
+    
     const backendClient = conway.backendClientFactory(fetchPath);
-    const initialStates = await backendClient.fetchStates(initialSeed)
     const catalog = await backendClient.getCatalog();
     
-    const domClient = conway.domClientFactory(catalog).renderTo(containerId);
+    const initialSeed = optionalSeedOverride || catalog[2]; // TODO: fix these types
+    const initialState = transformSeedToState(initialSeed);
+    const initialStates = await backendClient.fetchStates(initialState)
+    
+    const domClient = conway.domClientFactory(initialSeed, catalog).renderTo(containerId);
     let game = conway.gameFactory(turnSpeedInMs, initialStates);
 
     domClient.subscribe.toCellClick(async (i, j) =>
@@ -24,15 +34,13 @@ window.conway.initialize = async (containerId, fetchPath, turnSpeedInMs, initial
 
     game.subscribe.toChanged(domClient.rerender);
     
-    domClient.subscribe.toCatalogSelect(async newSeed => {
-        console.log('catalog select', newSeed);
+    domClient.subscribe.toCatalogSelect(async catalogIndex => {
+        console.log('catalog select', catalogIndex);
         game.pause();
+        
         // TODO: HACK: LEAVES A DANGLING STATE AT INDEX
-        const newNewSeed = { turn: 0, grid: newSeed.split(/\r?\n/).map(row => row.split(" ")) };
-
-        game = await window.conway.initialize(containerId, fetchPath, turnSpeedInMs, newNewSeed);
-        document.querySelector("#conway #state").style.gridTemplateColumns = "1fr ".repeat(newNewSeed.grid.length);
-
+        const selected = catalog[catalogIndex];
+        game = await window.conway.initialize(containerId, fetchPath, turnSpeedInMs, selected);
         game.unpause();
     });
 

@@ -1,6 +1,6 @@
 ﻿window.conway = window.conway || {};
 
-window.conway.domClientFactory = (catalog) => {
+window.conway.domClientFactory = (initialSeed, catalog) => {
 
     const nullHandler = () => {};
     let onCellClick = nullHandler;
@@ -27,9 +27,10 @@ window.conway.domClientFactory = (catalog) => {
             .map((row, i) => row.map((value, j) => cellHtmlFactory(i, j, value)))
             .flat();
         
-        document
-            .querySelector("#state")
-            .replaceChildren(...children);
+        const stateElm = document.querySelector("#state");
+        
+        stateElm.className = `width-${state.grid[0].length}`;
+        stateElm.replaceChildren(...children);
     };
 
     /**
@@ -57,15 +58,21 @@ window.conway.domClientFactory = (catalog) => {
         return elm;
     }
     
-    const renderCatalog = (selector, catalog) => {
+    const renderCatalog = (selector, catalog, selected) => {
+        
+        if (!catalog.some(x => x.key === selected.key))
+        {
+            catalog = [selected, ...catalog] 
+        }
+        
         const selectElm = document.querySelector(selector);
         
-        selectElm.onchange = (event) => onCatalogSelect(event.target.value);
-        
-        Object
-            .keys(catalog)
-            .map(key => createOption(key, catalog[key]))
+        catalog
+            .map((entry, i) => createOption(entry.key,i))
             .forEach(optionElm => selectElm.appendChild(optionElm));
+
+        selectElm.selectedIndex = catalog.map(x => x.key).indexOf(selected.key); // TODO: do better
+        selectElm.onchange = (event) => onCatalogSelect(event.target.value);
     }
 
     const rerender = (state, isPaused) => {
@@ -81,7 +88,7 @@ window.conway.domClientFactory = (catalog) => {
             .getElementById(containerId)
             .innerHTML = `
                 <h5 id="turn">Turn <span>1</span></h5>
-                <div id="state" style="grid-template-columns: 1fr 1fr 1fr"></div>
+                <div id="state"></div>
                 <br />
                 <div id="controls">
                     <div id="pause-btn">Pause</div>
@@ -89,12 +96,10 @@ window.conway.domClientFactory = (catalog) => {
                 </div>
                 <br />
                 <aside id="input-catalog">
-                    <select>
-                        <option value="-1">---</option><!-- TODO: initialize with default! !>
-                    </select>
+                    <select></select>
                 </aside>`;
         
-        renderCatalog("#input-catalog > select", catalog);
+        renderCatalog("#input-catalog > select", catalog, initialSeed);
         
         return that;
     }
