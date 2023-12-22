@@ -37,24 +37,6 @@ div {
     opacity: 80%;
 }
 
-#state.width-1 {     grid-template-columns: 1fr; }
-#state.width-2 {     grid-template-columns: 1fr 1fr; }
-#state.width-3 {     grid-template-columns: 1fr 1fr 1fr; }
-#state.width-4 {     grid-template-columns: 1fr 1fr 1fr 1fr; }
-#state.width-5 {     grid-template-columns: 1fr 1fr 1fr 1fr 1fr; }
-#state.width-6 {     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr; }
-#state.width-7 {     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr; }
-#state.width-8 {     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr; }
-#state.width-9 {     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr; }
-#state.width-10 {     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr; }
-#state.width-11 {     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr }
-#state.width-12 {     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr; }
-#state.width-13 {     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr; }
-#state.width-14 {     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr; }
-#state.width-15 {     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr; }
-#state.width-16 {     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr; }
-#state.width-17 {     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr; }
-
 #controls{
     margin: auto; 
     width: 180px;

@@ -29,7 +29,7 @@ window.conway.domClientFactory = (initialSeed, catalog) => {
         
         const stateElm = document.querySelector("#state");
         
-        stateElm.className = `width-${state.grid[0].length}`;
+        stateElm.style.gridTemplateColumns = [...Array(state.grid[0].length)].map(_ => "1fr").join(" ");
         stateElm.replaceChildren(...children);
     };
 
