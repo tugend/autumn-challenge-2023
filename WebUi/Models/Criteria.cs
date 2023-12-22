@@ -3,4 +3,4 @@
 namespace WebUi.Models;
 
 [UsedImplicitly]
-public record Criteria(int Turns = 20);
+public record Criteria(int Turns = 10);

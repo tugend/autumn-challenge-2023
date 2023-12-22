@@ -35,6 +35,7 @@ window.conway.initialize = async (containerId, fetchPath, turnSpeedInMs, optiona
     domClient.subscribe.toTogglePlayBtnClick(game
         .togglePause);
     
+    // TODO: use game set state and add game setIntiallState?
     domClient.subscribe.toCatalogSelect(async catalogIndex => {
         game.pause();
         
@@ -45,6 +46,10 @@ window.conway.initialize = async (containerId, fetchPath, turnSpeedInMs, optiona
     });
 
     game.subscribe.toChanged(domClient.rerender);
+    
+    game.subscribe.toNextStatePage(async fromState => {
+        return await backendClient.fetchStates(fromState);
+    })
     
     return game;
 }
