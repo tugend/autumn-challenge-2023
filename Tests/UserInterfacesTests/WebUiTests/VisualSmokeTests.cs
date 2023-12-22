@@ -16,18 +16,14 @@ public sealed class VisualSmokeTests
     public async Task Shotgun()
     {
         // Startup
-        var seed = new
+        var seed = new[]
         {
-            key = nameof(Shotgun),
-            value = new[]
-            {
-                new[] { "1", "1", "4" }, 
-                new[] { "1", "0", "0" }, 
-                new[] { "0", "0", "0" }
-            }
+            new[] { "1", "1", "4" }, 
+            new[] { "1", "0", "0" }, 
+            new[] { "0", "0", "0" }
         };
 
-        using var _ = _client.StartNewConwaysGame(nameof(Shotgun), seed, TimeSpan.FromMilliseconds(800));
+        using var _ = _client.StartNewConwaysGame(seed, TimeSpan.FromMilliseconds(800));
 
         // Act
         for (var i = 1; i < 10; i++)
@@ -40,16 +36,14 @@ public sealed class VisualSmokeTests
     [Fact]
     public async Task Interactions()
     {
-        var seed = new
+        var seed = new[]
         {
-            key = nameof(Interactions),
-            value = new[] { 
-                new[] { "0", "2", "2" }, 
-                new[] { "2", "2", "2" }, 
-                new[] { "2", "2", "2" } }
+            new[] { "0", "2", "2" },
+            new[] { "2", "2", "2" },
+            new[] { "2", "2", "2" }
         };
         
-        using var _ = _client.StartNewConwaysGame(nameof(Interactions), seed, TimeSpan.FromMilliseconds(800));
+        using var _ = _client.StartNewConwaysGame(seed, TimeSpan.FromMilliseconds(800));
 
         var count = 0;
         

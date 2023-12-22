@@ -31,12 +31,9 @@ public sealed class WebUiClient
             .ForEach(entry => _output?.WriteLine(entry.ToString()));
     }
 
-    public LogContext StartNewConwaysGame(object? seedObject = null, TimeSpan? turnSpeed = null) =>
-        StartNewConwaysGame(null, seedObject, turnSpeed);
-    
-    public LogContext StartNewConwaysGame(string? context, object? seedObject = null, TimeSpan? turnSpeed = null)
+    public LogContext StartNewConwaysGame(string[][]? input = null, TimeSpan? turnSpeed = null)
     {
-        var seed = EncodeSeed(seedObject);
+        var seed = EncodeSeed(new { key = "Custom", value = input });
         var speed = turnSpeed ?? TimeSpan.FromMilliseconds(200);
         
         var id = Guid.NewGuid().ToString();

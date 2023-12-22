@@ -51,11 +51,7 @@ public class GameTests
     {
         var width = input.First().Length;
         
-        using var _ = _client.StartNewConwaysGame(new // TODO: why on earth is this not typed!!!
-        {
-            key = "Input",
-            value = input
-        });
+        using var _ = _client.StartNewConwaysGame(input);
 
         await _client
             .Chain()
@@ -69,11 +65,7 @@ public class GameTests
     {
         var width = input.First().Length;
         
-        using var _ = _client.StartNewConwaysGame(new
-        {
-            key = "Input",
-            value = input
-        }, turnSpeed: TimeSpan.FromMilliseconds(600));
+        using var _ = _client.StartNewConwaysGame(input, turnSpeed: TimeSpan.FromMilliseconds(600));
 
         foreach (var targetTurn in targetTurns)
         {

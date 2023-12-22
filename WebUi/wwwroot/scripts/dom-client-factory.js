@@ -71,7 +71,7 @@ window.conway.domClientFactory = (initialSeed, catalog) => {
             .map((entry, i) => createOption(entry.key,i))
             .forEach(optionElm => selectElm.appendChild(optionElm));
 
-        selectElm.selectedIndex = catalog.map(x => x.key).indexOf(selected.key); // TODO: do better
+        selectElm.selectedIndex = catalog.map(x => x.key).indexOf(selected.key);
         selectElm.onchange = (event) => onCatalogSelect(event.target.value);
     }
 

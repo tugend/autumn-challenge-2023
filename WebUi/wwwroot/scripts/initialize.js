@@ -1,19 +1,19 @@
-﻿// TODO: this is pretty redundant now
-const transformSeedToState = (seed) => (
-    { 
-        turn: 0, 
-        grid: seed.value 
-    });
+﻿window.conway = window.conway || {};
 
-window.conway = window.conway || {};
-
+/**
+ * @param { string } containerId
+ * @param { string } fetchPath
+ * @param { number } turnSpeedInMs
+ * @param { CatalogEntry } optionalSeedOverride
+ * @returns { Promise<Game> }
+ */
 window.conway.initialize = async (containerId, fetchPath, turnSpeedInMs, optionalSeedOverride) => {
     
     const backendClient = conway.backendClientFactory(fetchPath);
     const catalog = await backendClient.getCatalog();
     
-    const initialSeed = optionalSeedOverride || catalog[2]; // TODO: fix these types
-    const initialState = transformSeedToState(initialSeed);
+    const initialSeed = optionalSeedOverride || catalog[2];
+    const initialState = { turn: 0, grid: initialSeed.value };
     const initialStates = await backendClient.fetchStates(initialState)
     
     const domClient = conway.domClientFactory(initialSeed, catalog).renderTo(containerId);
@@ -36,12 +36,11 @@ window.conway.initialize = async (containerId, fetchPath, turnSpeedInMs, optiona
     game.subscribe.toChanged(domClient.rerender);
     
     domClient.subscribe.toCatalogSelect(async catalogIndex => {
-        console.log('catalog select', catalogIndex);
         game.pause();
         
-        // TODO: HACK: LEAVES A DANGLING STATE AT INDEX
         const selected = catalog[catalogIndex];
         game = await window.conway.initialize(containerId, fetchPath, turnSpeedInMs, selected);
+        
         game.unpause();
     });
 

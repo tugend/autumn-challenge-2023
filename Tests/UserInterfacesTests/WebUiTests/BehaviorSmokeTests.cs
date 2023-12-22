@@ -18,11 +18,7 @@ public sealed class BehaviorSmokeTests
     public void KillLivingCell()
     {
         // Startup
-        var seed = new // TODO: reduce this setup
-        {
-            key = nameof(KillLivingCell),
-            value = new [] { new [] { "1" } } 
-        };
+        var seed = new [] { new [] { "1" } };
         
         using var _ = _client.StartNewConwaysGame(seed);
 
@@ -41,14 +37,10 @@ public sealed class BehaviorSmokeTests
     public void BirthCell() 
     {
         // Startup
-        var seed = new
+        var seed = new []
         {
-            key = nameof(BirthCell),
-            value = new []
-            {
-                new [] { "1", "2", "3" },  
-                new [] { "4", "0", "5" }
-            }
+            new [] { "1", "2", "3" },  
+            new [] { "4", "0", "5" }
         };
         
         using var _ = _client.StartNewConwaysGame(seed);
@@ -67,14 +59,10 @@ public sealed class BehaviorSmokeTests
     public async Task TogglePause()
     {
         // Startup
-        var seed = new
+        var seed = new[]
         {
-            key = nameof(TogglePause),
-            value = new []
-            {
-                new [] { "1", "1", "1" }, 
-                new [] { "1", "0", "0" }
-            }
+            new[] { "1", "1", "1" },
+            new[] { "1", "0", "0" }
         };
 
         var turnSpeed = TimeSpan.FromMilliseconds(300);
@@ -102,12 +90,9 @@ public sealed class BehaviorSmokeTests
     public async Task Reset()
     {
         // Startup
-        var seed = new
-        {
-            key = nameof(Reset), /* UI is 1 indexed but state is 0 indexed */
-            value = new [] { 
-                new [] { "0", "1" },  
-                new [] { "2", "0" } }
+        var seed = new [] { 
+            new [] { "0", "1" },  
+            new [] { "2", "0" }
         };
         
         using var _ = _client.StartNewConwaysGame(seed, TimeSpan.FromMilliseconds(300));
