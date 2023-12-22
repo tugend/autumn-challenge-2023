@@ -35,9 +35,5 @@ Windows task manager -> WebUi -> close
 
 ## Next
 
-- Add support for dynamic sizes 
-- Add support for still life catalog with initial input selected by default
-- Add support for pulsar catalog
-- Add support for moving catalog (with moving window)
-- Add support for 10+ turns and fix test for Pentadecathlon
-- Add support for black and white (live or dead) cell rendering
+- Add support for full state setting control via url
+- Preserve theme settings (color, speed, selection) on catalog select
