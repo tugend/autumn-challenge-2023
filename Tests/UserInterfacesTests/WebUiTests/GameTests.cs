@@ -35,7 +35,7 @@ public class GameTests
     [InlineData(nameof(Oscillators.Toad), 2)]
     [InlineData(nameof(Oscillators.Beacon), 2)]
     [InlineData(nameof(Oscillators.Pulsar), 3)]
-    // [InlineData(nameof(Oscillators.Pentadecathlon), 15)]
+    [InlineData(nameof(Oscillators.Pentadecathlon), 15)]
     public async Task Oscillating(string name, int period)
     {
         var input = Oscillators.Get(name);

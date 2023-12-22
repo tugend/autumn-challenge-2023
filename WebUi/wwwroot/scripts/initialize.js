@@ -1,5 +1,7 @@
 ﻿window.conway = window.conway || {};
 
+
+
 /**
  * @param { string } containerId
  * @param { string } fetchPath
@@ -32,8 +34,6 @@ window.conway.initialize = async (containerId, fetchPath, turnSpeedInMs, optiona
 
     domClient.subscribe.toTogglePlayBtnClick(game
         .togglePause);
-
-    game.subscribe.toChanged(domClient.rerender);
     
     domClient.subscribe.toCatalogSelect(async catalogIndex => {
         game.pause();
@@ -44,5 +44,7 @@ window.conway.initialize = async (containerId, fetchPath, turnSpeedInMs, optiona
         game.unpause();
     });
 
+    game.subscribe.toChanged(domClient.rerender);
+    
     return game;
 }
