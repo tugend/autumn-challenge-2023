@@ -18,8 +18,13 @@ public sealed class VisualSmokeTests
         // Startup
         var seed = new
         {
-            turn = 0,
-            grid = new[] { new[] { 1, 1, 4 }, new[] { 1, 0, 0 }, new[] { 0, 0, 0 } }
+            key = nameof(Shotgun),
+            value = new[]
+            {
+                new[] { "1", "1", "4" }, 
+                new[] { "1", "0", "0" }, 
+                new[] { "0", "0", "0" }
+            }
         };
 
         using var _ = _client.StartNewConwaysGame(nameof(Shotgun), seed, TimeSpan.FromMilliseconds(800));
@@ -37,11 +42,11 @@ public sealed class VisualSmokeTests
     {
         var seed = new
         {
-            turn = 0,
-            grid = new[] { 
-                new[] { 0, 2, 2 }, 
-                new[] { 2, 2, 2 }, 
-                new[] { 2, 2, 2 } }
+            key = nameof(Interactions),
+            value = new[] { 
+                new[] { "0", "2", "2" }, 
+                new[] { "2", "2", "2" }, 
+                new[] { "2", "2", "2" } }
         };
         
         using var _ = _client.StartNewConwaysGame(nameof(Interactions), seed, TimeSpan.FromMilliseconds(800));

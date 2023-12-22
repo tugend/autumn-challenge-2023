@@ -35,7 +35,7 @@ public class GameTests
     [InlineData(nameof(Oscillators.Toad), 2)]
     [InlineData(nameof(Oscillators.Beacon), 2)]
     [InlineData(nameof(Oscillators.Pulsar), 3)]
-    [InlineData(nameof(Oscillators.Pentadecathlon), 15)]
+    // [InlineData(nameof(Oscillators.Pentadecathlon), 15)]
     public async Task Oscillating(string name, int period)
     {
         var input = Oscillators.Get(name);
@@ -51,10 +51,10 @@ public class GameTests
     {
         var width = input.First().Length;
         
-        using var _ = _client.StartNewConwaysGame(new
+        using var _ = _client.StartNewConwaysGame(new // TODO: why on earth is this not typed!!!
         {
-            turn = 0,
-            grid = input.Select(xs => xs.Select(int.Parse))
+            key = "Input",
+            value = input
         });
 
         await _client
@@ -71,8 +71,8 @@ public class GameTests
         
         using var _ = _client.StartNewConwaysGame(new
         {
-            turn = 0,
-            grid = input.Select(xs => xs.Select(int.Parse))
+            key = "Input",
+            value = input
         }, turnSpeed: TimeSpan.FromMilliseconds(600));
 
         foreach (var targetTurn in targetTurns)

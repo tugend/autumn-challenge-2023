@@ -27,7 +27,7 @@
         
         const seedOverride = optionalUrlSeedEncoded && JSON.parse(decodeURIComponent(optionalUrlSeedEncoded));
         
-        console.log("Initializing Conway's game of life")
+        console.log("Initializing Conway's game of life", seedOverride)
         const game = await conway.initialize('conway', "/api/conway", turnSpeedInMs, seedOverride);
 
         window.conway.isMainLoopRunning = true;

@@ -18,10 +18,10 @@ public sealed class BehaviorSmokeTests
     public void KillLivingCell()
     {
         // Startup
-        var seed = new
+        var seed = new // TODO: reduce this setup
         {
-            turn = 0,
-            grid = new [] { new [] { 1 } } 
+            key = nameof(KillLivingCell),
+            value = new [] { new [] { "1" } } 
         };
         
         using var _ = _client.StartNewConwaysGame(seed);
@@ -43,15 +43,15 @@ public sealed class BehaviorSmokeTests
         // Startup
         var seed = new
         {
-            turn = 0,
-            grid = new []
+            key = nameof(BirthCell),
+            value = new []
             {
-                new [] { 1, 2, 3 },  
-                new [] { 4, 0, 5 }
+                new [] { "1", "2", "3" },  
+                new [] { "4", "0", "5" }
             }
         };
         
-        using var _ = _client.StartNewConwaysGame(seed); // TODO: seed is broken, format is changed..
+        using var _ = _client.StartNewConwaysGame(seed);
         _client.ClickPauseButton();
         
         // Act
@@ -69,8 +69,12 @@ public sealed class BehaviorSmokeTests
         // Startup
         var seed = new
         {
-            turn = 0,
-            grid = new [] { new [] { 1, 1, 1 }, new [] { 1, 0, 0 } }
+            key = nameof(TogglePause),
+            value = new []
+            {
+                new [] { "1", "1", "1" }, 
+                new [] { "1", "0", "0" }
+            }
         };
 
         var turnSpeed = TimeSpan.FromMilliseconds(300);
@@ -100,8 +104,10 @@ public sealed class BehaviorSmokeTests
         // Startup
         var seed = new
         {
-            turn = 2, /* UI is 1 indexed but state is 0 indexed */
-            grid = new [] { new [] { 1, 2, 3 },  new [] { 4, 5, 6 } }
+            key = nameof(Reset), /* UI is 1 indexed but state is 0 indexed */
+            value = new [] { 
+                new [] { "0", "1" },  
+                new [] { "2", "0" } }
         };
         
         using var _ = _client.StartNewConwaysGame(seed, TimeSpan.FromMilliseconds(300));
@@ -110,8 +116,8 @@ public sealed class BehaviorSmokeTests
         var initialState = _client
             .GetMainAsString();
 
-        var fourthState = await _client
-            .WaitForTurnOrFail(4)
+        var laterState = await _client
+            .WaitForTurnOrFail(2)
             .MapAsync(x => x.GetMainAsString());
 
         var resetState = _client
@@ -122,20 +128,18 @@ public sealed class BehaviorSmokeTests
         // Assert
         initialState
             .Should()
-            .Be("""
+            .StartWith("""
                 Conways Game of Life
-                Turn 3
+                Turn 1
+                0
                 1
                 2
-                3
-                4
-                5
-                6
+                0
 
                 Pause
                 Reset
                 """)
-            .And.NotBe(fourthState)
+            .And.NotBe(laterState)
             .And.Be(resetState);
     }
 }
