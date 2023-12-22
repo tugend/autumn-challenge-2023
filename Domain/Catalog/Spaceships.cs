@@ -5,13 +5,14 @@ namespace Domain.Catalog;
 public static class Spaceships
 {
     public const string Glider = """
-                                 0 0 0 0
-                                 0 1 0 1
-                                 0 0 1 1
-                                 0 0 1 0
+                                 0 0 0 0 0
+                                 0 1 0 1 0
+                                 0 0 1 1 0
+                                 0 0 1 0 0
                                  """;
     
     public const string LightWeightSpaceship = """
+                                 0 0 0 0 0 0 0
                                  0 0 1 1 1 1 0
                                  0 1 0 0 0 1 0
                                  0 0 0 0 0 1 0
@@ -20,21 +21,23 @@ public static class Spaceships
                                  """;
     
     public const string MiddleWeightSpaceship = """
-                                   0 0 1 0 0 0 0
-                                   1 0 0 0 1 0 0
-                                   0 0 0 0 0 1 0
-                                   1 0 0 0 0 1 0
-                                   0 1 1 1 1 1 0
-                                   0 0 0 0 0 0 0
+                                   0 0 0 0 0 0 0 0
+                                   0 0 0 1 0 0 0 0
+                                   0 1 0 0 0 1 0 0
+                                   0 0 0 0 0 0 1 0
+                                   0 1 0 0 0 0 1 0
+                                   0 0 1 1 1 1 1 0
+                                   0 0 0 0 0 0 0 0
                                    """;   
     
     public const string HeavyWeightSpaceship = """
-                                    0 0 1 1 0 0 0
-                                    1 0 0 0 1 0 0
-                                    0 0 0 0 0 1 0
-                                    1 0 0 0 0 1 0
-                                    0 1 1 1 1 1 0
-                                    0 0 0 0 0 0 0
+                                    0 0 0 0 0 0 0 0
+                                    0 0 0 1 1 0 0 0
+                                    0 1 0 0 0 1 0 0
+                                    0 0 0 0 0 0 1 0
+                                    0 1 0 0 0 0 1 0
+                                    0 0 1 1 1 1 1 0
+                                    0 0 0 0 0 0 0 0
                                     """;
 
     public static string[][] Get(string name) =>

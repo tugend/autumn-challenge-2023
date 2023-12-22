@@ -25,6 +25,7 @@ public static class StillLife
                                0 1 0 0 1 0
                                0 0 1 0 1 0
                                0 0 0 1 0 0
+                               0 0 0 0 0 0
                                """;
 
     public const string Boat = """

@@ -3,6 +3,7 @@
 window.conway.domClientFactory = (initialSeed, catalog) => {
 
     const nullHandler = () => {};
+    
     let onCellClick = nullHandler;
     let onTogglePlayBtnClick = nullHandler;
     let onResetBtnClick = nullHandler
@@ -50,6 +51,14 @@ window.conway.domClientFactory = (initialSeed, catalog) => {
         const elm = document.getElementById('reset-btn');
         elm.onclick = onResetBtnClick;
     };
+
+    const renderColorBtn = () => {
+        const elm = document.getElementById('color-btn');
+        elm.onclick = () => {
+            const stateElm = document.getElementById("state");
+            stateElm.className = stateElm.className === 'binary' ? 'color' : 'binary';
+        };
+    };
     
     const createOption = (label, value) => {
         const elm = document.createElement("option");
@@ -88,11 +97,12 @@ window.conway.domClientFactory = (initialSeed, catalog) => {
             .getElementById(containerId)
             .innerHTML = `
                 <h5 id="turn">Turn <span>1</span></h5>
-                <div id="state"></div>
+                <div id="state" class="binary"></div>
                 <br />
                 <div id="controls">
                     <div id="pause-btn">Pause</div>
                     <div id="reset-btn">Reset</div>
+                    <div id="color-btn">Color</div>
                 </div>
                 <br />
                 <aside id="input-catalog">
@@ -100,6 +110,7 @@ window.conway.domClientFactory = (initialSeed, catalog) => {
                 </aside>`;
         
         renderCatalog("#input-catalog > select", catalog, initialSeed);
+        renderColorBtn();
         
         return that;
     }

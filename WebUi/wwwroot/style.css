@@ -39,10 +39,11 @@ div {
 
 #controls{
     margin: auto; 
-    width: 180px;
+    width: 270px;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     border: 1px solid gray;
+    font-size: 18px;
 }
 
 #controls > div
@@ -61,17 +62,27 @@ div {
     font-weight: bold;
 }
 
-.life-9 { background-color: #57bb8a; }
-.life-8 { background-color: #57bb8a; }
-.life-7 { background-color: #84bb7b; }
-.life-6 { background-color: #b0be6e; }
-.life-5 { background-color: #e2c965; }
-.life-4 { background-color: #e9b861; }
-.life-3 { background-color: #e9a268; }
-.life-2 { background-color: #e2886c; }
-.life-1 { background-color: #e0816d; }
-.life-0 { background-color: #d3d3d3; }
+.binary .life { 
+    background-color: black;
+    color: transparent;
+}
+.binary .life-0 { 
+    background-color: white;
+    color: transparent;
+}
+
+.color .life-9 { background-color: #57bb8a; }
+.color .life-8 { background-color: #57bb8a; }
+.color .life-7 { background-color: #84bb7b; }
+.color .life-6 { background-color: #b0be6e; }
+.color .life-5 { background-color: #e2c965; }
+.color .life-4 { background-color: #e9b861; }
+.color .life-3 { background-color: #e9a268; }
+.color .life-2 { background-color: #e2886c; }
+.color .life-1 { background-color: #e0816d; }
+.color .life-0 { background-color: #d3d3d3; }
 
 #input-catalog select {
-    width: 180px;
+    width: 270px;
+    font-size: 18px;
 }
