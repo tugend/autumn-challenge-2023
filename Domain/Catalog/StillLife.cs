@@ -1,4 +1,6 @@
-﻿namespace Domain.Catalog;
+﻿using ObjectExtensions;
+
+namespace Domain.Catalog;
 
 public static class StillLife
 {
@@ -41,12 +43,13 @@ public static class StillLife
                               0 0 0 0 0
                               """;
     
-    public static string Get(string name) =>
-        typeof(StillLife)
+    public static string[][] Get(string name) =>
+        (typeof(StillLife)
             .GetField(name)?
-            .GetValue(null) as string ?? throw new InvalidOperationException();
+            .GetValue(null) as string ?? throw new InvalidOperationException())
+            .Map(Converter.Convert);
     
-    public static IEnumerable<KeyValuePair<string, string>> All =>
+    public static IEnumerable<KeyValuePair<string, string[][]>> All =>
         new[]
         {
             nameof(Block),

@@ -51,7 +51,7 @@ public sealed class BehaviorSmokeTests
             }
         };
         
-        using var _ = _client.StartNewConwaysGame(seed);
+        using var _ = _client.StartNewConwaysGame(seed); // TODO: seed is broken, format is changed..
         _client.ClickPauseButton();
         
         // Act

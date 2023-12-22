@@ -1,7 +1,8 @@
-﻿const transformSeedToState = (seed) => (
+﻿// TODO: this is pretty redundant now
+const transformSeedToState = (seed) => (
     { 
         turn: 0, 
-        grid: seed.value.split(/\r?\n/).map(row => row.split(" ")) 
+        grid: seed.value 
     });
 
 window.conway = window.conway || {};

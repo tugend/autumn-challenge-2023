@@ -1,4 +1,6 @@
-﻿namespace Domain.Catalog;
+﻿using ObjectExtensions;
+
+namespace Domain.Catalog;
 
 public static class Spaceships
 {
@@ -36,12 +38,13 @@ public static class Spaceships
                                     0 0 0 0 0 0 0
                                     """;       
     
-    public static string Get(string name) =>
-        typeof(Spaceships)
-            .GetField(name)?
-            .GetValue(null) as string ?? throw new InvalidOperationException();
+    public static string[][] Get(string name) =>
+        (typeof(Spaceships)
+        .GetField(name)?
+        .GetValue(null) as string ?? throw new InvalidOperationException())
+        .Map(Converter.Convert);
     
-    public static IEnumerable<KeyValuePair<string, string>> All =>
+    public static IEnumerable<KeyValuePair<string, string[][]>> All =>
         new[]
         {
             nameof(Glider),

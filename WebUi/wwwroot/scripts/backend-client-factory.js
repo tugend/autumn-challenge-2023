@@ -25,7 +25,7 @@ window.conway.backendClientFactory = (fetchUrl) => {
     /**
      * @typedef {object} State
      * @property {number} turn
-     * @property {number[][]} grid
+     * @property {string[][]} grid
      *
      * @param {State} seed
      */
@@ -37,6 +37,15 @@ window.conway.backendClientFactory = (fetchUrl) => {
     const fetchStates = (seed) =>
         fetch(fetchUrl + "/states", postRequest(seed)).then(asJson);
 
+    /**
+     * @typedef {object} CatalogEntry
+     * @property {string} key
+     * @property {string[][]} value
+     */
+    
+    /**
+     * @return { Promise<CatalogEntry[]> }
+     */
     const getCatalog = () =>
         fetch(fetchUrl + "/catalog", getRequest()).then(asJson);
     
