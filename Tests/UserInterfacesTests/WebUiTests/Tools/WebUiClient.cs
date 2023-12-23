@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
 using System.Text.Encodings.Web;
+using Domain.Catalog;
 using Newtonsoft.Json;
 using ObjectExtensions;
 using OpenQA.Selenium;
@@ -31,7 +32,11 @@ public sealed class WebUiClient
             .ForEach(entry => _output?.WriteLine(entry.ToString()));
     }
 
-    public LogContext StartNewConwaysGame(string[][]? input = null, TimeSpan? turnSpeed = null)
+    public LogContext StartNewConwaysGame(string input, TimeSpan? turnSpeed = null) =>
+        StartNewConwaysGame(Converter.Convert(input), turnSpeed);
+
+    
+    public LogContext StartNewConwaysGame(int[][] input, TimeSpan? turnSpeed = null)
     {
         var seed = EncodeSeed(new { key = "Custom", value = input });
         var speed = turnSpeed ?? TimeSpan.FromMilliseconds(200);

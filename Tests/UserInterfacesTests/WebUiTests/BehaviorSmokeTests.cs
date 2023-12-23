@@ -18,7 +18,7 @@ public sealed class BehaviorSmokeTests
     public void KillLivingCell()
     {
         // Startup
-        var seed = new [] { new [] { "1" } };
+        var seed = "1";
         
         using var _ = _client.StartNewConwaysGame(seed);
 
@@ -37,11 +37,10 @@ public sealed class BehaviorSmokeTests
     public void BirthCell() 
     {
         // Startup
-        var seed = new []
-        {
-            new [] { "1", "2", "3" },  
-            new [] { "4", "0", "5" }
-        };
+        var seed = """
+           1 2 3
+           4 0 5
+           """; 
         
         using var _ = _client.StartNewConwaysGame(seed);
         _client.ClickPauseButton();
@@ -59,11 +58,10 @@ public sealed class BehaviorSmokeTests
     public async Task TogglePause()
     {
         // Startup
-        var seed = new[]
-        {
-            new[] { "1", "1", "1" },
-            new[] { "1", "0", "0" }
-        };
+        var seed = """
+           1 1 1
+           1 0 0
+           """;
 
         var turnSpeed = TimeSpan.FromMilliseconds(300);
         using var _ = _client.StartNewConwaysGame(seed, turnSpeed);
@@ -90,10 +88,10 @@ public sealed class BehaviorSmokeTests
     public async Task Reset()
     {
         // Startup
-        var seed = new [] { 
-            new [] { "0", "1" },  
-            new [] { "2", "0" }
-        };
+        var seed = """
+            0 1
+            2 0
+            """;
         
         using var _ = _client.StartNewConwaysGame(seed, TimeSpan.FromMilliseconds(300));
         

@@ -55,10 +55,12 @@ window.conway.gameFactory = (turnSpeedInMs, states) => {
         states[index];
     
     const seed = async (i, j) => {
-        let seededState = deepCopy(current());
-        seededState.grid = seededState.grid.map(xs => xs.map(x => x + ""));
-        seededState.grid[i][j] = seededState.grid[i][j] > 0 ? "0" : "1";
+        const seededState = deepCopy(current());
+        
+        const entry = seededState.grid[i][j];
+        seededState.grid[i][j] = entry > 0 ? 0 : 1;
         seededState.turn = 0;
+        
         return seededState;
     }
     
@@ -94,8 +96,7 @@ window.conway.gameFactory = (turnSpeedInMs, states) => {
             toChanged: (f) => onStateChange = () => f(current(), isPaused()),
             
             toNextStatePage: (f) => onNextStatePage = async () => {
-                console.log('toNextStatePage!')
-                const nextPage = await f({turn: index, grid: states[index].grid.map(xs => xs.map(x => x + ""))});
+                const nextPage = await f(states[index]);
                 states = [...states.slice(0, states.length - 1), ...nextPage];
             }
         }

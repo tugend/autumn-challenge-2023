@@ -2,7 +2,6 @@
 using JetBrains.Annotations;
 using ObjectExtensions;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.DevTools.V117.Database;
 using Xunit.Abstractions;
 
 namespace Tests.UserInterfacesTests.WebUiTests.Tools;

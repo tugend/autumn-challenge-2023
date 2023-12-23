@@ -11,13 +11,9 @@ app
     .MapGroup("api")
     .MapGetRoute("health", () => "healthy")
     .MapGetRoute("conway/catalog", () => Domain.Catalog.Index.All)
-    .MapPostRoute("conway/states", ([AsParameters] Criteria criteria, SeedRequest seed) => Game
+    .MapPostRoute("conway/states", ([AsParameters] Criteria criteria, Seed seed) => Game // TODO: pass along entire frontend control 
         .Init(seed.Turn, seed.Grid)
         .Play()
-        .Take(criteria.Turns)); // super duper improvement would be to just send the diffs. ^_^
+        .Take(criteria.Turns));
 
 app.Run();
-
-
-// TODO: clean up
-public record SeedRequest(int Turn, string[][] Grid);

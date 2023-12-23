@@ -10,20 +10,20 @@ public class ConverterTests
     public void Parse()
     {
         const string input = """
-                      0 0 0 0
-                      0 1 1 0
-                      0 1 1 0
-                      0 0 0 0
-                      """;
+            0 0 0 0
+            0 1 1 0
+            0 1 1 0
+            0 0 0 0
+            """;
 
         var converted = Converter.Convert(input);
 
         converted.Should().BeEquivalentTo(new[]
         {
-            new[] { "0", "0", "0", "0" },
-            new[] { "0", "1", "1", "0" },
-            new[] { "0", "1", "1", "0" },
-            new[] { "0", "0", "0", "0" },
+            new[] { 0, 0, 0, 0 },
+            new[] { 0, 1, 1, 0 },
+            new[] { 0, 1, 1, 0 },
+            new[] { 0, 0, 0, 0 },
         });
     }
     
@@ -32,20 +32,20 @@ public class ConverterTests
     {
         var input = new[]
         {
-            new[] { "0", "0", "0", "0" },
-            new[] { "0", "1", "1", "0" },
-            new[] { "0", "1", "1", "0" },
-            new[] { "0", "0", "0", "0" },
+            new[] { 0, 0, 0, 0 },
+            new[] { 0, 1, 1, 0 },
+            new[] { 0, 1, 1, 0 },
+            new[] { 0, 0, 0, 0 },
         };
 
         var converted = Converter.Convert(input);
 
         converted.Should().BeEquivalentTo("""
-                                          0 0 0 0
-                                          0 1 1 0
-                                          0 1 1 0
-                                          0 0 0 0
-                                          """);
+            0 0 0 0
+            0 1 1 0
+            0 1 1 0
+            0 0 0 0
+            """);
     }
     
     [Fact]

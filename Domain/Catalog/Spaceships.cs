@@ -40,18 +40,18 @@ public static class Spaceships
                                     0 0 0 0 0 0 0 0
                                     """;
 
-    public static string[][] Get(string name) =>
+    public static int[][] Get(string name) =>
         (typeof(Spaceships)
             .GetField(name)?
             .GetValue(null) as string ?? throw new InvalidOperationException())
         .Map(Converter.Convert)
-        .TopPadColumns("0", 5)
+        .TopPadColumns(0, 5)
         .Select(row => row
-            .LeftPadRow("0", 5)
-            .RightPadRow("0", 20)).ToArray()
-        .BottomPadColumns("0", 20);
+            .LeftPadRow(0, 5)
+            .RightPadRow(0, 20)).ToArray()
+        .BottomPadColumns(0, 20);
     
-    public static IEnumerable<KeyValuePair<string, string[][]>> All =>
+    public static IEnumerable<KeyValuePair<string, int[][]>> All =>
         new[]
         {
             nameof(Glider),
@@ -64,13 +64,13 @@ public static class Spaceships
 
 file static class Extensions 
 {
-    public static string[] LeftPadRow(this string[] row, string padding, int count) => 
+    public static int[] LeftPadRow(this int[] row, int padding, int count) => 
         Enumerable.Repeat(padding, count).Concat(row).ToArray();
     
-    public static string[] RightPadRow(this string[] row, string padding, int count) => 
+    public static int[] RightPadRow(this int[] row, int padding, int count) => 
         row.Concat(Enumerable.Repeat(padding, count)).ToArray();
     
-    public static string[][] TopPadColumns(this string[][] columns, string padding, int count)
+    public static int[][] TopPadColumns(this int[][] columns, int padding, int count)
     {
         var createColumn = () => Enumerable.Repeat(padding, columns.First().Length).ToArray();
         var topPadding = Enumerable.Repeat(0, count).Select(_ => createColumn());
@@ -78,7 +78,7 @@ file static class Extensions
         return topPadding.Concat(columns).ToArray();
     }
     
-    public static string[][] BottomPadColumns(this string[][] columns, string padding, int count)
+    public static int[][] BottomPadColumns(this int[][] columns, int padding, int count)
     {
         var createColumn = () => Enumerable.Repeat(padding, columns.First().Length).ToArray();
         var bottomPadding = Enumerable.Repeat(0, count).Select(_ => createColumn());

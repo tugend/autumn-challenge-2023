@@ -2,8 +2,8 @@
 
 public static class Index
 {
-    public static IEnumerable<KeyValuePair<string, string[][]>> All => Enumerable
-        .Empty<KeyValuePair<string, string[][]>>()
+    public static IEnumerable<KeyValuePair<string, int[][]>> All => Enumerable
+        .Empty<KeyValuePair<string, int[][]>>()
         .Concat(StillLife.All)
         .Concat(Oscillators.All)
         .Concat(Spaceships.All);

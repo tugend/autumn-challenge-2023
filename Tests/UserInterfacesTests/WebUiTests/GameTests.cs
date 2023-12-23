@@ -3,7 +3,6 @@ using FluentAssertions;
 using TaskExtensions;
 using Tests.UserInterfacesTests.WebUiTests.Tools;
 using Xunit.Abstractions;
-using static Domain.Functions;
 
 namespace Tests.UserInterfacesTests.WebUiTests;
 
@@ -47,7 +46,7 @@ public class GameTests
         state[0].Should().NotBe(state[2], $"because the oscillating period was {period}");
     }
     
-    private async Task<string> GameAfter(string[][] input, int targetTurn)
+    private async Task<string> GameAfter(int[][] input, int targetTurn)
     {
         var width = input.First().Length;
         
@@ -61,7 +60,7 @@ public class GameTests
         return _client.GetStateAsString(width: width, padding: 1, onlyOnesAndZeros: true);
     }
     
-    private async IAsyncEnumerable<string> GameAfter(string[][] input, params int[] targetTurns)
+    private async IAsyncEnumerable<string> GameAfter(int[][] input, params int[] targetTurns)
     {
         var width = input.First().Length;
         

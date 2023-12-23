@@ -16,8 +16,8 @@ public record Game
     public static Game Init(string initialSeed) => 
         new(1, Functions.Parse(initialSeed));
     
-    public static Game Init(int turns, string[][] grid) => 
-        new(turns, grid.Select(xs => xs.Select(int.Parse).ToArray()).ToArray());
+    public static Game Init(int turns, int[][] grid) => 
+        new(turns, grid);
     
     public IEnumerable<Game> Play()
     {

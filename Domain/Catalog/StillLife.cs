@@ -44,13 +44,13 @@ public static class StillLife
                               0 0 0 0 0
                               """;
     
-    public static string[][] Get(string name) =>
+    public static int[][] Get(string name) =>
         (typeof(StillLife)
             .GetField(name)?
             .GetValue(null) as string ?? throw new InvalidOperationException())
             .Map(Converter.Convert);
     
-    public static IEnumerable<KeyValuePair<string, string[][]>> All =>
+    public static IEnumerable<KeyValuePair<string, int[][]>> All =>
         new[]
         {
             nameof(Block),
