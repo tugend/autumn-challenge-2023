@@ -13,9 +13,9 @@ Introduce a web factory fixture, try catch some more,
 figure out why processes does not shut down correctly
 
 ### Pending refinement
-- TODO: add        : linting
+- Fix dotnet folder structure
+- Try to simplify github actions steps (multiple runs in one step)
 - TODO: clean up notes and replace with a README file
-- TODO: strong'ish js types
 
 ## Working Notes Tips
 
