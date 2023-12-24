@@ -6,19 +6,21 @@
  * @param { string } containerId
  * @param { string } fetchPath
  * @param { number } turnSpeedInMs
+ * @param { number } turn
+ * @param { 'binary'|'color' } color
  * @param { CatalogEntry } optionalSeedOverride
  * @returns { Promise<Game> }
  */
-window.conway.initialize = async (containerId, fetchPath, turnSpeedInMs, optionalSeedOverride) => {
+window.conway.initialize = async (containerId, fetchPath, turnSpeedInMs, turn, color, optionalSeedOverride) => {
     
     const backendClient = conway.backendClientFactory(fetchPath);
     const catalog = await backendClient.getCatalog();
     
     const initialSeed = optionalSeedOverride || catalog[2];
-    const initialState = { turn: 0, grid: initialSeed.value };
+    const initialState = { turn: turn, grid: initialSeed.value };
     const initialStates = await backendClient.fetchStates(initialState)
     
-    const domClient = conway.domClientFactory(initialSeed, catalog).renderTo(containerId);
+    const domClient = conway.domClientFactory(initialSeed, catalog, color).renderTo(containerId);
     let game = conway.gameFactory(turnSpeedInMs, initialStates);
 
     domClient.subscribe.toCellClick(async (i, j) =>
@@ -37,12 +39,11 @@ window.conway.initialize = async (containerId, fetchPath, turnSpeedInMs, optiona
     
     // TODO: use game set state and add game setIntiallState?
     domClient.subscribe.toCatalogSelect(async catalogIndex => {
-        game.pause();
-        
         const selected = catalog[catalogIndex];
-        game = await window.conway.initialize(containerId, fetchPath, turnSpeedInMs, selected);
-        
-        game.unpause();
+        const params = new URLSearchParams(location.search);
+        params.set('color', domClient.getColor());
+        params.set('seed', encodeURIComponent(JSON.stringify(selected)));
+        window.location.search = params.toString();
     });
 
     game.subscribe.toChanged(domClient.rerender);

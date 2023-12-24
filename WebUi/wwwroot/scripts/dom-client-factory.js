@@ -1,6 +1,6 @@
 ﻿window.conway = window.conway || {};
 
-window.conway.domClientFactory = (initialSeed, catalog) => {
+window.conway.domClientFactory = (initialSeed, catalog, color) => {
 
     const nullHandler = () => {};
     
@@ -65,6 +65,9 @@ window.conway.domClientFactory = (initialSeed, catalog) => {
         elm.onclick = onResetBtnClick;
     };
 
+    const getColor = () =>
+        document.getElementById("state").className;
+    
     const renderColorBtn = () => {
         const elm = document.getElementById('color-btn');
         elm.onclick = () => {
@@ -129,7 +132,7 @@ window.conway.domClientFactory = (initialSeed, catalog) => {
             .getElementById(containerId)
             .innerHTML = `
                 <h5 id="turn">Turn <span>1</span></h5>
-                <div id="state" class="binary"></div>
+                <div id="state" class="${color}"></div>
                 <br />
                 <div id="controls">
                     <div id="pause-btn">Pause</div>
@@ -150,6 +153,7 @@ window.conway.domClientFactory = (initialSeed, catalog) => {
     const that = { 
         renderTo, 
         rerender,
+        getColor,
         subscribe: {
             toCellClick: subscribeToCellClick,
             toResetBtnClick: subscribeToResetBtnClick,

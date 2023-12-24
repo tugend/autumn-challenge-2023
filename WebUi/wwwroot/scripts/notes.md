@@ -14,8 +14,6 @@ figure out why processes does not shut down correctly
 
 ### Pending refinement
 - TODO: add        : linting
-- Add support for full state setting control via url
-- Preserve theme settings (color, speed, selection) on catalog select
 
 ## Working Notes Tips
 
