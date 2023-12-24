@@ -21,7 +21,7 @@ window.conway.initialize = async (containerId, fetchPath, turnSpeedInMs, turn, c
     const initialStates = await backendClient.fetchStates(initialState)
     
     const domClient = conway.domClientFactory(initialSeed, catalog, color).renderTo(containerId);
-    let game = conway.gameFactory(turnSpeedInMs, initialStates);
+    const game = conway.gameFactory(turnSpeedInMs, initialStates);
 
     domClient.subscribe.toCellClick(async (i, j) =>
         await game
@@ -37,7 +37,6 @@ window.conway.initialize = async (containerId, fetchPath, turnSpeedInMs, turn, c
     domClient.subscribe.toTogglePlayBtnClick(game
         .togglePause);
     
-    // TODO: use game set state and add game setIntiallState?
     domClient.subscribe.toCatalogSelect(async catalogIndex => {
         const selected = catalog[catalogIndex];
         const params = new URLSearchParams(location.search);

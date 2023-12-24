@@ -149,7 +149,10 @@ window.conway.domClientFactory = (initialSeed, catalog, color) => {
         
         return that;
     }
-    
+
+    /**
+     * @type {DomClient}
+     */
     const that = { 
         renderTo, 
         rerender,

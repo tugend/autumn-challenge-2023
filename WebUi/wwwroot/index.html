@@ -19,6 +19,11 @@
 
 <script type="application/javascript">
     (async () => {
+        
+        /**
+         * @param { string | undefined } seedOrUndefined
+         * @returns { State | undefined }
+         */
         const parseSeed = (seedOrUndefined) => seedOrUndefined === undefined
             ? undefined
             : JSON.parse(decodeURIComponent(seedOrUndefined))

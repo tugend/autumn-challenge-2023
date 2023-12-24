@@ -14,6 +14,8 @@ figure out why processes does not shut down correctly
 
 ### Pending refinement
 - TODO: add        : linting
+- TODO: clean up notes and replace with a README file
+- TODO: strong'ish js types
 
 ## Working Notes Tips
 

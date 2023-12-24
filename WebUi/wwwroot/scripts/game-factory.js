@@ -1,5 +1,10 @@
 ﻿window.conway = window.conway || {};
 
+/**
+ * @param { Number } turnSpeedInMs
+ * @param { State[] } states
+ * @returns { Game }
+ */
 window.conway.gameFactory = (turnSpeedInMs, states) => {
     const turnInMs = turnSpeedInMs;
     let timeoutId = null;
@@ -50,7 +55,10 @@ window.conway.gameFactory = (turnSpeedInMs, states) => {
         onStateChange()
         return that;
     }
-    
+
+    /**
+     * @returns { State }
+     */
     const current = () =>
         states[index];
     
@@ -80,25 +88,25 @@ window.conway.gameFactory = (turnSpeedInMs, states) => {
         return that;
     }
     
-    let onNextStatePage = () => {};
+    const onNextStatePage = (f) => async () => {
+        const nextPage = await f(states[index]);
+        states = [...states.slice(0, states.length - 1), ...nextPage];
+    }
 
+    /**
+     * @type { Game }
+     */
     const that = {
         triggerUpdate,
         setState,
         pause,
-        isPaused,
         unpause,
-        current,
-        seed,
         togglePause,
+        seed,
         reset,
         subscribe: {
             toChanged: (f) => onStateChange = () => f(current(), isPaused()),
-            
-            toNextStatePage: (f) => onNextStatePage = async () => {
-                const nextPage = await f(states[index]);
-                states = [...states.slice(0, states.length - 1), ...nextPage];
-            }
+            toNextStatePage: onNextStatePage
         }
     };
     

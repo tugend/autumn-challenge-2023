@@ -13,8 +13,32 @@
  */
 
 /**
+ * @typedef { object } DomSubscriptions
+ * @property { (f: (i: number, j: number) => Promise<void>) => void } toCellClick
+ * @property { (f: () => void) => void } toResetBtnClick
+ * @property { (f: () => void) => void } toTogglePlayBtnClick
+ * @property { (f: (catalogIndex: number) => Promise<void>) => void } toCatalogSelect
+ */
+
+/**
  * @typedef { object } DomClient 
- * @property { any } renderTo
- * @property { any } rerender
- * @property { any } subscribe
+ * @property { (containerId: string) => DomClient } renderTo
+ * @property { (state: State, isPaused: boolean) => DomClient } rerender
+ * @property { DomSubscriptions } subscribe
+ */
+
+/**
+ * @typedef { object } GameSubscriptions
+ * @property { (f: (current: State, isPaused: boolean) => void) => void } toChanged
+ * @property { (f: (fromState: State) => Promise<State[]>) => void } toNextStatePage
+ */
+
+/**
+ * @typedef {object} Game
+ * @property { () => Game } unpause
+ * @property { () => Game } pause
+ * @property { () => void } togglePause
+ * @property { () => void } reset
+ * @property { GameSubscriptions } subscribe
+ * @property { (states: State[]) => void } setState
  */
