@@ -1,7 +1,5 @@
 ﻿window.conway = window.conway || {};
 
-
-
 /**
  * @param { string } containerId
  * @param { string } fetchPath
@@ -18,7 +16,7 @@ window.conway.initialize = async (containerId, fetchPath, turnSpeedInMs, turn, c
     
     const initialSeed = optionalSeedOverride || catalog[2];
     const initialState = { turn: turn, grid: initialSeed.value };
-    const initialStates = await backendClient.fetchStates(initialState)
+    const initialStates = await backendClient.fetchStates(initialState);
     
     const domClient = conway.domClientFactory(initialSeed, catalog, color).renderTo(containerId);
     const game = conway.gameFactory(turnSpeedInMs, initialStates);
@@ -40,8 +38,8 @@ window.conway.initialize = async (containerId, fetchPath, turnSpeedInMs, turn, c
     domClient.subscribe.toCatalogSelect(async catalogIndex => {
         const selected = catalog[catalogIndex];
         const params = new URLSearchParams(location.search);
-        params.set('color', domClient.getColor());
-        params.set('seed', encodeURIComponent(JSON.stringify(selected)));
+        params.set("color", domClient.getColor());
+        params.set("seed", encodeURIComponent(JSON.stringify(selected)));
         window.location.search = params.toString();
     });
 
@@ -49,7 +47,7 @@ window.conway.initialize = async (containerId, fetchPath, turnSpeedInMs, turn, c
     
     game.subscribe.toNextStatePage(async fromState => {
         return await backendClient.fetchStates(fromState);
-    })
+    });
     
     return game;
-}
+};

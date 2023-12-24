@@ -15,4 +15,4 @@ public record State(int Turns, int[][] Grid)
     
     public (int MaxX, int MaxY) GridBounds = 
         (Grid.Length, Grid.Select(x => x.Length).FirstOrDefault(0));
-};
+}

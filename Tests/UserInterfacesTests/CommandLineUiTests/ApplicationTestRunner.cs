@@ -7,7 +7,7 @@ public static class ApplicationTestRunner
     public static (Func<string> Read, Func<string, TimeSpan, Task> WaitFor) InitOutputBuffer(Process process)
     {
         var output = new List<string>();
-        process.OutputDataReceived += (sender, e) =>
+        process.OutputDataReceived += (_, e) =>
         {
             // Prepend line numbers to each line of the output.
             if (e.Data == null) return;

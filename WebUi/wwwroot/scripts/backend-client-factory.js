@@ -1,17 +1,21 @@
 ﻿window.conway = window.conway || {};
 
+/**
+ * @param fetchUrl
+ * @returns {{fetchStates: (function(State): Promise<State[]>), getCatalog: (function(): Promise<CatalogEntry[]>)}}
+ */
 window.conway.backendClientFactory = (fetchUrl) => {
-    const asJson = response => response.json()
+    const asJson = response => response.json();
 
     const postRequest = (content) => ({
         method: "POST",
-        headers: {'Content-Type': 'application/json'},
+        headers: {"Content-Type": "application/json"},
         body: JSON.stringify(content)
     });
 
     const getRequest = (content) => ({
         method: "GET",
-        headers: {'Content-Type': 'application/json'},
+        headers: {"Content-Type": "application/json"},
         body: JSON.stringify(content)
     });
 
@@ -27,6 +31,6 @@ window.conway.backendClientFactory = (fetchUrl) => {
      */
     const getCatalog = () =>
         fetch(fetchUrl + "/catalog", getRequest()).then(asJson);
-    
+
     return { fetchStates, getCatalog };
-}
+};

@@ -40,7 +40,7 @@ public static class Spaceships
                                     0 0 0 0 0 0 0 0
                                     """;
 
-    public static int[][] Get(string name) =>
+    private static int[][] Get(string name) =>
         (typeof(Spaceships)
             .GetField(name)?
             .GetValue(null) as string ?? throw new InvalidOperationException())
@@ -57,17 +57,17 @@ public static class Spaceships
             nameof(Glider),
             nameof(LightWeightSpaceship),
             nameof(MiddleWeightSpaceship),
-            nameof(HeavyWeightSpaceship),
+            nameof(HeavyWeightSpaceship)
         }
         .Select(name => KeyValuePair.Create(name, Get(name)));
 }
 
 file static class Extensions 
 {
-    public static int[] LeftPadRow(this int[] row, int padding, int count) => 
+    public static int[] LeftPadRow(this IEnumerable<int> row, int padding, int count) => 
         Enumerable.Repeat(padding, count).Concat(row).ToArray();
     
-    public static int[] RightPadRow(this int[] row, int padding, int count) => 
+    public static int[] RightPadRow(this IEnumerable<int> row, int padding, int count) => 
         row.Concat(Enumerable.Repeat(padding, count)).ToArray();
     
     public static int[][] TopPadColumns(this int[][] columns, int padding, int count)

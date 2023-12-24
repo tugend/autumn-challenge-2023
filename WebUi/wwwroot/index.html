@@ -19,24 +19,24 @@
 
 <script type="application/javascript">
     (async () => {
-        
+
         /**
          * @param { string | undefined } seedOrUndefined
-         * @returns { State | undefined }
+         * @returns { CatalogEntry | undefined }
          */
-        const parseSeed = (seedOrUndefined) => seedOrUndefined === undefined
+        const tryParseSeed = (seedOrUndefined) => seedOrUndefined === undefined
             ? undefined
-            : JSON.parse(decodeURIComponent(seedOrUndefined))
-        
+            : /** @type CatalogEntry */ JSON.parse(decodeURIComponent(seedOrUndefined));
+
         const urlParams = new URLSearchParams(location.search);
-        const turnSpeedInMs = parseInt(urlParams.get('turn-speed') || "1000")
+        const turnSpeedInMs = parseInt(urlParams.get("turn-speed") || "1000");
         
-        const turn = parseInt(urlParams.get('turn') || "0")
-        const color = urlParams.get('color') || "binary";
-        const seedOrUndefined = parseSeed(urlParams.get('seed'))
+        const turn = parseInt(urlParams.get("turn") || "0");
+        const color = urlParams.get("color") || "binary";
+        const seedOrUndefined = tryParseSeed(urlParams.get("seed"));
         
-        console.log("Initializing Conway's game of life", { turn, color, seed: seedOrUndefined })
-        const game = await conway.initialize('conway', "/api/conway", turnSpeedInMs, turn, color, seedOrUndefined);
+        console.log("Initializing Conway's game of life", { turn, color, seed: seedOrUndefined });
+        const game = await conway.initialize("conway", "/api/conway", turnSpeedInMs, turn, color, seedOrUndefined);
 
         window.conway.isMainLoopRunning = true;
         game.unpause();

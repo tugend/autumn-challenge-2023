@@ -1,12 +1,18 @@
 ﻿window.conway = window.conway || {};
 
+/**
+ * @param {CatalogEntry} initialSeed
+ * @param {CatalogEntry[]} catalog
+ * @param {"binary"|"color"} color
+ * @returns {DomClient}
+ */
 window.conway.domClientFactory = (initialSeed, catalog, color) => {
 
     const nullHandler = () => {};
-    
+
     let onCellClick = nullHandler;
     let onTogglePlayBtnClick = nullHandler;
-    let onResetBtnClick = nullHandler
+    let onResetBtnClick = nullHandler;
     let onCatalogSelect = nullHandler;
 
     const subscribeToCellClick = (f) => onCellClick = f;
@@ -27,20 +33,23 @@ window.conway.domClientFactory = (initialSeed, catalog, color) => {
          * @returns {HTMLDivElement}
          */
         const cellHtmlFactory = (i, j, value) => {
-            const elm = document.createElement('div')
+            const elm = document.createElement("div");
             elm.innerText = `${value}`;
             elm.className = `life life-${Math.min(value, 9)}`;
             elm.onclick = () => onClick(i, j, value + "");
             return elm;
-        }
+        };
 
         const children = state.grid
             .map((row, i) => row.map((value, j) => cellHtmlFactory(i, j, value)))
             .flat();
-        
+
         const stateElm = document.querySelector("#state");
-        
-        stateElm.style.gridTemplateColumns = [...Array(state.grid[0].length)].map(_ => "1fr").join(" ");
+
+        stateElm.style.gridTemplateColumns = [...Array(state.grid[0].length)]
+            .map(() => "1fr")
+            .join(" ");
+
         stateElm.replaceChildren(...children);
     };
 
@@ -55,24 +64,25 @@ window.conway.domClientFactory = (initialSeed, catalog, color) => {
      * @param { boolean } isPaused
      */
     const renderTogglePlayBtn = (isPaused) => {
-        const elm = document.getElementById('pause-btn');
+        const elm = document.getElementById("pause-btn");
         elm.innerText = isPaused ? "Continue" : "Pause";
         elm.onclick = onTogglePlayBtnClick;
     };
 
     const renderResetBtn = () => {
-        const elm = document.getElementById('reset-btn');
+        const elm = document.getElementById("reset-btn");
         elm.onclick = onResetBtnClick;
     };
 
     const getColor = () =>
         document.getElementById("state").className;
-    
+
     const renderColorBtn = () => {
-        const elm = document.getElementById('color-btn');
+        const elm = document.getElementById("color-btn");
         elm.onclick = () => {
             const stateElm = document.getElementById("state");
-            stateElm.className = stateElm.className === 'binary' ? 'color' : 'binary';
+            const color = getColor();
+            stateElm.className = color === "binary" ? "color" : "binary";
         };
     };
 
@@ -86,7 +96,7 @@ window.conway.domClientFactory = (initialSeed, catalog, color) => {
         elm.value = value + "";
         elm.innerText = label;
         return elm;
-    }
+    };
 
     /**
      * @param { string } selector
@@ -97,7 +107,7 @@ window.conway.domClientFactory = (initialSeed, catalog, color) => {
         
         if (!catalog.some(x => x.key === selected.key))
         {
-            catalog = [selected, ...catalog] 
+            catalog = [selected, ...catalog];
         }
         
         const selectElm = document.querySelector(selector);
@@ -108,7 +118,7 @@ window.conway.domClientFactory = (initialSeed, catalog, color) => {
 
         selectElm.selectedIndex = catalog.map(x => x.key).indexOf(selected.key);
         selectElm.onchange = (event) => onCatalogSelect(event.target.value);
-    }
+    };
 
     /**
      * @param { State } state
@@ -121,7 +131,7 @@ window.conway.domClientFactory = (initialSeed, catalog, color) => {
         renderStateElm(state, onCellClick);
         renderResetBtn();
         return that;
-    }
+    };
 
     /**
      * @param { string } containerId
@@ -148,7 +158,7 @@ window.conway.domClientFactory = (initialSeed, catalog, color) => {
         renderColorBtn();
         
         return that;
-    }
+    };
 
     /**
      * @type {DomClient}
@@ -165,4 +175,4 @@ window.conway.domClientFactory = (initialSeed, catalog, color) => {
         }};
     
     return that;
-}
+};

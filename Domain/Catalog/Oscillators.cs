@@ -82,6 +82,6 @@ public static class Oscillators
             nameof(Toad),
             nameof(Beacon),
             nameof(Pulsar),
-            nameof(Pentadecathlon),
+            nameof(Pentadecathlon)
         }.Select(name => KeyValuePair.Create(name, Get(name)));
 }

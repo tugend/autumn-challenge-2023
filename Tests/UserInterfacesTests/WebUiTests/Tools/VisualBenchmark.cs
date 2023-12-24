@@ -54,7 +54,7 @@ public class VisualBenchmark
 
         await actual
             .Tap(x => x.Mutate(CreateOverlayDiff(benchmarkAsBytes, screenshotAsBytes)))
-            .Map(x => actual.SaveAsPngAsync(_diffPath));
+            .Map(_ => actual.SaveAsPngAsync(_diffPath));
         
         screenshot.SaveAsFile(_actualPath, ScreenshotImageFormat.Png);
         

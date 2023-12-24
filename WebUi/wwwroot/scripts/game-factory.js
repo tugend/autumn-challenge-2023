@@ -16,8 +16,8 @@ window.conway.gameFactory = (turnSpeedInMs, states) => {
     const setState = (_states) => {
         states = _states.map(x => { x.turn = states[index].turn + x.turn; return x; });
         index = 0;
-        triggerUpdate()
-    }
+        triggerUpdate();
+    };
     
     const deepCopy = (instance) =>
         JSON.parse(JSON.stringify(instance));
@@ -28,33 +28,33 @@ window.conway.gameFactory = (turnSpeedInMs, states) => {
     const pause = () => {
         if (isPaused()) return that;
         
-        clearTimeout(timeoutId)
+        clearTimeout(timeoutId);
         timeoutId = null;
-        onStateChange()
+        onStateChange();
         
         return that;
-    }
+    };
 
     const nextTurn = () => {
-         console.log('next turn', index);
+        console.log("next turn", index);
 
-         if (index === states.length - 1) {
-             console.log('next turn is at an end!');
-             onNextStatePage(); // async 
-         }
+        if (index === states.length - 1) {
+            console.log("next turn is at an end!");
+            onNextStatePage(); // async
+        }
         
         timeoutId = setTimeout(() => {
             index = Math.min(states.length -1, index + 1);
             onStateChange();
             nextTurn();
         }, turnInMs);
-    }
+    };
 
     const unpause = () => {
         timeoutId = setTimeout(nextTurn, turnInMs);
-        onStateChange()
+        onStateChange();
         return that;
-    }
+    };
 
     /**
      * @returns { State }
@@ -70,7 +70,7 @@ window.conway.gameFactory = (turnSpeedInMs, states) => {
         seededState.turn = 0;
         
         return seededState;
-    }
+    };
     
     const togglePause = () =>
         isPaused()
@@ -80,18 +80,18 @@ window.conway.gameFactory = (turnSpeedInMs, states) => {
     const reset = () => {
         states = initialStates;
         index = 0;
-        onStateChange()
-    }
+        onStateChange();
+    };
     
     const triggerUpdate = () => {
-        onStateChange()
+        onStateChange();
         return that;
-    }
+    };
     
     const onNextStatePage = (f) => async () => {
         const nextPage = await f(states[index]);
         states = [...states.slice(0, states.length - 1), ...nextPage];
-    }
+    };
 
     /**
      * @type { Game }
@@ -111,4 +111,4 @@ window.conway.gameFactory = (turnSpeedInMs, states) => {
     };
     
     return that;
-} 
+};

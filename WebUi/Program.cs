@@ -11,7 +11,7 @@ app
     .MapGroup("api")
     .MapGetRoute("health", () => "healthy")
     .MapGetRoute("conway/catalog", () => Domain.Catalog.Index.All)
-    .MapPostRoute("conway/states", ([AsParameters] Criteria criteria, Seed seed) => Game // TODO: pass along entire frontend control 
+    .MapPostRoute("conway/states", ([AsParameters] Criteria criteria, Seed seed) => Game
         .Init(seed.Turn, seed.Grid)
         .Play()
         .Take(criteria.Turns));
