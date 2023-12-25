@@ -13,7 +13,12 @@ Introduce a web factory fixture, try catch some more,
 figure out why processes does not shut down correctly
 
 ### Pending refinement
-- Fix dotnet folder structure
+- Cleanup stringify vs convert
+- Split extensions up consistently in partial files
+- Split tests up into separate projects
+- Align file and solution folder structure to avoid confusion
+- {src/test}/{domain,cli,web,extensions}
+- Fix dotnet folder structure: domain/{src, test}, cli/{src,test}, web/{src,test}, extensions/?
 - Try to simplify github actions steps (multiple runs in one step)
 - TODO: clean up notes and replace with a README file
 
