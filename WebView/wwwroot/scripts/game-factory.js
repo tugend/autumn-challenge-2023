@@ -13,7 +13,7 @@ window.conway.gameFactory = (turnSpeedInMs, states) => {
     
     let onStateChange = () => {};
     let onNextStatePage = () => {};
-    
+
     const setState = (_states) => {
         states = _states.map(x => { x.turn = states[index].turn + x.turn; return x; });
         index = 0;
@@ -103,7 +103,7 @@ window.conway.gameFactory = (turnSpeedInMs, states) => {
         subscribe: {
             toChanged: (f) => onStateChange = () => f(current(), isPaused()),
             toNextStatePage: (f) => onNextStatePage = async () => {
-                const nextPage = await f(states[index]); // TODO: this is ugly
+                const nextPage = await f(states[index]); // TODO: this is ugly and totally not a subscription, instead we need to depend on the fetch function in ctor input
                 states = [...states.slice(0, states.length - 1), ...nextPage];
             }
         }

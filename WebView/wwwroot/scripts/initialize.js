@@ -39,6 +39,7 @@ window.conway.initialize = async (containerId, fetchPath, turnSpeedInMs, turn, c
         const selected = catalog[catalogIndex];
         const params = new URLSearchParams(location.search);
         params.set("color", domClient.getColor());
+        params.set("turn-speed", turnSpeedInMs + "");
         params.set("seed", encodeURIComponent(JSON.stringify(selected)));
         window.location.search = params.toString();
     });
