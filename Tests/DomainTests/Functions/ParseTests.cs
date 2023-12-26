@@ -1,5 +1,5 @@
 using FluentAssertions;
-using Tests.FluentAssertionsExtensions;
+using FluentAssertionsExtensions;
 using static Domain.Functions;
 
 namespace Tests.DomainTests.Functions;

@@ -36,9 +36,9 @@
     </ItemGroup>
     
     <ItemGroup>
-      <ProjectReference Include="..\AssemblyExtensions\AssemblyExtensions.csproj" />
       <ProjectReference Include="..\CommandLineUi\CommandLineUi.csproj" />
       <ProjectReference Include="..\Domain\Domain.csproj" />
+      <ProjectReference Include="..\FluentAssertionsExtensions\FluentAssertionsExtensions.csproj" />
       <ProjectReference Include="..\ObjectExtensions\ObjectExtensions.csproj" />
       <ProjectReference Include="..\TaskExtensions\TaskExtensions.csproj" />
       <ProjectReference Include="..\WebUi\WebUi.csproj" />
