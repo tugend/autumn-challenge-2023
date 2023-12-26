@@ -1,16 +1,18 @@
 ﻿window.conway = window.conway || {};
 
 /**
+ * @param { (fromState: State) => Promise<State[]> } fetchStates
  * @param { Number } turnSpeedInMs
- * @param { State[] } states
+ * @param { State } initialState
  * @returns { Game }
  */
-window.conway.gameFactory = (turnSpeedInMs, states) => {
+window.conway.gameFactory = (fetchStates, turnSpeedInMs, initialState) => {
     const turnInMs = turnSpeedInMs;
     let timeoutId = null;
     let index = 0;
+    let states = await fetchStates(initialState) // TODO: make a proper start game thing??
     const initialStates = states;
-    
+
     let onStateChange = () => {};
     let onNextStatePage = () => {};
 
@@ -19,20 +21,20 @@ window.conway.gameFactory = (turnSpeedInMs, states) => {
         index = 0;
         triggerUpdate();
     };
-    
+
     const deepCopy = (instance) =>
         JSON.parse(JSON.stringify(instance));
-    
+
     const isPaused = () =>
         timeoutId == null;
 
     const pause = () => {
         if (isPaused()) return that;
-        
+
         clearTimeout(timeoutId);
         timeoutId = null;
         onStateChange();
-        
+
         return that;
     };
 
@@ -62,28 +64,28 @@ window.conway.gameFactory = (turnSpeedInMs, states) => {
      */
     const current = () =>
         states[index];
-    
+
     const seed = async (i, j) => {
         const seededState = deepCopy(current());
-        
+
         const entry = seededState.grid[i][j];
         seededState.grid[i][j] = entry > 0 ? 0 : 1;
         seededState.turn = 0;
-        
+
         return seededState;
     };
-    
+
     const togglePause = () =>
         isPaused()
             ? unpause()
             : pause();
-    
+
     const reset = () => {
         states = initialStates;
         index = 0;
         onStateChange();
     };
-    
+
     const triggerUpdate = () => {
         onStateChange();
         return that;
@@ -108,6 +110,6 @@ window.conway.gameFactory = (turnSpeedInMs, states) => {
             }
         }
     };
-    
+
     return that;
 };

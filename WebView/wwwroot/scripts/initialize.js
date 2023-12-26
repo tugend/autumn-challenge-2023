@@ -16,10 +16,9 @@ window.conway.initialize = async (containerId, fetchPath, turnSpeedInMs, turn, c
     
     const initialSeed = optionalSeedOverride || catalog[2];
     const initialState = { turn: turn, grid: initialSeed.value };
-    const initialStates = await backendClient.fetchStates(initialState);
-    
+
     const domClient = conway.domClientFactory(initialSeed, catalog, color).renderTo(containerId);
-    const game = conway.gameFactory(turnSpeedInMs, initialStates);
+    const game = conway.gameFactory(backendClient.fetchStates, turnSpeedInMs, initialState);
 
     domClient.subscribe.toCellClick(async (i, j) =>
         await game
