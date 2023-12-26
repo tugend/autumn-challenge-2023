@@ -8,8 +8,8 @@ namespace WebViewTests.Tools;
 
 
 
-[CollectionDefinition(nameof(UICollection))]
-public class UICollection : ICollectionFixture<WebUiTestFixture>
+[CollectionDefinition(nameof(ViewCollection))]
+public class ViewCollection : ICollectionFixture<WebViewTestFixture>
 {
     // This class has no code, and is never created. Its purpose is simply
     // to be the place to apply [CollectionDefinition] and all the
@@ -17,13 +17,13 @@ public class UICollection : ICollectionFixture<WebUiTestFixture>
 }
 
 [UsedImplicitly]
-public sealed class WebUiTestFixture : IAsyncLifetime
+public sealed class WebViewTestFixture : IAsyncLifetime
 {
     private Process? _process;
     private ChromeDriver? _driver;
-    private WebUiClient? _client;
+    private WebViewClient? _client;
 
-    public WebUiClient Client => 
+    public WebViewClient Client =>
         _client ?? throw new ApplicationException("Fixture should have been initialized!");
     
     public async Task InitializeAsync()
@@ -31,11 +31,11 @@ public sealed class WebUiTestFixture : IAsyncLifetime
         try
         {
             Console.WriteLine("Starting web ui runner");
-            _process = await WebUiRunner.Start();
+            _process = await WebViewRunner.Start();
             
             Console.WriteLine("Starting chromium runner");
             _driver = await ChromiumRunner.Start();
-            _client = new WebUiClient(_driver);
+            _client = new WebViewClient(_driver);
         }
         catch (Exception)
         {
@@ -45,7 +45,7 @@ public sealed class WebUiTestFixture : IAsyncLifetime
         }    
     }
 
-    public WebUiTestFixture Inject(ITestOutputHelper output) => 
+    public WebViewTestFixture Inject(ITestOutputHelper output) =>
         this.Tap(x => x.Client.Inject(output));
 
     private static void Dispose(IDisposable? disposable) =>

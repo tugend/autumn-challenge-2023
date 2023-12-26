@@ -23,7 +23,7 @@ public static class ChromiumRunner
         await Policy
             .Handle<WebDriverException>()
             .WaitAndRetryAsync(10, _ => TimeSpan.FromMilliseconds(10), OnRetry)
-            .ExecuteAsync(() => Task.Run(() => driver.Navigate().GoToUrl("http://localhost:5089/resources/index.html")));
+            .ExecuteAsync(() => Task.Run(() => driver.Navigate().GoToUrl("http://localhost:5087/resources/index.html")));
         
         return driver;
     }

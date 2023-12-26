@@ -4,12 +4,12 @@ using Xunit.Abstractions;
 // https://www.benday.com/2021/07/19/asp-net-core-integration-tests-with-selenium-webapplicationfactory/
 namespace WebViewTests;
 
-[Collection(nameof(UICollection))]
+[Collection(nameof(ViewCollection))]
 public sealed class VisualSmokeTests
 {
-    private readonly WebUiClient _client;
+    private readonly WebViewClient _client;
 
-    public VisualSmokeTests(WebUiTestFixture fixture, ITestOutputHelper outputHelper) => 
+    public VisualSmokeTests(WebViewTestFixture fixture, ITestOutputHelper outputHelper) => 
         _client = fixture.Inject(outputHelper).Client;
 
     [Fact]

@@ -6,12 +6,12 @@ using Xunit.Abstractions;
 
 namespace WebViewTests;
 
-[Collection(nameof(UICollection))]
+[Collection(nameof(ViewCollection))]
 public class GameTests
 {
-    private readonly WebUiClient _client;
+    private readonly WebViewClient _client;
 
-    public GameTests(WebUiTestFixture fixture, ITestOutputHelper outputHelper) => 
+    public GameTests(WebViewTestFixture fixture, ITestOutputHelper outputHelper) =>
         _client = fixture.Inject(outputHelper).Client;
     
     [Theory]

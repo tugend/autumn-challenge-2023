@@ -12,13 +12,13 @@ using Xunit.Sdk;
 
 namespace WebViewTests.Tools;
 
-public sealed class WebUiClient
+public sealed class WebViewClient
 {
     private readonly ChromeDriver _driver;
     private readonly WebDriverWait _wait ;
     private ITestOutputHelper? _output;
 
-    internal WebUiClient(ChromeDriver driver)
+    internal WebViewClient(ChromeDriver driver)
     {
         _driver = driver;
         _wait = new WebDriverWait(_driver, TimeSpan.FromMilliseconds(100));
@@ -42,7 +42,7 @@ public sealed class WebUiClient
         var speed = turnSpeed ?? TimeSpan.FromMilliseconds(200);
         
         var id = Guid.NewGuid().ToString();
-        var url = $"http://localhost:5089/resources/index.html?id={id}&turn-speed={speed.TotalMilliseconds}&seed={seed}";
+        var url = $"http://localhost:5087/resources/index.html?id={id}&turn-speed={speed.TotalMilliseconds}&seed={seed}";
         
         _driver .Navigate().GoToUrl(url);
         _wait.Until(_ => _driver.ExecuteScript("return window.conway.isMainLoopRunning"));
@@ -93,7 +93,7 @@ public sealed class WebUiClient
             .Text
             .Map(int.Parse);
 
-    public WebUiClient ClickPauseButton()
+    public WebViewClient ClickPauseButton()
     {
         GetPauseButton()
             .Click();
@@ -124,7 +124,7 @@ public sealed class WebUiClient
             .Select(xs => string.Join(" ", xs))
             .Map(xs => string.Join(Environment.NewLine, xs));
 
-    public WebUiClient ClickCell(int flatZeroIndexedCellIndex)
+    public WebViewClient ClickCell(int flatZeroIndexedCellIndex)
     {
         try
         {
@@ -143,7 +143,7 @@ public sealed class WebUiClient
         _driver
             .FindElement(By.CssSelector($"#state .life:nth-child({flatZeroIndexedCellIndex+1})"));
 
-    public WebUiClient ClickResetButton()
+    public WebViewClient ClickResetButton()
     {
         _driver
             .FindElement(By.Id("reset-btn"))

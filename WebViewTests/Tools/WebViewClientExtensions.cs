@@ -2,16 +2,16 @@
 
 namespace WebViewTests.Tools;
 
-public static class WebUiClientExtensions 
+public static class WebViewClientExtensions 
 {
-    public static async Task<WebUiClient> WaitForTurnOrFail(this WebUiClient instance, int targetTurn)
+    public static async Task<WebViewClient> WaitForTurnOrFail(this WebViewClient instance, int targetTurn)
     {
         var endTurn = await instance.WaitForTurn(targetTurn);
         endTurn.Should().Be(targetTurn);
         return instance;
     }
     
-    public static WebUiClient TurnCountShouldBe(this WebUiClient instance, int expected, string? because = null)
+    public static WebViewClient TurnCountShouldBe(this WebViewClient instance, int expected, string? because = null)
     {
         instance
             .GetTurnCount()
@@ -20,7 +20,7 @@ public static class WebUiClientExtensions
         return instance;
     }
     
-    public static WebUiClient PauseButtonShouldBe(this WebUiClient instance, string expected, string because)
+    public static WebViewClient PauseButtonShouldBe(this WebViewClient instance, string expected, string because)
     {
         instance
             .GetPauseButton()

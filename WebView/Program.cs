@@ -17,3 +17,8 @@ app
         .Take(criteria.Turns));
 
 app.Run();
+
+namespace WebView
+{
+    public class Program { }
+}

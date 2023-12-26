@@ -35,7 +35,7 @@ void Print(Game game)
     Console.WriteLine(Stringify(game.Grid));
 }
 
-namespace CommandLineFrontend
+namespace CliView
 {
     public class Program { }
 }

@@ -1,18 +1,21 @@
 ﻿using System.Diagnostics;
+using FluentAssertions;
 using Polly;
 
 namespace WebViewTests.Tools;
 
-public static class WebUiRunner
+public static class WebViewRunner
 {
     public static async Task<Process> Start()
     {
-        var webUiPath = RelativePaths.WebUiProgramPath();
+        var path = RelativePaths.WebViewProgramPath;
+
+        File.Exists(path).Should().BeTrue(because: $"{path} should exist");
 
         var process = Process.Start(new ProcessStartInfo
         {
             FileName = "dotnet",
-            Arguments = $"run --project {webUiPath}",
+            Arguments = $"run --project {path}",
             WindowStyle = ProcessWindowStyle.Hidden,
             CreateNoWindow = true,
             UseShellExecute = true
@@ -23,7 +26,7 @@ public static class WebUiRunner
         await Policy
             .Handle<HttpRequestException>()
             .WaitAndRetryAsync(10, _ => TimeSpan.FromMilliseconds(10), OnRetry)
-            .ExecuteAsync(() => client.GetAsync("http://localhost:5089/api/health"));
+            .ExecuteAsync(() => client.GetAsync("http://localhost:5087/api/health"));
         
         return process;
     }
