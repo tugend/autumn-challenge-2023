@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
 
-namespace Tests.UserInterfacesTests.WebUiTests.Tools;
+namespace WebViewTests.Tools;
 
 public static class WebUiClientExtensions 
 {

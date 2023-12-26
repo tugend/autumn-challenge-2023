@@ -1,11 +1,11 @@
 ﻿using FluentAssertions;
 using ObjectExtensions;
 using TaskExtensions;
-using Tests.UserInterfacesTests.WebUiTests.Tools;
+using WebViewTests.Tools;
 using Xunit.Abstractions;
 
 // https://www.benday.com/2021/07/19/asp-net-core-integration-tests-with-selenium-webapplicationfactory/
-namespace Tests.UserInterfacesTests.WebUiTests;
+namespace WebViewTests;
 
 [Collection(nameof(UICollection))]
 public sealed class BehaviorSmokeTests
@@ -18,7 +18,7 @@ public sealed class BehaviorSmokeTests
     public void KillLivingCell()
     {
         // Startup
-        var seed = "1";
+        const string seed = "1";
         
         using var _ = _client.StartNewConwaysGame(seed);
 
@@ -37,10 +37,10 @@ public sealed class BehaviorSmokeTests
     public void BirthCell() 
     {
         // Startup
-        var seed = """
-           1 2 3
-           4 0 5
-           """; 
+        const string seed = """
+            1 2 3
+            4 0 5
+            """;
         
         using var _ = _client.StartNewConwaysGame(seed);
         _client.ClickPauseButton();

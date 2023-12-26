@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace Tests.UserInterfacesTests.CommandLineUiTests;
+namespace CliViewTests;
 
 public static class ApplicationTestRunner
 {

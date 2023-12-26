@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using Polly;
 
-namespace Tests.UserInterfacesTests.WebUiTests.Tools;
+namespace WebViewTests.Tools;
 
 public static class WebUiRunner
 {

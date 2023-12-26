@@ -1,8 +1,8 @@
-﻿using Tests.UserInterfacesTests.WebUiTests.Tools;
+﻿using WebViewTests.Tools;
 using Xunit.Abstractions;
 
 // https://www.benday.com/2021/07/19/asp-net-core-integration-tests-with-selenium-webapplicationfactory/
-namespace Tests.UserInterfacesTests.WebUiTests;
+namespace WebViewTests;
 
 [Collection(nameof(UICollection))]
 public sealed class VisualSmokeTests

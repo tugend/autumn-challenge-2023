@@ -1,9 +1,9 @@
-﻿using CommandLineUi;
+﻿using CommandLineFrontend;
 using FluentAssertions;
 using TaskExtensions;
 using static System.TimeSpan;
 
-namespace Tests.UserInterfacesTests.CommandLineUiTests;
+namespace CliViewTests;
 
 public class SmokeTests
 {

@@ -1,10 +1,10 @@
 ﻿using Domain.Catalog;
 using FluentAssertions;
 using TaskExtensions;
-using Tests.UserInterfacesTests.WebUiTests.Tools;
+using WebViewTests.Tools;
 using Xunit.Abstractions;
 
-namespace Tests.UserInterfacesTests.WebUiTests;
+namespace WebViewTests;
 
 [Collection(nameof(UICollection))]
 public class GameTests

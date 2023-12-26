@@ -2,7 +2,7 @@
 using ObjectExtensions;
 using OpenQA.Selenium;
 
-namespace Tests.UserInterfacesTests.WebUiTests.Tools;
+namespace WebViewTests.Tools;
 
 public class VisualBenchmark
 {

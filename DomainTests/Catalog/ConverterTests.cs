@@ -2,7 +2,7 @@
 using FluentAssertions;
 using ObjectExtensions;
 
-namespace Tests.DomainTests.Catalog;
+namespace DomainTests.Catalog;
 
 public class ConverterTests
 {
@@ -51,7 +51,7 @@ public class ConverterTests
     [Fact]
     public void Convert()
     {
-        var input = StillLife.Beehive;
+        const string input = StillLife.Beehive;
 
         var twiceConverted = input
             .Map(Converter.Convert)

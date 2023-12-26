@@ -3,7 +3,7 @@ using FluentAssertions;
 using ObjectExtensions;
 using static Domain.Functions;
 
-namespace Tests.DomainTests.Functions;
+namespace DomainTests.Functions;
 
 public class SeedTests
 {
@@ -56,10 +56,10 @@ public class SeedTests
             .Throw<ArgumentOutOfRangeException>()
             .WithMessage("Coordinate { X = 3, Y = 0 } was out of bounds(3, 3) (Parameter 'target')");
     }
-    
-    public static State Empty => new(0, Parse("""
-        0 0 0
-        0 0 0
-        0 0 0
-        """));
+
+    private static State Empty => new(0, Parse("""
+                                               0 0 0
+                                               0 0 0
+                                               0 0 0
+                                               """));
 }

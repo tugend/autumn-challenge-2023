@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using static Domain.Functions;
 
-namespace Tests.DomainTests.Functions;
+namespace DomainTests.Functions;
 
 public class NextTests
 {

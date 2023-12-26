@@ -10,7 +10,7 @@ using OpenQA.Selenium.Support.UI;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace Tests.UserInterfacesTests.WebUiTests.Tools;
+namespace WebViewTests.Tools;
 
 public sealed class WebUiClient
 {
@@ -109,7 +109,7 @@ public sealed class WebUiClient
             .FindElement(By.TagName("main"))
             .Text;
 
-    public string OnlyOneOrZero(string value) =>
+    private string OnlyOneOrZero(string value) =>
         int.Parse(value)
             .Map(x => Math.Min(x, 1).ToString());
 

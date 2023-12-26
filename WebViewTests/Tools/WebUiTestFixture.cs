@@ -4,7 +4,7 @@ using ObjectExtensions;
 using OpenQA.Selenium.Chrome;
 using Xunit.Abstractions;
 
-namespace Tests.UserInterfacesTests.WebUiTests.Tools;
+namespace WebViewTests.Tools;
 
 
 

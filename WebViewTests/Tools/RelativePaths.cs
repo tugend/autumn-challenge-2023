@@ -1,6 +1,6 @@
 ﻿using ObjectExtensions;
 
-namespace Tests.UserInterfacesTests.WebUiTests.Tools;
+namespace WebViewTests.Tools;
 
 public static class RelativePaths
 {

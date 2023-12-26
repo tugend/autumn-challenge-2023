@@ -4,7 +4,7 @@ using OpenQA.Selenium.Chrome;
 using Polly;
 using Size = System.Drawing.Size;
 
-namespace Tests.UserInterfacesTests.WebUiTests.Tools;
+namespace WebViewTests.Tools;
 
 public static class ChromiumRunner
 {
