@@ -29,10 +29,9 @@ public class VisualBenchmark
         return new VisualBenchmark(name, actualPath, diffPath, benchmarkPath);
     }
     
-    public VisualBenchmark SaveAsBenchmark(Screenshot screenshot)
+    public void SaveAsBenchmark(Screenshot screenshot)
     {
         screenshot.SaveAsFile(_benchmarkPath, ScreenshotImageFormat.Png);
-        return this;
     }
     
     public bool IsEmpty() => 

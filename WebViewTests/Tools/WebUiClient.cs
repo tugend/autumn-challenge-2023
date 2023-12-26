@@ -109,7 +109,7 @@ public sealed class WebUiClient
             .FindElement(By.TagName("main"))
             .Text;
 
-    private string OnlyOneOrZero(string value) =>
+    private static string OnlyOneOrZero(string value) =>
         int.Parse(value)
             .Map(x => Math.Min(x, 1).ToString());
 
@@ -155,7 +155,7 @@ public sealed class WebUiClient
     public void Inject(ITestOutputHelper output) => 
         _output = output;
     
-    public class LogContext : IDisposable
+    public sealed class LogContext : IDisposable
     {
         private readonly Action _printLogs;
 

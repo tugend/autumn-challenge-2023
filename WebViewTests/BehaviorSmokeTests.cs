@@ -18,7 +18,7 @@ public sealed class BehaviorSmokeTests
     public void KillLivingCell()
     {
         // Startup
-        const string seed = "1";
+        var seed = "1";
         
         using var _ = _client.StartNewConwaysGame(seed);
 
@@ -37,10 +37,10 @@ public sealed class BehaviorSmokeTests
     public void BirthCell() 
     {
         // Startup
-        const string seed = """
-            1 2 3
-            4 0 5
-            """;
+        var seed = """
+           1 2 3
+           4 0 5
+           """;
         
         using var _ = _client.StartNewConwaysGame(seed);
         _client.ClickPauseButton();

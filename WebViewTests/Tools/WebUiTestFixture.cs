@@ -48,8 +48,8 @@ public sealed class WebUiTestFixture : IAsyncLifetime
     public WebUiTestFixture Inject(ITestOutputHelper output) => 
         this.Tap(x => x.Client.Inject(output));
 
-    private static void Dispose(ChromeDriver? driver) => 
-        driver?.Dispose();
+    private static void Dispose(IDisposable? disposable) =>
+        disposable?.Dispose();
 
     private static void Dispose(Process? process) 
     {

@@ -23,7 +23,7 @@ public class ConverterTests
             new[] { 0, 0, 0, 0 },
             new[] { 0, 1, 1, 0 },
             new[] { 0, 1, 1, 0 },
-            new[] { 0, 0, 0, 0 },
+            new[] { 0, 0, 0, 0 }
         });
     }
     
@@ -35,7 +35,7 @@ public class ConverterTests
             new[] { 0, 0, 0, 0 },
             new[] { 0, 1, 1, 0 },
             new[] { 0, 1, 1, 0 },
-            new[] { 0, 0, 0, 0 },
+            new[] { 0, 0, 0, 0 }
         };
 
         var converted = Converter.Convert(input);

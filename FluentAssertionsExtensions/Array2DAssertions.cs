@@ -20,7 +20,7 @@ public class Array2DAssertions<T> : ReferenceTypeAssertions<T[][], Array2DAssert
 
     protected override string Identifier => "T[][]";
 
-    public AndConstraint<Array2DAssertions<T>> BeEquivalentTo(T[][] other, string because = "", params object[] becauseArgs)
+    public void BeEquivalentTo(T[][] other, string because = "", params object[] becauseArgs)
     {
         Execute.Assertion
             .BecauseOf(because, becauseArgs)
@@ -34,7 +34,7 @@ public class Array2DAssertions<T> : ReferenceTypeAssertions<T[][], Array2DAssert
 
                        """);
 
-        return new AndConstraint<Array2DAssertions<T>>(this);
+        new AndConstraint<Array2DAssertions<T>>(this);
     }
 
     private static string ToString(T[][] matrix) =>

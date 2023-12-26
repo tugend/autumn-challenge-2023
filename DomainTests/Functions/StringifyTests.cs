@@ -12,7 +12,7 @@ public class StringifyTests
         {
             new[]{ 1, 0, 0 },
             new[]{ 0, 2, 0 },
-            new[]{ 0, 0, 3 },
+            new[]{ 0, 0, 3 }
         };
 
         Stringify(grid)
