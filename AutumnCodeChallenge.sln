@@ -6,7 +6,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectExtensions", "ObjectE
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{61276D23-96A9-4023-86F0-277B612FB97B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandLineUi", "CommandLineUi\CommandLineUi.csproj", "{1AF5F3EA-9C60-4CE7-B4DE-B39C70D6F3D7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CliView", "CliView\CliView.csproj", "{1AF5F3EA-9C60-4CE7-B4DE-B39C70D6F3D7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnumerableExtensions", "EnumerableExtensions\EnumerableExtensions.csproj", "{4D0DF343-24F4-48B0-90A1-56B318893DE2}"
 EndProject
@@ -14,9 +14,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskExtensions", "TaskExtensions\TaskExtensions.csproj", "{C8FE0A64-CE60-4353-9967-0C3A287CD466}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UserInterfaces", "UserInterfaces", "{73A663A9-3B6A-40A4-A14C-29525D963089}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Views", "Views", "{73A663A9-3B6A-40A4-A14C-29525D963089}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebUi", "WebUi\WebUi.csproj", "{8AA0562D-1147-4A45-932E-9DBDACBAF74F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebView", "WebView\WebView.csproj", "{8AA0562D-1147-4A45-932E-9DBDACBAF74F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcExtensions", "MvcExtensions\MvcExtensions.csproj", "{D848EDDA-BED7-42A9-B26F-568922BDE60C}"
 EndProject

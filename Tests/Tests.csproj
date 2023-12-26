@@ -36,12 +36,12 @@
     </ItemGroup>
     
     <ItemGroup>
-      <ProjectReference Include="..\CommandLineUi\CommandLineUi.csproj" />
+      <ProjectReference Include="..\CliView\CliView.csproj" />
       <ProjectReference Include="..\Domain\Domain.csproj" />
       <ProjectReference Include="..\FluentAssertionsExtensions\FluentAssertionsExtensions.csproj" />
       <ProjectReference Include="..\ObjectExtensions\ObjectExtensions.csproj" />
       <ProjectReference Include="..\TaskExtensions\TaskExtensions.csproj" />
-      <ProjectReference Include="..\WebUi\WebUi.csproj" />
+      <ProjectReference Include="..\WebView\WebView.csproj" />
     </ItemGroup>
     
     <ItemGroup>

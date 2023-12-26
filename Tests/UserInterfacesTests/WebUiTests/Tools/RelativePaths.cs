@@ -8,7 +8,7 @@ public static class RelativePaths
         TestsRootSrcPath(new [] { "Tests" }.Concat(subPath).ToArray());
     
     public static string WebUiProgramPath() =>
-        TestsRootSrcPath("WebUi", "WebUi.csproj");
+        TestsRootSrcPath("WebView", "WebView.csproj");
 
     private static string TestsRootSrcPath(params string[] subPath) =>
         Environment
