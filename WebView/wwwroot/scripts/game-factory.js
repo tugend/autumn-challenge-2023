@@ -12,7 +12,8 @@ window.conway.gameFactory = (turnSpeedInMs, states) => {
     const initialStates = states;
     
     let onStateChange = () => {};
-
+    let onNextStatePage = () => {};
+    
     const setState = (_states) => {
         states = _states.map(x => { x.turn = states[index].turn + x.turn; return x; });
         index = 0;
@@ -42,7 +43,7 @@ window.conway.gameFactory = (turnSpeedInMs, states) => {
             console.log("next turn is at an end!");
             onNextStatePage(); // async
         }
-        
+
         timeoutId = setTimeout(() => {
             index = Math.min(states.length -1, index + 1);
             onStateChange();
@@ -87,11 +88,6 @@ window.conway.gameFactory = (turnSpeedInMs, states) => {
         onStateChange();
         return that;
     };
-    
-    const onNextStatePage = (f) => async () => {
-        const nextPage = await f(states[index]);
-        states = [...states.slice(0, states.length - 1), ...nextPage];
-    };
 
     /**
      * @type { Game }
@@ -106,7 +102,10 @@ window.conway.gameFactory = (turnSpeedInMs, states) => {
         reset,
         subscribe: {
             toChanged: (f) => onStateChange = () => f(current(), isPaused()),
-            toNextStatePage: onNextStatePage
+            toNextStatePage: (f) => onNextStatePage = async () => {
+                const nextPage = await f(states[index]); // TODO: this is ugly
+                states = [...states.slice(0, states.length - 1), ...nextPage];
+            }
         }
     };
     

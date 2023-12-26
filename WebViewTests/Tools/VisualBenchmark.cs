@@ -21,7 +21,7 @@ public class VisualBenchmark
 
     public static VisualBenchmark Init(string name)
     {
-        var folder = RelativePaths.VisualBenchmarkPath("Views", "WebViewTests", nameof(VisualSmokeTests));
+        var folder = RelativePaths.VisualBenchmarkPath("WebViewTests", nameof(VisualSmokeTests));
         var actualPath = Path.Join(folder, $"{name}.actual.png");
         var diffPath = Path.Join(folder, $"{name}.diff.png");
         var benchmarkPath = Path.Join(folder, $"{name}.bench.png");

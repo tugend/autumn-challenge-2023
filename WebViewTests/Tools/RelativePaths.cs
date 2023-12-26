@@ -5,7 +5,7 @@ namespace WebViewTests.Tools;
 public static class RelativePaths
 {
     public static string VisualBenchmarkPath(params string[] subPath) =>
-        TestsRootSrcPath(new [] { "WebViewTests" }.Concat(subPath).ToArray());
+        TestsRootSrcPath(subPath);
     
     public static string WebViewProgramPath => // TODO: target dll included in assembly instead, no reason to double compile
         TestsRootSrcPath("WebView", "WebView.csproj");
