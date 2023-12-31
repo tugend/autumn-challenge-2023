@@ -34,6 +34,7 @@
 
 /**
  * @typedef {object} Game
+ * @property { () => Promise<void> } start
  * @property { () => Game } unpause
  * @property { () => Game } pause
  * @property { () => void } togglePause

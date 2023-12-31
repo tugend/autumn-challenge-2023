@@ -4,14 +4,25 @@
  * @param { (fromState: State) => Promise<State[]> } fetchStates
  * @param { Number } turnSpeedInMs
  * @param { State } initialState
- * @returns { Promise<Game> }
+ * @returns { Game }
  */
-window.conway.gameFactory = async (fetchStates, turnSpeedInMs, initialState) => {
-    const turnInMs = turnSpeedInMs;
+window.conway.gameFactory = (fetchStates, turnSpeedInMs, initialState) => {
+
+    let turnInMs = -1;
     let timeoutId = null;
     let index = 0;
-    const initialStates = await fetchStates(initialState); // TODO: make a proper start game thing??;
+    let initialStates = /** @type State[] */ [];
     let states = initialStates;
+
+    const start = async () => {
+        turnInMs = turnSpeedInMs;
+        timeoutId = null;
+        index = 0;
+        initialStates = await fetchStates(initialState); // TODO: make a proper start game thing??;
+        states = initialStates;
+
+        window.conway.isMainLoopRunning = true;
+    };
 
     let onStateChange = () => {};
 
@@ -97,6 +108,7 @@ window.conway.gameFactory = async (fetchStates, turnSpeedInMs, initialState) => 
      * @type { Game }
      */
     const that = {
+        start,
         triggerUpdate,
         setState,
         pause,

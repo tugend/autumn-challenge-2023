@@ -38,7 +38,6 @@
         console.log("Initializing Conway's game of life", { turn, color, seed: seedOrUndefined });
         const game = await conway.initialize("conway", "/api/conway", turnSpeedInMs, turn, color, seedOrUndefined);
 
-        window.conway.isMainLoopRunning = true;
         game.unpause();
 })();
 </script>

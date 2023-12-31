@@ -45,5 +45,7 @@ window.conway.initialize = async (containerId, fetchPath, turnSpeedInMs, turn, c
 
     game.subscribe.toChanged(domClient.rerender);
 
+    await game.start();
+
     return game;
 };
