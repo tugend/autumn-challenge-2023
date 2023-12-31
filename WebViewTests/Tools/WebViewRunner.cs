@@ -20,14 +20,28 @@ public static class WebViewRunner
             CreateNoWindow = true,
             UseShellExecute = true
         })!;
-        
+
+        await Task.Delay(300);
+        if (process.HasExited)
+        {
+            throw new Exception("Whoops! Process failed to start!");
+        }
+
         using var client = new HttpClient();
-        
-        await Policy
-            .Handle<HttpRequestException>()
-            .WaitAndRetryAsync(10, _ => TimeSpan.FromMilliseconds(10), OnRetry)
-            .ExecuteAsync(() => client.GetAsync("http://localhost:5087/api/health"));
-        
+
+        try
+        {
+            // TODO: how to do this idiomatically in Polly?
+            await Policy
+                .Handle<HttpRequestException>()
+                .WaitAndRetryAsync(10, _ => TimeSpan.FromMilliseconds(10), OnRetry)
+                .ExecuteAsync(() => client.GetAsync("http://localhost:5087/api/health"));
+        }
+        catch
+        {
+            process.Kill();
+        }
+
         return process;
     }
 
