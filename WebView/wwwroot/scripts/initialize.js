@@ -14,11 +14,11 @@ window.conway.initialize = async (containerId, fetchPath, turnSpeedInMs, turn, c
     const backendClient = conway.backendClientFactory(fetchPath);
     const catalog = await backendClient.getCatalog();
     
-    const initialSeed = optionalSeedOverride || catalog[2];
+    const initialSeed = optionalSeedOverride || catalog.filter(x => x.key === "Blinker")[0];
     const initialState = { turn: turn, grid: initialSeed.value };
 
     const domClient = conway.domClientFactory(initialSeed, catalog, color).renderTo(containerId);
-    const game = conway.gameFactory(backendClient.fetchStates, turnSpeedInMs, initialState);
+    const game = await conway.gameFactory(backendClient.fetchStates, turnSpeedInMs, initialState); // TODO: start game method separate from ctor
 
     domClient.subscribe.toCellClick(async (i, j) =>
         await game
@@ -44,10 +44,6 @@ window.conway.initialize = async (containerId, fetchPath, turnSpeedInMs, turn, c
     });
 
     game.subscribe.toChanged(domClient.rerender);
-    
-    game.subscribe.toNextStatePage(async fromState => {
-        return await backendClient.fetchStates(fromState);
-    });
-    
+
     return game;
 };

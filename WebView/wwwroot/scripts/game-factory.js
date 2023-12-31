@@ -4,20 +4,22 @@
  * @param { (fromState: State) => Promise<State[]> } fetchStates
  * @param { Number } turnSpeedInMs
  * @param { State } initialState
- * @returns { Game }
+ * @returns { Promise<Game> }
  */
-window.conway.gameFactory = (fetchStates, turnSpeedInMs, initialState) => {
+window.conway.gameFactory = async (fetchStates, turnSpeedInMs, initialState) => {
     const turnInMs = turnSpeedInMs;
     let timeoutId = null;
     let index = 0;
-    let states = await fetchStates(initialState) // TODO: make a proper start game thing??
-    const initialStates = states;
+    const initialStates = await fetchStates(initialState); // TODO: make a proper start game thing??;
+    let states = initialStates;
 
     let onStateChange = () => {};
-    let onNextStatePage = () => {};
 
     const setState = (_states) => {
-        states = _states.map(x => { x.turn = states[index].turn + x.turn; return x; });
+        states = _states.map(x => {
+            x.turn = states[index].turn + x.turn;
+            return x;
+        });
         index = 0;
         triggerUpdate();
     };
@@ -38,16 +40,16 @@ window.conway.gameFactory = (fetchStates, turnSpeedInMs, initialState) => {
         return that;
     };
 
-    const nextTurn = () => {
+    const nextTurn = async () => {
         console.log("next turn", index);
 
         if (index === states.length - 1) {
-            console.log("next turn is at an end!");
-            onNextStatePage(); // async
+            const nextPage = await fetchStates(states[index]);
+            states = [...states.slice(0, states.length - 1), ...nextPage];
         }
 
         timeoutId = setTimeout(() => {
-            index = Math.min(states.length -1, index + 1);
+            index = Math.min(states.length - 1, index + 1);
             onStateChange();
             nextTurn();
         }, turnInMs);
@@ -103,11 +105,7 @@ window.conway.gameFactory = (fetchStates, turnSpeedInMs, initialState) => {
         seed,
         reset,
         subscribe: {
-            toChanged: (f) => onStateChange = () => f(current(), isPaused()),
-            toNextStatePage: (f) => onNextStatePage = async () => {
-                const nextPage = await f(states[index]); // TODO: this is ugly and totally not a subscription, instead we need to depend on the fetch function in ctor input
-                states = [...states.slice(0, states.length - 1), ...nextPage];
-            }
+            toChanged: (f) => onStateChange = () => f(current(), isPaused())
         }
     };
 

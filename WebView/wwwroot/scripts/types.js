@@ -30,7 +30,6 @@
 /**
  * @typedef { object } GameSubscriptions
  * @property { (f: (current: State, isPaused: boolean) => void) => void } toChanged
- * @property { (f: (fromState: State) => Promise<State[]>) => void } toNextStatePage
  */
 
 /**
