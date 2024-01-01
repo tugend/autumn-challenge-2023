@@ -19,11 +19,12 @@ public static class ChromiumRunner
         driver
             .Manage()
             .Window.Size = new Size(900, 900);
-        
+
+        // TODO: do a graceful shutdown at the composition root
         await Policy
             .Handle<WebDriverException>()
             .WaitAndRetryAsync(10, _ => TimeSpan.FromMilliseconds(10), OnRetry)
-            .ExecuteAsync(() => Task.Run(() => driver.Navigate().GoToUrl("http://localhost:5087/resources/index.html")));
+            .ExecuteAsync(() => Task.Run(() => driver.Navigate().GoToUrl("http://localhost:5000/resources/index.html")));
         
         return driver;
     }

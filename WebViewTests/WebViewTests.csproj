@@ -38,5 +38,6 @@
     <ItemGroup>
         <ProjectReference Include="..\Domain\Domain.csproj"/>
         <ProjectReference Include="..\TaskExtensions\TaskExtensions.csproj"/>
+        <ProjectReference Include="..\WebView\WebView.csproj" />
     </ItemGroup>
 </Project>

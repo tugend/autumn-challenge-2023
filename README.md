@@ -1,7 +1,8 @@
 ﻿## TODOs
 
 ### Pending refinement
-- Reference dlls in test startup fixtures in tests
+- Print process to log for debugging purposes (enable or always, stderr and std)
+- Reference dlls/exes in test startup fixtures in tests?
 - Outfactor target port
 - Cleanup stringify vs convert
 - use module systems to reduce complexity of web view: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules

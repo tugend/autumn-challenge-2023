@@ -42,7 +42,7 @@ public sealed class WebViewClient
         var speed = turnSpeed ?? TimeSpan.FromMilliseconds(200);
         
         var id = Guid.NewGuid().ToString();
-        var url = $"http://localhost:5087/resources/index.html?id={id}&turn-speed={speed.TotalMilliseconds}&seed={seed}";
+        var url = $"http://localhost:5000/resources/index.html?id={id}&turn-speed={speed.TotalMilliseconds}&seed={seed}";
         
         _driver .Navigate().GoToUrl(url);
         _wait.Until(_ => _driver.ExecuteScript("return window.conway.isMainLoopRunning"));
