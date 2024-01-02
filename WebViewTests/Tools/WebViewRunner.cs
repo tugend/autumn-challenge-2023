@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using FluentAssertions;
 using Polly;
+using WebView;
 
 namespace WebViewTests.Tools;
 
@@ -8,57 +9,69 @@ public static class WebViewRunner
 {
     public static async Task<Process> Start()
     {
-        var path = RelativePaths.WebViewProgramPath;
-        var cd = Environment.CurrentDirectory;
-        File.Exists(path).Should().BeTrue(because: $"{path} should exist");
-
         var process = Process.Start(new ProcessStartInfo
         {
-            FileName = "dotnet",
-            Arguments = "WebView.dll", // .exe?
+            FileName = ProgramPath(typeof(Program)),
             WindowStyle = ProcessWindowStyle.Hidden,
             CreateNoWindow = true,
             UseShellExecute = false,
             RedirectStandardError = true,
+            RedirectStandardOutput = true,
         })!;
 
-        await Task.Delay(300);
-        if (process.HasExited)
+        var isHealthy = await IsViewHealthy("http://localhost:5000/api/health");
+
+        if (isHealthy) return process;
+
+        if (!process.HasExited)
         {
-            throw new Exception("Whoops! Process failed to start!" + await process.StandardError.ReadToEndAsync());
+            process.Kill(entireProcessTree: true);
         }
 
-        using var client = new HttpClient();
+        var error = await process.StandardError.ReadToEndAsync();
+        var std = await process.StandardOutput.ReadToEndAsync();
 
+        throw new Exception($"""
+            Whoops! Process failed to start!
+                Standard Output
+                {std}
+        
+                Standard Error Output
+                {error}
+            """);
+
+    }
+
+    private static string ProgramPath(Type targetType)
+    {
+        var targetAssembly = targetType.Assembly;
+        var executableName = targetAssembly.GetName().Name;
+        var executablePath = Path.GetDirectoryName(targetAssembly.Location);
+        var programToTest = $"{executablePath}{Path.DirectorySeparatorChar}{executableName}.exe";
+        return programToTest;
+    }
+
+    private static async Task<bool> IsViewHealthy(string uri)
+    {
         try
         {
-            // https://stackoverflow.com/questions/55299641/can-i-combine-retry-and-fallback-polly-resilience-policies
-            //
-            // var fallback = Policy<IList<Value>>
-            //     .Handle<TaskCanceledException>()
-            //     .FallbackAsync(null as IList<Value>);
-            //
-            // var retry = Policy<IList<Value>>
-            //     .Handle<TaskCanceledException>()
-            //     .RetryAsync<IList<Value>>(3);
-            //
-            // var results = await fallback.WrapAsync(retry)
-            //     .ExecuteAsync(() => myRestfulCall());
+            using var client = new HttpClient();
 
-            // TODO: how to do this idiomatically in Polly?
-            await Policy
+            // TODO: this should also check reply
+            var message = await Policy
                 .Handle<HttpRequestException>()
                 .WaitAndRetryAsync(10, _ => TimeSpan.FromMilliseconds(10), OnRetry)
-                .ExecuteAsync(() => client.GetAsync("http://localhost:5000/api/health"));
+                .ExecuteAsync(() => client.GetAsync(uri));
+
+            var response = await message.Content.ReadAsStringAsync();
+            return response.Equals("healthy");
         }
         catch
         {
-            process.Kill();
+            return false;
         }
-
-        return process;
     }
 
     private static void OnRetry(Exception exception, TimeSpan timeSpan, int count, Context context) => 
-        Console.WriteLine($"Retry {count} {exception.Message}");
+        Console.WriteLine($"Waiting for target view to be live. Retry count:{count}, Failure message: {exception.Message}");
 }

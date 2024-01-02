@@ -2,11 +2,10 @@
 using JetBrains.Annotations;
 using ObjectExtensions;
 using OpenQA.Selenium.Chrome;
+using WebView;
 using Xunit.Abstractions;
 
 namespace WebViewTests.Tools;
-
-
 
 [CollectionDefinition(nameof(ViewCollection))]
 public class ViewCollection : ICollectionFixture<WebViewTestFixture>
@@ -32,7 +31,7 @@ public sealed class WebViewTestFixture : IAsyncLifetime
         {
             Console.WriteLine("Starting web ui runner");
             _process = await WebViewRunner.Start();
-            
+
             Console.WriteLine("Starting chromium runner");
             _driver = await ChromiumRunner.Start();
             _client = new WebViewClient(_driver);
@@ -53,10 +52,9 @@ public sealed class WebViewTestFixture : IAsyncLifetime
 
     private static void Dispose(Process? process) 
     {
-        process?.Kill();
-        process?.Dispose();
+        process?.Kill(entireProcessTree: true);
     }
-    
+
     public Task DisposeAsync()
     {
         Dispose(_driver);

@@ -21,7 +21,7 @@ public class VisualBenchmark
 
     public static VisualBenchmark Init(string name)
     {
-        var folder = RelativePaths.VisualBenchmarkPath("WebViewTests", nameof(VisualSmokeTests));
+        var folder = VisualBenchmarkPath("WebViewTests", nameof(VisualSmokeTests));
         var actualPath = Path.Join(folder, $"{name}.actual.png");
         var diffPath = Path.Join(folder, $"{name}.diff.png");
         var benchmarkPath = Path.Join(folder, $"{name}.bench.png");
@@ -67,4 +67,16 @@ public class VisualBenchmark
         using var diffMask = ImageSharpCompare.CalcDiffMaskImage(actual, expected);
         context.DrawImage(diffMask, PixelColorBlendingMode.Overlay, PixelAlphaCompositionMode.DestOver, 0.8f);
     };
+
+    private static string VisualBenchmarkPath(params string[] subPath) =>
+        TestsRootSrcPath(subPath);
+
+    private static string TestsRootSrcPath(params string[] subPath) =>
+        Environment
+            .CurrentDirectory
+            .Split(Path.DirectorySeparatorChar)
+            .TakeWhile(x => !x.Equals("WebViewTests"))
+            .Concat(subPath)
+            .ToArray()
+            .Map(Path.Join);
 }
