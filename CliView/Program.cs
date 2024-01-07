@@ -32,7 +32,7 @@ void Print(Game game)
 
     Console.WriteLine("Turns: " + game.Turn);
     Console.WriteLine("Grid");
-    Console.WriteLine(Stringify(game.Grid));
+    Console.WriteLine(Convert(game.Grid));
 }
 
 namespace CliView

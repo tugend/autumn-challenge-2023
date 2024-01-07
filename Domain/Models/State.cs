@@ -10,7 +10,7 @@ public record State(int Turns, int[][] Grid)
         $"""
         State
         Turns: {Turns}  
-        {Functions.Stringify(Grid)}
+        {Functions.Convert(Grid)}
         """;
     
     public (int MaxX, int MaxY) GridBounds = 

@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
 using System.Text.Encodings.Web;
-using Domain.Catalog;
 using Newtonsoft.Json;
 using ObjectExtensions;
 using OpenQA.Selenium;
@@ -35,7 +34,7 @@ public sealed class WebViewClient
     }
 
     public LogContext StartNewConwaysGame(string input, TimeSpan? turnSpeed = null) =>
-        StartNewConwaysGame(Converter.Convert(input), turnSpeed);
+        StartNewConwaysGame(Domain.Functions.Convert(input), turnSpeed);
 
     
     public LogContext StartNewConwaysGame(int[][] input, TimeSpan? turnSpeed = null)

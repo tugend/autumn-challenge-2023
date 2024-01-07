@@ -44,7 +44,7 @@ public static class Spaceships
         (typeof(Spaceships)
             .GetField(name)?
             .GetValue(null) as string ?? throw new InvalidOperationException())
-        .Map(Converter.Convert)
+        .Map(Functions.Convert)
         .TopPadColumns(0, 5)
         .Select(row => row
             .LeftPadRow(0, 5)

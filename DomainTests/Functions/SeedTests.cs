@@ -57,7 +57,7 @@ public class SeedTests
             .WithMessage("Coordinate { X = 3, Y = 0 } was out of bounds(3, 3) (Parameter 'target')");
     }
 
-    private static State Empty => new(0, Parse("""
+    private static State Empty => new(0, Convert("""
                                                0 0 0
                                                0 0 0
                                                0 0 0

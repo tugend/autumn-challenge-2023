@@ -1,6 +1,7 @@
 ﻿## TODOs
 
 ### Pending refinement
+- Merge to main
 - Cleanup stringify vs convert
 - use module systems to reduce complexity of web view: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules
 - TODO: clean up notes and replace with a README file

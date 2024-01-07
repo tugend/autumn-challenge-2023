@@ -16,7 +16,7 @@ public class NextTests
     [Fact]
     public void Cell_Without_Neighbours_Dies()
     {
-        var input = Parse("""
+        var input = Convert("""
             0 0 0
             0 1 0
             0 0 0
@@ -30,7 +30,7 @@ public class NextTests
     [Fact]
     public void Cells_With_Single_Neighbour_Dies()
     {
-        var input = Parse("""
+        var input = Convert("""
             1 0 0
             1 0 0
             0 0 0
@@ -44,7 +44,7 @@ public class NextTests
     [Fact]
     public void Cells_With_Two_Neighbours_Lives()
     {
-        var input = Parse("""
+        var input = Convert("""
             0 0 1
             0 1 0
             1 0 0
@@ -52,7 +52,7 @@ public class NextTests
     
         Next(input)
             .Should()
-            .BeEquivalentTo(Parse("""
+            .BeEquivalentTo(Convert("""
                 0 0 0
                 0 2 0
                 0 0 0
@@ -62,7 +62,7 @@ public class NextTests
     [Fact]
     public void Cells_With_Three_Neighbours_Lives()
     {
-        var input = Parse("""
+        var input = Convert("""
             0 0 0
             1 1 0
             1 1 0
@@ -70,14 +70,14 @@ public class NextTests
         
         Next(input)
             .Should()
-            .BeEquivalentTo(Parse("""
+            .BeEquivalentTo(Convert("""
                 0 0 0
                 2 2 0
                 2 2 0
                 """));
     }
 
-    private static int[][] Empty => Parse("""
+    private static int[][] Empty => Convert("""
         0 0 0
         0 0 0
         0 0 0

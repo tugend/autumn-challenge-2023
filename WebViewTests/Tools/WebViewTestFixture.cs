@@ -2,7 +2,6 @@
 using JetBrains.Annotations;
 using ObjectExtensions;
 using OpenQA.Selenium.Chrome;
-using WebView;
 using Xunit.Abstractions;
 
 namespace WebViewTests.Tools;

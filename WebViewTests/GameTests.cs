@@ -26,7 +26,7 @@ public class GameTests
         
         var state = await GameAfter(input, targetTurn: 10);
 
-        Converter.Convert(state).Should().BeEquivalentTo(input, because: $"{name} should be a still life");
+        Domain.Functions.Convert(state).Should().BeEquivalentTo(input, because: $"{name} should be a still life");
     }
 
     [Theory]
