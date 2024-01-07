@@ -8,7 +8,7 @@ namespace WebViewTests.Tools;
 
 public static class ChromiumRunner
 {
-    public static async Task<ChromeDriver> Start()
+    public static async Task<ChromeDriver> Start(Uri gamePath)
     {
         var options = new ChromeOptions()
             .Tap(x => x.AddArgument("--headless"))
@@ -24,7 +24,7 @@ public static class ChromiumRunner
         await Policy
             .Handle<WebDriverException>()
             .WaitAndRetryAsync(10, _ => TimeSpan.FromMilliseconds(10), OnRetry)
-            .ExecuteAsync(() => Task.Run(() => driver.Navigate().GoToUrl("http://localhost:5000/resources/index.html")));
+            .ExecuteAsync(() => Task.Run(() => driver.Navigate().GoToUrl(gamePath)));
         
         return driver;
     }

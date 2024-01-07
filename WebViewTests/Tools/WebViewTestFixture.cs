@@ -18,6 +18,11 @@ public class ViewCollection : ICollectionFixture<WebViewTestFixture>
 [UsedImplicitly]
 public sealed class WebViewTestFixture : IAsyncLifetime
 {
+    private const string TargetPort = "5002";
+    private static readonly Uri BasePath = new($"http://localhost:{TargetPort}");
+    private static readonly Uri GamePath = new(BasePath, "resources/index.html");
+    private static readonly Uri TargetHealthEndpoint = new(BasePath, "api/health");
+
     private Process? _process;
     private ChromeDriver? _driver;
     private WebViewClient? _client;
@@ -30,11 +35,11 @@ public sealed class WebViewTestFixture : IAsyncLifetime
         try
         {
             Console.WriteLine("Starting web ui runner");
-            _process = await WebViewRunner.Start();
+            _process = await WebViewRunner.Start(BasePath, TargetHealthEndpoint);
 
             Console.WriteLine("Starting chromium runner");
-            _driver = await ChromiumRunner.Start();
-            _client = new WebViewClient(_driver);
+            _driver = await ChromiumRunner.Start(GamePath);
+            _client = new WebViewClient(_driver, GamePath);
         }
         catch (Exception)
         {
@@ -50,10 +55,8 @@ public sealed class WebViewTestFixture : IAsyncLifetime
     private static void Dispose(IDisposable? disposable) =>
         disposable?.Dispose();
 
-    private static void Dispose(Process? process) 
-    {
+    private static void Dispose(Process? process) =>
         process?.Kill(entireProcessTree: true);
-    }
 
     public Task DisposeAsync()
     {

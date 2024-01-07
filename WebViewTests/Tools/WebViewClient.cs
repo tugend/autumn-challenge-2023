@@ -15,12 +15,14 @@ namespace WebViewTests.Tools;
 public sealed class WebViewClient
 {
     private readonly ChromeDriver _driver;
+    private readonly Uri _gamePath;
     private readonly WebDriverWait _wait ;
     private ITestOutputHelper? _output;
 
-    internal WebViewClient(ChromeDriver driver)
+    internal WebViewClient(ChromeDriver driver, Uri gamePath)
     {
         _driver = driver;
+        _gamePath = gamePath;
         _wait = new WebDriverWait(_driver, TimeSpan.FromMilliseconds(100));
     }
 
@@ -42,7 +44,7 @@ public sealed class WebViewClient
         var speed = turnSpeed ?? TimeSpan.FromMilliseconds(200);
         
         var id = Guid.NewGuid().ToString();
-        var url = $"http://localhost:5000/resources/index.html?id={id}&turn-speed={speed.TotalMilliseconds}&seed={seed}";
+        var url = $"{_gamePath}?id={id}&turn-speed={speed.TotalMilliseconds}&seed={seed}";
         
         _driver .Navigate().GoToUrl(url);
         _wait.Until(_ => _driver.ExecuteScript("return window.conway.isMainLoopRunning"));

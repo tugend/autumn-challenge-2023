@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using FluentAssertions;
 using Polly;
 using WebView;
 
@@ -7,11 +6,12 @@ namespace WebViewTests.Tools;
 
 public static class WebViewRunner
 {
-    public static async Task<Process> Start()
+    public static async Task<Process> Start(Uri basePath, Uri targetHealthEndpoint)
     {
         var process = Process.Start(new ProcessStartInfo
         {
             FileName = ProgramPath(typeof(Program)),
+            Arguments = $"--urls=\"{basePath}\"",
             WindowStyle = ProcessWindowStyle.Hidden,
             CreateNoWindow = true,
             UseShellExecute = false,
@@ -19,7 +19,7 @@ public static class WebViewRunner
             RedirectStandardOutput = true,
         })!;
 
-        var isHealthy = await IsViewHealthy("http://localhost:5000/api/health");
+        var isHealthy = await IsViewHealthy(targetHealthEndpoint);
 
         if (isHealthy) return process;
 
@@ -51,19 +51,19 @@ public static class WebViewRunner
         return programToTest;
     }
 
-    private static async Task<bool> IsViewHealthy(string uri)
+    private static async Task<bool> IsViewHealthy(Uri uri)
     {
         try
         {
             using var client = new HttpClient();
 
-            // TODO: this should also check reply
             var message = await Policy
                 .Handle<HttpRequestException>()
                 .WaitAndRetryAsync(10, _ => TimeSpan.FromMilliseconds(10), OnRetry)
                 .ExecuteAsync(() => client.GetAsync(uri));
 
             var response = await message.Content.ReadAsStringAsync();
+
             return response.Equals("healthy");
         }
         catch
