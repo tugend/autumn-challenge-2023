@@ -2,10 +2,9 @@
 
 ### Pending refinement
 - Merge to main
-- Cleanup stringify vs convert
-- use module systems to reduce complexity of web view: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules
+- Simplify github actions steps (multiple runs in one step)
+- Use module systems to reduce complexity of web view: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules
 - TODO: clean up notes and replace with a README file
-- Try to simplify github actions steps (multiple runs in one step)
 
 ## Working Notes Tips
 

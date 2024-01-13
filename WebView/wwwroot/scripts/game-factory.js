@@ -1,12 +1,12 @@
 ﻿window.conway = window.conway || {};
 
 /**
- * @param { (fromState: State) => Promise<State[]> } fetchStates
+ * @param { GameClient } client
  * @param { Number } turnSpeedInMs
  * @param { State } initialState
  * @returns { Game }
  */
-window.conway.gameFactory = (fetchStates, turnSpeedInMs, initialState) => {
+window.conway.gameFactory = (client, turnSpeedInMs, initialState) => {
 
     let turnInMs = -1;
     let timeoutId = null;
@@ -18,7 +18,7 @@ window.conway.gameFactory = (fetchStates, turnSpeedInMs, initialState) => {
         turnInMs = turnSpeedInMs;
         timeoutId = null;
         index = 0;
-        initialStates = await fetchStates(initialState); // TODO: make a proper start game thing??;
+        initialStates = await client.fetchStates(initialState); // TODO: make a proper start game thing??;
         states = initialStates;
 
         window.conway.isMainLoopRunning = true;
@@ -55,7 +55,7 @@ window.conway.gameFactory = (fetchStates, turnSpeedInMs, initialState) => {
         console.log("next turn", index);
 
         if (index === states.length - 1) {
-            const nextPage = await fetchStates(states[index]);
+            const nextPage = await client.fetchStates(states[index]);
             states = [...states.slice(0, states.length - 1), ...nextPage];
         }
 
