@@ -14,12 +14,35 @@ const createLifeCellElm = (i, j, value, onClick) => {
 };
 
 class CallbackManager {
+    /**
+     * @param {Callbacks} callbacks
+     */
+    constructor(callbacks) {
+    }
 
+    /**
+     * @type { (f: () => void) => void }
+     */
+    toTogglePlayBtnClick = (_) => {};
+
+    /**
+     * @type { (f: (i: number, j: number) => void) => void }
+     */
+        // eslint-disable-next-line no-unused-vars
+    toCellClick = (_) => {};
+
+    /**
+     * @type { (f: (catalogIndex: number) => Promise<void>) => void }
+     */
+        // eslint-disable-next-line no-unused-vars
+    toCatalogSelect = (_) => {};
+
+    /**
+     * @type { (f: () => void) => void }
+     */
+    toResetBtnClick = (_) => {};
 }
 
-// TODO: separate into a manager that allow us to set callbacks
-// and an internal object that allow us to call the callbacks.
-// This should avoid shared state where others can call the callbacks directly.
 class Callbacks {
     /**
      * @type { () => void }
@@ -60,7 +83,15 @@ export default class DomClient {
      */
     #color;
 
-    subscriptions = new Callbacks();
+    /**
+     * @type { Callbacks }
+     */
+    #subscriptions;
+
+    /**
+     * @type { CallbackManager }
+     */
+    subscribe
 
     /**
      * @param {CatalogEntry} initialSeed
@@ -71,13 +102,15 @@ export default class DomClient {
         this.#initialSeed = initialSeed;
         this.#catalog = catalog;
         this.#color = color;
+        this.#subscriptions = new Callbacks();
+        this.subscribe = new CallbackManager(this.#subscriptions);
     }
 
     /**
      * @param { State } state
      * @param { (i: number, j: number) => void } onClick
      */
-    renderStateElm(state, onClick) {
+    renderStateElm = (state, onClick) => {
         const children = state
             .grid.map((row, i) =>
                 row.map((value, j) =>
@@ -97,7 +130,7 @@ export default class DomClient {
     /**
      * @param {number} turnCount
      */
-    renderTurnCountElm(turnCount) {
+    renderTurnCountElm = (turnCount) => {
         document
             .querySelector("#turn > span")
             .innerText = turnCount;
@@ -106,22 +139,22 @@ export default class DomClient {
     /**
      * @param { boolean } isPaused
      */
-    renderTogglePlayBtn(isPaused) {
+    renderTogglePlayBtn = (isPaused) => {
         const elm = document.getElementById("pause-btn");
         elm.innerText = isPaused ? "Continue" : "Pause";
-        elm.onclick = this.subscriptions.onTogglePlayBtnClick;
+        elm.onclick = this.#subscriptions.onTogglePlayBtnClick;
     }
 
-    renderResetBtn() {
+    renderResetBtn = () => {
         const elm = document.getElementById("reset-btn");
-        elm.onclick = this.subscriptions.onResetBtnClick;
+        elm.onclick = this.#subscriptions.onResetBtnClick;
     }
 
-    getColor() {
+    getColor = () => {
         return document.getElementById("state").className;
     }
 
-    renderColorBtn() {
+    renderColorBtn = () => {
         const elm = document.getElementById("color-btn");
         elm.onclick = () => {
             const stateElm = document.getElementById("state");
@@ -135,7 +168,7 @@ export default class DomClient {
      * @param { number } value
      * @returns {HTMLOptionElement}
      */
-    createOption(label, value) {
+    createOption = (label, value) => {
         const elm = document.createElement("option");
         elm.value = value + "";
         elm.innerText = label;
@@ -147,7 +180,7 @@ export default class DomClient {
      * @param { CatalogEntry[] } catalog
      * @param { CatalogEntry } selected
      */
-    renderCatalog(selector, catalog, selected)  {
+    renderCatalog = (selector, catalog, selected)  => {
 
         if (!catalog.some(x => x.key === selected.key))
         {
@@ -161,7 +194,7 @@ export default class DomClient {
             .forEach(optionElm => selectElm.appendChild(optionElm));
 
         selectElm.selectedIndex = catalog.map(x => x.key).indexOf(selected.key);
-        selectElm.onchange = (event) => this.subscriptions.onCatalogSelect(event.target.value);
+        selectElm.onchange = (event) => this.#subscriptions.onCatalogSelect(event.target.value);
     }
 
     /**
@@ -169,19 +202,18 @@ export default class DomClient {
      * @param { boolean } isPaused
      * @returns { DomClient }
      */
-    rerender(state, isPaused)  {
+    rerender = (state, isPaused) => {
         this.renderTogglePlayBtn(isPaused);
         this.renderTurnCountElm(state.turn+1);
-        this.renderStateElm(state, this.subscriptions.onCellClick);
+        this.renderStateElm(state, this.#subscriptions.onCellClick);
         this.renderResetBtn();
-        return this;
     }
 
     /**
      * @param { string } containerId
      * @returns { DomClient }
      */
-    renderTo (containerId) {
+    renderTo = (containerId) => {
         document
             .getElementById(containerId)
             .innerHTML = `
@@ -200,7 +232,5 @@ export default class DomClient {
 
         this.renderCatalog("#input-catalog > select", this.#catalog, this.#initialSeed);
         this.renderColorBtn();
-
-        return this;
     }
 }

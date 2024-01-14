@@ -1,7 +1,6 @@
 ﻿import GameClient from "./game-client.mjs";
 import DomClient from "./dom-client.mjs";
-
-window.conway = window.conway || {};
+import GameView from "./game-view.mjs";
 
 /**
  * @param { string } containerId
@@ -20,34 +19,36 @@ const initialize = async (containerId, fetchPath, turnSpeedInMs, turn, color, op
     const initialSeed = optionalSeedOverride || catalog.filter(x => x.key === "Blinker")[0];
     const initialState = { turn: turn, grid: initialSeed.value };
 
-    const domClient = new DomClient(initialSeed, catalog, color).renderTo(containerId);
-    const game = await conway.gameFactory(backendClient, turnSpeedInMs, initialState); // TODO: start game method separate from ctor
+    const domClient = new DomClient(initialSeed, catalog, color);
 
-    domClient.subscriptions.onCellClick = (async (i, j) =>
-        await game
+    const game = await GameView(backendClient.fetchStates, turnSpeedInMs, initialState); // TODO: start game method separate from ctor
+
+    domClient.subscribe.toCellClick(((i, j) =>
+        game
             .pause()
             .seed(i, j)
             .then(async newSeed => await backendClient.fetchStates(newSeed))
-            .then(game.setState));
+            .then(game.setState)));
 
-    domClient.subscriptions.onResetBtnClick = () => game
+    domClient.subscribe.toResetBtnClick(() => game
         .pause()
-        .reset();
+        .reset());
 
-    domClient.subscriptions.onTogglePlayBtnClick = game
-        .togglePause;
+    domClient.subscribe.toTogglePlayBtnClick(game
+        .togglePause);
 
-    domClient.subscriptions.onCatalogSelect = async catalogIndex => {
+    domClient.subscribe.toCatalogSelect(catalogIndex => {
         const selected = catalog[catalogIndex];
         const params = new URLSearchParams(location.search);
         params.set("color", domClient.getColor());
         params.set("turn-speed", turnSpeedInMs + "");
         params.set("seed", encodeURIComponent(JSON.stringify(selected)));
         window.location.search = params.toString();
-    };
+    });
 
     game.subscribe.toChanged(domClient.rerender);
 
+    domClient.renderTo(containerId);
     await game.start();
 
     return game;

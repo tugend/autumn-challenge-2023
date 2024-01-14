@@ -27,7 +27,7 @@ export default class GameClient {
      * @param { State } seed
      * @return { Promise<State[]> }
      */
-    async fetchStates(seed) {
+    fetchStates = async (seed) => {
         const response = await fetch(this.#baseUrl + "/states", postRequest(seed));
         return response.json();
     }
@@ -35,7 +35,7 @@ export default class GameClient {
     /**
      * @return { Promise<CatalogEntry[]> }
      */
-    async getCatalog() {
+     getCatalog = async () => {
         const response = await fetch(this.#baseUrl + "/catalog", getRequest());
         return response.json();
     }
