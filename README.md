@@ -1,10 +1,9 @@
 ﻿## TODOs
 
 ### Pending refinement
-- Use module systems to reduce complexity of web view: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules
-  - Cleanup and rename initialize (and maybe refactor to class?)
-  - Move index script to a main script (together with initialize maybe?)
-  - Cleanup and refactor game-view to class
+- TODO: reconsider type names (client, manager, game, handler, controller wtf is it....) -> game-api, dom-manager, location-manager, game-controller maybe?   
+- TODO: revisit accessors
+- split into file per type
 - Merge to main
 - Simplify github actions steps (multiple runs in one step)
 - TODO: clean up notes and replace with a README file
