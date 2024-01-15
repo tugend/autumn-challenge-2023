@@ -90,6 +90,7 @@ export default class GameController {
         const states = await this.#fetchStates(this.#start);
         this.#initialStates = states;
         this.#currentStates = states;
+        this.unpause();
     }
 
     setState = (_states) => {

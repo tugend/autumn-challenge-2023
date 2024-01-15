@@ -27,3 +27,11 @@
  * @property { GameSubscriptions } subscribe
  * @property { (states: State[]) => void } setState
  */
+
+/**
+ * @typedef { object } Settings
+ * @property { 'color'|'binary' } color
+ * @property { number } turnSpeedInMs
+ * @property { number } turn
+ * @property { (CatalogEntry|undefined) } optionalSeedOverride
+ */

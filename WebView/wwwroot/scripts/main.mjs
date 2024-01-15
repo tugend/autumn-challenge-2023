@@ -1,55 +1,34 @@
 ﻿import GameClient from "./game-client.mjs";
 import DomClient from "./dom-client.mjs";
 import GameController from "./game-controller.mjs";
+import UrlClient from "./url-client.mjs";
+import arrangeDependencies from "./arrange-dependencies.mjs";
 
-export default class GameFactory {
-    /**
-     * @param { string } containerId
-     * @param { string } fetchPath
-     * @param { number } turnSpeedInMs
-     * @param { number } turn
-     * @param { 'binary'|'color' } color
-     * @param { CatalogEntry } optionalSeedOverride
-     */
-    static async initialize(containerId, fetchPath, turnSpeedInMs, turn, color, optionalSeedOverride) {
-        const gameClient = new GameClient(fetchPath);
-        const catalog = await gameClient.getCatalog();
+const main = async () => {
+    // CONSTANTS
+    const containerId = "conway";
+    const namedInitialGame = "Blinker";
+    const baseUrl = "/api/conway";
 
-        const initialSeed = optionalSeedOverride || catalog.filter(x => x.key === "Blinker")[0];
-        const initialState = {turn: turn, grid: initialSeed.value};
+    // SETUP
+    const urlClient = new UrlClient();
+    const settings = urlClient.getSettings();
+    const gameClient = new GameClient(baseUrl);
+    const catalog = await gameClient.getCatalog();
 
-        const domClient = new DomClient(initialSeed, catalog, color);
-        const controller = await new GameController(gameClient.fetchStates, turnSpeedInMs, initialState);
+    const initialSeed = settings.optionalSeedOverride || catalog.filter(x => x.key === namedInitialGame)[0];
+    const initialState = {turn: settings.turn, grid: initialSeed.value};
 
-        domClient.subscribe.toCellClick(async (i, j) => {
-            controller.pause();
-            const newSeed = await controller.seed(i, j);
-            const newStates = await gameClient.fetchStates(newSeed);
-            controller.setState(newStates);
-        });
+    const controller = await new GameController(gameClient.fetchStates, settings.turnSpeedInMs, initialState);
+    const domClient = new DomClient(initialSeed, catalog, settings.color);
+    arrangeDependencies(settings, urlClient, domClient, controller, gameClient, catalog); // TODO: ???
 
-        domClient.subscribe.toResetBtnClick(() => {
-            controller.pause();
-            controller.reset();
-        });
+    // INITIAL RENDER
+    domClient.renderTo(containerId);
 
-        domClient.subscribe.toTogglePlayBtnClick(controller
-            .togglePause);
-
-        domClient.subscribe.toCatalogSelect(catalogIndex => {
-            const selected = catalog[catalogIndex];
-            const params = new URLSearchParams(location.search);
-            params.set("color", domClient.getColor());
-            params.set("turn-speed", turnSpeedInMs + "");
-            params.set("seed", encodeURIComponent(JSON.stringify(selected)));
-            window.location.search = params.toString();
-        });
-
-        controller.subscribe.toChanged(domClient.rerender);
-
-        domClient.renderTo(containerId);
-        await controller.start();
-
-        return controller;
-    };
+    // START GAME LOOP
+    console.debug("Initializing Conway's game of life", settings);
+    await controller.start();
 }
+
+export default main;

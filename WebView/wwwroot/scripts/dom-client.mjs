@@ -152,6 +152,9 @@ export default class DomClient {
         elm.onclick = this.#subscriptions.onResetBtnClick;
     }
 
+    /**
+     * @returns { 'color'|'binary' }
+     */
     getColor = () => {
         return document.getElementById("state").className;
     }
