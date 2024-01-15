@@ -14,7 +14,7 @@
 </body>
 
 <script type="module">
-    import initialize from "./scripts/initialize.mjs";
+    import GameFactory from "./scripts/initialize.mjs";
 
     (async () => {
 
@@ -33,8 +33,8 @@
         const color = urlParams.get("color") || "binary";
         const seedOrUndefined = tryParseSeed(urlParams.get("seed"));
         
-        console.log("Initializing Conway's game of life", { turn, color, seed: seedOrUndefined });
-        const game = await initialize("conway", "/api/conway", turnSpeedInMs, turn, color, seedOrUndefined);
+        console.debug("Initializing Conway's game of life", { turn, color, seed: seedOrUndefined });
+        const game = await GameFactory.initialize("conway", "/api/conway", turnSpeedInMs, turn, color, seedOrUndefined);
 
         game.unpause();
 })();

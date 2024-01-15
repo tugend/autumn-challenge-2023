@@ -17,30 +17,32 @@ class CallbackManager {
     /**
      * @param {Callbacks} callbacks
      */
+    #callbacks;
+
     constructor(callbacks) {
+        this.#callbacks = callbacks;
     }
 
     /**
-     * @type { (f: () => void) => void }
+     * @type { (f: () => void) => {} }
      */
-    toTogglePlayBtnClick = (_) => {};
+    toTogglePlayBtnClick = (f) => this.#callbacks.onTogglePlayBtnClick = f;
 
     /**
-     * @type { (f: (i: number, j: number) => void) => void }
+     * @type { (f: (i: number, j: number) => void) => {} }
+     */
+    toCellClick = (f) => this.#callbacks.onCellClick = f;
+
+    /**
+     * @type { (f: (catalogIndex: number) => Promise<void>) => {} }
      */
         // eslint-disable-next-line no-unused-vars
-    toCellClick = (_) => {};
+    toCatalogSelect = (f) => this.#callbacks.onCatalogSelect = f;
 
     /**
-     * @type { (f: (catalogIndex: number) => Promise<void>) => void }
+     * @type { (f: () => void) => {} }
      */
-        // eslint-disable-next-line no-unused-vars
-    toCatalogSelect = (_) => {};
-
-    /**
-     * @type { (f: () => void) => void }
-     */
-    toResetBtnClick = (_) => {};
+    toResetBtnClick = (f) => this.#callbacks.onResetBtnClick = f;
 }
 
 class Callbacks {
