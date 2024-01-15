@@ -2,7 +2,15 @@
     return JSON.parse(JSON.stringify(instance));
 }
 
-class CallbackManager {
+export class Callbacks {
+    /**
+     * @type { (current: State, isPaused: boolean) => void }
+     */
+    onChanged = (_1, _2) => {
+    };
+}
+
+export class CallbackManager {
     /**
      * @type {Callbacks}
      */
@@ -16,13 +24,6 @@ class CallbackManager {
      * @type { (f: (current: State, isPaused: boolean) => void) => {} }
      */
     toChanged = (f) => this.#callbacks.onChanged = f;
-}
-
-class Callbacks {
-    /**
-     * @type { (current: State, isPaused: boolean) => void }
-     */
-    onChanged = (_1, _2) => {};
 }
 
 export default class GameController {
@@ -137,13 +138,15 @@ export default class GameController {
         this.#currentStates[this.#index];
 
     seed = async (i, j) => {
-        const seededState = deepCopy(this.#current());
+        this.pause();
 
-        const entry = seededState.grid[i][j];
-        seededState.grid[i][j] = entry > 0 ? 0 : 1;
-        seededState.turn = 0;
+        const newState = deepCopy(this.#current());
+        const entry = newState.grid[i][j];
+        newState.grid[i][j] = entry > 0 ? 0 : 1;
+        newState.turn = 0;
 
-        return seededState;
+        const newStates = await this.#fetchStates(newState);
+        this.setState(newStates);
     };
 
     togglePause = () =>
@@ -154,6 +157,7 @@ export default class GameController {
     reset = () => {
         this.#currentStates = this.#initialStates;
         this.#index = 0;
+        this.pause();
         this.reportChange();
     };
 

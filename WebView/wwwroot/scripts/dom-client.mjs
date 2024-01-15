@@ -1,19 +1,32 @@
-﻿/**
- * @param { number } i
- * @param { number } j
- * @param { number } value
- * @param { (i: number, j: number) => void } onClick
- * @returns {HTMLDivElement}
- */
-const createLifeCellElm = (i, j, value, onClick) => {
-    const elm = document.createElement("div");
-    elm.innerText = `${value}`;
-    elm.className = `life life-${Math.min(value, 9)}`;
-    elm.onclick = () => onClick(i, j);
-    return elm;
-};
+﻿export class Callbacks {
+    /**
+     * @type { () => void }
+     */
+    onTogglePlayBtnClick = () => {
+    };
 
-class CallbackManager {
+    /**
+     * @type { (i: number, j: number) => void }
+     */
+        // eslint-disable-next-line no-unused-vars
+    onCellClick = (_1, _2) => {
+    };
+
+    /**
+     * @type { (catalogIndex: number) => Promise<void> }
+     */
+        // eslint-disable-next-line no-unused-vars
+    onCatalogSelect = (_) => {
+    };
+
+    /**
+     * @type { () => void }
+     */
+    onResetBtnClick = () => {
+    };
+}
+
+export class CallbackManager {
     /**
      * @param {Callbacks} callbacks
      */
@@ -45,29 +58,20 @@ class CallbackManager {
     toResetBtnClick = (f) => this.#callbacks.onResetBtnClick = f;
 }
 
-class Callbacks {
-    /**
-     * @type { () => void }
-     */
-    onTogglePlayBtnClick = () => {};
-
-    /**
-     * @type { (i: number, j: number) => void }
-     */
-    // eslint-disable-next-line no-unused-vars
-    onCellClick = (_1, _2) => {};
-
-    /**
-     * @type { (catalogIndex: number) => Promise<void> }
-     */
-    // eslint-disable-next-line no-unused-vars
-    onCatalogSelect = (_) => {};
-
-    /**
-     * @type { () => void }
-     */
-    onResetBtnClick = () => {};
-}
+/**
+ * @param { number } i
+ * @param { number } j
+ * @param { number } value
+ * @param { (i: number, j: number) => void } onClick
+ * @returns {HTMLDivElement}
+ */
+const createLifeCellElm = (i, j, value, onClick) => {
+    const elm = document.createElement("div");
+    elm.innerText = `${value}`;
+    elm.className = `life life-${Math.min(value, 9)}`;
+    elm.onclick = () => onClick(i, j);
+    return elm;
+};
 
 export default class DomClient {
     /**

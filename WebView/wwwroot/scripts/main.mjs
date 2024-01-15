@@ -1,8 +1,7 @@
-﻿import GameClient from "./game-client.mjs";
+﻿import StateClient from "./game-client.mjs";
 import DomClient from "./dom-client.mjs";
-import GameController from "./game-controller.mjs";
+import Controller from "./game-controller.mjs";
 import UrlClient from "./url-client.mjs";
-import arrangeDependencies from "./arrange-dependencies.mjs";
 
 const main = async () => {
     // CONSTANTS
@@ -11,17 +10,23 @@ const main = async () => {
     const baseUrl = "/api/conway";
 
     // SETUP
-    const urlClient = new UrlClient();
-    const settings = urlClient.getSettings();
-    const gameClient = new GameClient(baseUrl);
+    const settings = UrlClient.getSettings();
+    const gameClient = new StateClient(baseUrl);
     const catalog = await gameClient.getCatalog();
 
     const initialSeed = settings.optionalSeedOverride || catalog.filter(x => x.key === namedInitialGame)[0];
     const initialState = {turn: settings.turn, grid: initialSeed.value};
 
-    const controller = await new GameController(gameClient.fetchStates, settings.turnSpeedInMs, initialState);
+    const controller = await new Controller(gameClient.fetchStates, settings.turnSpeedInMs, initialState);
     const domClient = new DomClient(initialSeed, catalog, settings.color);
-    arrangeDependencies(settings, urlClient, domClient, controller, gameClient, catalog); // TODO: ???
+
+    // Arrange dependencies
+    controller.subscribe.toChanged(domClient.rerender);
+
+    domClient.subscribe.toCellClick(controller.seed);
+    domClient.subscribe.toResetBtnClick(controller.reset);
+    domClient.subscribe.toTogglePlayBtnClick(controller.togglePause);
+    domClient.subscribe.toCatalogSelect(catalogIndex => UrlClient.setSettings(domClient.getColor(), settings.turnSpeedInMs, catalog[catalogIndex]));
 
     // INITIAL RENDER
     domClient.renderTo(containerId);

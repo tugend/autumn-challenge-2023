@@ -7,11 +7,14 @@ const tryParseSeed = (seedOrUndefined) => seedOrUndefined === undefined
     : /** @type CatalogEntry */ JSON.parse(decodeURIComponent(seedOrUndefined));
 
 export default class UrlClient {
-
     /**
-     * @returns {Settings}
+     * @typedef { object } Settings
+     * @property { 'color'|'binary' } color
+     * @property { number } turnSpeedInMs
+     * @property { number } turn
+     * @property { (CatalogEntry|undefined) } optionalSeedOverride
      */
-    getSettings() {
+    static getSettings() {
         const urlParams = new URLSearchParams(location.search);
         const turnSpeedInMs = parseInt(urlParams.get("turn-speed") || "1000");
 
@@ -28,13 +31,15 @@ export default class UrlClient {
     }
 
     /**
-     * @param {Settings} settings
+     * @param {'color'|'binary'} color
+     * @param {number} turnSpeedInMs
+     * @param {CatalogEntry} seed
      */
-     setSettings(settings) {
+    static setSettings(color, turnSpeedInMs, seed) {
         const params = new URLSearchParams(location.search);
-        params.set("color", settings.color);
-        params.set("turn-speed", settings.turnSpeedInMs + "");
-        params.set("seed", encodeURIComponent(JSON.stringify(settings.optionalSeedOverride)));
+        params.set("color", color);
+        params.set("turn-speed", turnSpeedInMs + "");
+        params.set("seed", encodeURIComponent(JSON.stringify(seed)));
 
         window.location.search = params.toString();
     }

@@ -16,4 +16,9 @@
       <PackageReference Include="JetBrains.Annotations" Version="2023.2.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\scripts\dom\callback-manager.mjs" />
+      <_ContentIncludedByDefault Remove="wwwroot\scripts\dom\callbacks.mjs" />
+    </ItemGroup>
+
 </Project>
