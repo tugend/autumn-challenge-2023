@@ -2,22 +2,23 @@
     /**
      * @type { () => void }
      */
-    onTogglePlayBtnClick = () => {
-    };
+    onTogglePlayBtnClick = () => {};
 
     /**
      * @type { (i: number, j: number) => void }
      */
         // eslint-disable-next-line no-unused-vars
-    onCellClick = (_1, _2) => {
-    };
+    onCellClick = (_1, _2) => {};
 
     /**
      * @type { (catalogIndex: number) => Promise<void> }
      */
-        // eslint-disable-next-line no-unused-vars
-    onCatalogSelect = (_) => {
-    };
+    onCatalogSelect = (_) => {};
+
+    /**
+     * @type { (color: 'black'|'binary') => {} }
+     */
+    onColorSelect = (_) => {};
 
     /**
      * @type { () => void }
@@ -47,10 +48,14 @@ export class CallbackManager {
     toCellClick = (f) => this.#callbacks.onCellClick = f;
 
     /**
-     * @type { (f: (catalogIndex: number) => Promise<void>) => {} }
+     * @type { (f: (catalogIndex: number) => {}) => {} }
      */
-        // eslint-disable-next-line no-unused-vars
     toCatalogSelect = (f) => this.#callbacks.onCatalogSelect = f;
+
+    /**
+     * @type { (f: (color: 'black'|'binary') => {}) => {} }
+     */
+    toColorSelect = (f) => this.#callbacks.onColorSelect = f;
 
     /**
      * @type { (f: () => void) => {} }
@@ -166,9 +171,9 @@ export default class DomClient {
     renderColorBtn = () => {
         const elm = document.getElementById("color-btn");
         elm.onclick = () => {
-            const stateElm = document.getElementById("state");
-            const color = this.getColor();
-            stateElm.className = color === "binary" ? "color" : "binary";
+            const currentColor = this.getColor();
+            const newColor = currentColor === "binary" ? "color" : "binary"
+            this.#subscriptions.onColorSelect(newColor);
         };
     }
 

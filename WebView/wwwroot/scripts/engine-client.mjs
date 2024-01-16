@@ -10,7 +10,7 @@ const getRequest = (content) => ({
     body: JSON.stringify(content)
 });
 
-export default class GameClient {
+export default class EngineClient {
     /**
      * @type { string }
      */

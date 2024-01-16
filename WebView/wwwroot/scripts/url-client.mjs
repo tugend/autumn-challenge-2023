@@ -31,16 +31,20 @@ export default class UrlClient {
     }
 
     /**
-     * @param {'color'|'binary'} color
-     * @param {number} turnSpeedInMs
      * @param {CatalogEntry} seed
      */
-    static setSettings(color, turnSpeedInMs, seed) {
+    static refreshWithNewSeed(seed) {
+        const params = new URLSearchParams(location.search);
+        params.set("seed", encodeURIComponent(JSON.stringify(seed)));
+        window.location.search = params.toString();
+    }
+
+    /**
+     * @param {'color'|'binary'} color
+     */
+    static refreshWithNewColor(color) {
         const params = new URLSearchParams(location.search);
         params.set("color", color);
-        params.set("turn-speed", turnSpeedInMs + "");
-        params.set("seed", encodeURIComponent(JSON.stringify(seed)));
-
         window.location.search = params.toString();
     }
 }

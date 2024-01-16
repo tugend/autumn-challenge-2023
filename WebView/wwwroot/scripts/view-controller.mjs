@@ -26,7 +26,7 @@ export class CallbackManager {
     toChanged = (f) => this.#callbacks.onChanged = f;
 }
 
-export default class GameController {
+export default class ViewController {
     /**
      * @type {number}
      */
@@ -50,7 +50,7 @@ export default class GameController {
     /**
      * @type {State[]}
      */
-    #initialStates = [];
+    #startStates = [];
 
     /**
      * @type {State[]}
@@ -70,7 +70,7 @@ export default class GameController {
     /**
      * @type {CallbackManager}
      */
-    subscribe;
+    #subscribe;
 
     /**
      * @param { (State) => Promise<State[]> } fetchStates
@@ -84,34 +84,64 @@ export default class GameController {
         this.#start = start;
         this.#fetchStates = fetchStates;
         this.#callbacks = new Callbacks();
-        this.subscribe = new CallbackManager(this.#callbacks);
+        this.#subscribe = new CallbackManager(this.#callbacks);
+    }
+
+    connectToDom = (domClient) => {
+        this.#subscribe.toChanged(domClient.rerender);
+
+        domClient.subscribe.toCellClick(this.seed);
+        domClient.subscribe.toResetBtnClick(this.resetToStart);
+        domClient.subscribe.toTogglePlayBtnClick(this.togglePause);
     }
 
     start = async () => {
         const states = await this.#fetchStates(this.#start);
-        this.#initialStates = states;
+        this.#startStates = states;
         this.#currentStates = states;
-        this.unpause();
+        this.#unpause();
     }
 
-    setState = (_states) => {
-        this.#currentStates = _states.map(x => {
-            x.turn = this.#currentStates[this.#index].turn + x.turn;
-            return x;
-        });
+
+    seed = async (i, j) => {
+        this.#pause();
+
+        const newState = deepCopy(this.#current());
+        const entry = newState.grid[i][j];
+        newState.grid[i][j] = entry > 0 ? 0 : 1;
+        newState.turn = 0;
+
+        const newStates = await this.#fetchStates(newState);
+        this.#setState(newStates);
+    };
+
+    togglePause = () =>
+        this.#isPaused()
+            ? this.#unpause()
+            : this.#pause();
+
+    resetToStart = () => {
+        this.#currentStates = this.#startStates;
         this.#index = 0;
-        this.reportChange();
+        this.#pause();
+        this.#reportChange();
+    };
+
+    #setState = (_states) => {
+        this.#currentStates = _states.map(x => ({ ...x, turn:  this.#currentStates[this.#index].turn + x.turn }));
+        this.#index = 0;
+        this.#reportChange();
     };
 
     #isPaused = () =>
         this.#timeoutId == null;
 
-    pause = () => {
+    #pause = () => {
         if (this.#isPaused()) return;
 
         clearTimeout(this.#timeoutId);
         this.#timeoutId = null;
-        this.reportChange();
+        this.#reportChange();
     };
 
     #nextTurn = async () => {
@@ -124,45 +154,22 @@ export default class GameController {
 
         this.#timeoutId = setTimeout(() => {
             this.#index = Math.min(this.#currentStates.length - 1, this.#index + 1);
-            this.reportChange();
+            this.#reportChange();
             this.#nextTurn();
         }, this.#turnInMs);
     };
 
-    unpause = () => {
+    #unpause = () => {
+        if (!this.#isPaused()) return;
+
         this.#timeoutId = setTimeout(this.#nextTurn, this.#turnInMs);
-        this.reportChange();
+        this.#reportChange();
     };
 
     #current = () =>
         this.#currentStates[this.#index];
 
-    seed = async (i, j) => {
-        this.pause();
-
-        const newState = deepCopy(this.#current());
-        const entry = newState.grid[i][j];
-        newState.grid[i][j] = entry > 0 ? 0 : 1;
-        newState.turn = 0;
-
-        const newStates = await this.#fetchStates(newState);
-        this.setState(newStates);
-    };
-
-    togglePause = () =>
-        this.#isPaused()
-            ? this.unpause()
-            : this.pause();
-
-    reset = () => {
-        this.#currentStates = this.#initialStates;
-        this.#index = 0;
-        this.pause();
-        this.reportChange();
-    };
-
-    // TODO: naming---
-    reportChange = () => {
+    #reportChange = () => {
         console.debug("report change")
         this.#callbacks.onChanged(this.#current(), this.#isPaused());
     };
