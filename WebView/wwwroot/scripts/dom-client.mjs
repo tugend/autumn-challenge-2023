@@ -16,9 +16,9 @@
     onCatalogSelect = (_) => {};
 
     /**
-     * @type { (color: 'black'|'binary') => {} }
+     * @type { (theme: Theme) => {} }
      */
-    onColorSelect = (_) => {};
+    onThemeSelect = (_) => {};
 
     /**
      * @type { () => void }
@@ -53,9 +53,9 @@ export class CallbackManager {
     toCatalogSelect = (f) => this.#callbacks.onCatalogSelect = f;
 
     /**
-     * @type { (f: (color: 'black'|'binary') => {}) => {} }
+     * @type { (f: (theme: Theme) => {}) => {} }
      */
-    toColorSelect = (f) => this.#callbacks.onColorSelect = f;
+    toThemeSelect = (f) => this.#callbacks.onThemeSelect = f;
 
     /**
      * @type { (f: () => void) => {} }
@@ -90,9 +90,9 @@ export default class DomClient {
     #catalog;
 
     /**
-     * @type {"binary"|"color"} color
+     * @type {Theme} theme
      */
-    #color;
+    #theme;
 
     /**
      * @type { Callbacks }
@@ -107,12 +107,12 @@ export default class DomClient {
     /**
      * @param {CatalogEntry} initialSeed
      * @param {CatalogEntry[]} catalog
-     * @param {"binary"|"color"} color
+     * @param {Theme} theme
      */
-    constructor(initialSeed, catalog, color) {
+    constructor(initialSeed, catalog, theme) {
         this.#initialSeed = initialSeed;
         this.#catalog = catalog;
-        this.#color = color;
+        this.#theme = theme;
         this.#subscriptions = new Callbacks();
         this.subscribe = new CallbackManager(this.#subscriptions);
     }
@@ -162,19 +162,21 @@ export default class DomClient {
     }
 
     /**
-     * @returns { 'color'|'binary' }
+     * @returns { Theme }
      */
-    getColor = () => {
-        return document.getElementById("state").className;
+    getTheme = () => {
+        // NOTE: this is a bit of a simple hack where we store a bit of state in the DOM.
+        // A better way may be to either use the DOM data attributes, or likely best and most consistent, keep an internal state instead.
+        return document.getElementById("state").className.replace("theme-", "");
     }
 
-    renderColorBtn = () => {
-        const elm = document.getElementById("color-btn");
+    renderThemeBtn = () => {
+        const elm = document.getElementById("theme-btn");
 
         elm.onclick = () => {
-            const currentColor = this.getColor();
-            const newColor = currentColor === "binary" ? "color" : "binary"
-            this.#subscriptions.onColorSelect(newColor);
+            const currentTheme = this.getTheme();
+            const newTheme = currentTheme === "binary" ? "color" : "binary"
+            this.#subscriptions.onThemeSelect(newTheme);
         };
     }
 
@@ -233,12 +235,12 @@ export default class DomClient {
             .getElementById(containerId)
             .innerHTML = `
                 <h2 id="turn">Turn <span>1</span></h2>
-                <div id="state" class="${this.#color}"></div>
+                <div id="state" class="theme-${this.#theme}"></div>
                 <br />
                 <div id="controls">
                     <div id="pause-btn" class="btn">Pause</div>
                     <div id="reset-btn" class="btn">Reset</div>
-                    <div id="color-btn" class="btn">Color</div>
+                    <div id="theme-btn" class="btn">Theme</div>
                 </div>
                 <br />
                 <aside id="seed-catalog">
@@ -247,6 +249,6 @@ export default class DomClient {
 
         // TODO: replace with explicit assignments here
         this.renderCatalog("#seed-catalog > select", this.#catalog, this.#initialSeed);
-        this.renderColorBtn();
+        this.renderThemeBtn();
     }
 }

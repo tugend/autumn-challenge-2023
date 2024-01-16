@@ -33,17 +33,22 @@ public sealed class WebViewClient
             .ForEach(entry => _output?.WriteLine(entry.ToString()));
     }
 
-    public LogContext StartNewConwaysGame(string input, TimeSpan? turnSpeed = null) =>
-        StartNewConwaysGame(Domain.Functions.Convert(input), turnSpeed);
+    public LogContext StartNewConwaysGame(string input, TimeSpan? turnSpeed = null, string? theme = null) =>
+        StartNewConwaysGame(Domain.Functions.Convert(input), turnSpeed, theme);
 
     
-    public LogContext StartNewConwaysGame(int[][] input, TimeSpan? turnSpeed = null)
+    public LogContext StartNewConwaysGame(int[][] input, TimeSpan? turnSpeed = null, string? theme = "color")
     {
+        if (!new[] { "color", "binary" }.Contains(theme))
+        {
+            throw new ArgumentException("Unknown theme " + theme, nameof(theme));
+        }
+
         var seed = EncodeSeed(new { key = "Custom", value = input });
         var speed = turnSpeed ?? TimeSpan.FromMilliseconds(200);
         
         var id = Guid.NewGuid().ToString();
-        var url = $"{_gamePath}?id={id}&turn-speed={speed.TotalMilliseconds}&seed={seed}";
+        var url = $"{_gamePath}?id={id}&turn-speed={speed.TotalMilliseconds}&seed={seed}&theme={theme}";
         
         _driver .Navigate().GoToUrl(url);
         _wait.Until(_ => _driver.ExecuteScript("return window.conway.isMainLoopRunning"));

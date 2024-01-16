@@ -32,8 +32,10 @@ public sealed class VisualSmokeTests
         }
     }
     
-    [Fact]
-    public async Task Interactions()
+    [Theory]
+    [InlineData("color")]
+    [InlineData("binary")]
+    public async Task Interactions_Given_Theme(string theme)
     {
         var seed = """
             0 2 2
@@ -41,7 +43,7 @@ public sealed class VisualSmokeTests
             2 2 2
             """;
         
-        using var _ = _client.StartNewConwaysGame(seed, TimeSpan.FromMilliseconds(800));
+        using var _ = _client.StartNewConwaysGame(seed, TimeSpan.FromMilliseconds(800), theme);
 
         var count = 0;
         

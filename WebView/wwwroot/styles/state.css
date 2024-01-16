@@ -17,7 +17,7 @@
     }
 }
 
-#state.binary {
+#state.theme-binary {
     > .cell {
         background-color: black;
         color: transparent;
@@ -29,7 +29,7 @@
     }
 }
 
-#state.color {
+#state.theme-color {
     > .life-9 { background-color: #57bb8a; }
     > .life-8 { background-color: #57bb8a; }
     > .life-7 { background-color: #84bb7b; }

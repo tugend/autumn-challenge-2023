@@ -1,6 +1,8 @@
-﻿using Codeuctivity.ImageSharpCompare;
+﻿using System.Text.Encodings.Web;
+using Codeuctivity.ImageSharpCompare;
 using ObjectExtensions;
 using OpenQA.Selenium;
+using static System.Console;
 
 namespace WebViewTests.Tools;
 
@@ -21,6 +23,11 @@ public class VisualBenchmark
 
     public static VisualBenchmark Init(string name)
     {
+        name = name
+            .Replace("\"", "")
+            .Replace(":", "=")
+            .Replace(" ", "");
+
         var folder = VisualBenchmarkPath("WebViewTests", nameof(VisualSmokeTests));
         var actualPath = Path.Join(folder, $"{name}.actual.png");
         var diffPath = Path.Join(folder, $"{name}.diff.png");

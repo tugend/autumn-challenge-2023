@@ -170,7 +170,6 @@ export default class ViewController {
         this.#currentStates[this.#index];
 
     #reportChange = () => {
-        console.debug("report change")
         this.#callbacks.onChanged(this.#current(), this.#isPaused());
     };
 }

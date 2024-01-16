@@ -9,3 +9,7 @@
  * @property {number} turn
  * @property {int[][]} grid
  */
+
+/**
+ * @typedef {'color'|'binary'} Theme
+ */
