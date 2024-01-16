@@ -73,7 +73,7 @@ export class CallbackManager {
 const createLifeCellElm = (i, j, value, onClick) => {
     const elm = document.createElement("div");
     elm.innerText = `${value}`;
-    elm.className = `life life-${Math.min(value, 9)}`;
+    elm.className = `cell life-${Math.min(value, 9)}`;
     elm.onclick = () => onClick(i, j);
     return elm;
 };
@@ -170,6 +170,7 @@ export default class DomClient {
 
     renderColorBtn = () => {
         const elm = document.getElementById("color-btn");
+
         elm.onclick = () => {
             const currentColor = this.getColor();
             const newColor = currentColor === "binary" ? "color" : "binary"
@@ -231,20 +232,21 @@ export default class DomClient {
         document
             .getElementById(containerId)
             .innerHTML = `
-                <h5 id="turn">Turn <span>1</span></h5>
+                <h2 id="turn">Turn <span>1</span></h2>
                 <div id="state" class="${this.#color}"></div>
                 <br />
                 <div id="controls">
-                    <div id="pause-btn">Pause</div>
-                    <div id="reset-btn">Reset</div>
-                    <div id="color-btn">Color</div>
+                    <div id="pause-btn" class="btn">Pause</div>
+                    <div id="reset-btn" class="btn">Reset</div>
+                    <div id="color-btn" class="btn">Color</div>
                 </div>
                 <br />
-                <aside id="input-catalog">
+                <aside id="seed-catalog">
                     <select></select>
                 </aside>`;
 
-        this.renderCatalog("#input-catalog > select", this.#catalog, this.#initialSeed);
+        // TODO: replace with explicit assignments here
+        this.renderCatalog("#seed-catalog > select", this.#catalog, this.#initialSeed);
         this.renderColorBtn();
     }
 }

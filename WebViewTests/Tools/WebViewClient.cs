@@ -142,7 +142,7 @@ public sealed class WebViewClient
 
     public IWebElement GetCell(int flatZeroIndexedCellIndex) =>
         _driver
-            .FindElement(By.CssSelector($"#state .life:nth-child({flatZeroIndexedCellIndex+1})"));
+            .FindElement(By.CssSelector($"#state > .cell:nth-child({flatZeroIndexedCellIndex+1})"));
 
     public WebViewClient ClickResetButton()
     {

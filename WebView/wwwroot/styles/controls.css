@@ -1,0 +1,27 @@
+﻿/*// TODO: is the & implicit here?*/
+/*// TODO: input catalog should be part of the controls*/
+/*// TODO: buttons should be classed btn and not targeted as part of the divs*/
+
+#controls {
+    margin: auto;
+    width: 270px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    border: 1px solid gray;
+    font-size: 18px;
+
+    > .btn {
+        text-align: center;
+        height: 60px;
+        line-height: 60px;;
+        width: 90px;
+        box-sizing: border-box;
+        border: 1px solid gray;
+        background: lightblue;
+        cursor: pointer;
+    }
+
+    > .btn:hover {
+        font-weight: bold;
+    }
+}
