@@ -1,67 +1,5 @@
-﻿export class Callbacks {
-    /**
-     * @type { () => void }
-     */
-    onTogglePlayBtnClick = () => {};
-
-    /**
-     * @type { (i: number, j: number) => void }
-     */
-        // eslint-disable-next-line no-unused-vars
-    onCellClick = (_1, _2) => {};
-
-    /**
-     * @type { (catalogIndex: number) => Promise<void> }
-     */
-    onCatalogSelect = (_) => {};
-
-    /**
-     * @type { (theme: Theme) => {} }
-     */
-    onThemeSelect = (_) => {};
-
-    /**
-     * @type { () => void }
-     */
-    onResetBtnClick = () => {
-    };
-}
-
-export class CallbackManager {
-    /**
-     * @param {Callbacks} callbacks
-     */
-    #callbacks;
-
-    constructor(callbacks) {
-        this.#callbacks = callbacks;
-    }
-
-    /**
-     * @type { (f: () => void) => {} }
-     */
-    toTogglePlayBtnClick = (f) => this.#callbacks.onTogglePlayBtnClick = f;
-
-    /**
-     * @type { (f: (i: number, j: number) => void) => {} }
-     */
-    toCellClick = (f) => this.#callbacks.onCellClick = f;
-
-    /**
-     * @type { (f: (catalogIndex: number) => {}) => {} }
-     */
-    toCatalogSelect = (f) => this.#callbacks.onCatalogSelect = f;
-
-    /**
-     * @type { (f: (theme: Theme) => {}) => {} }
-     */
-    toThemeSelect = (f) => this.#callbacks.onThemeSelect = f;
-
-    /**
-     * @type { (f: () => void) => {} }
-     */
-    toResetBtnClick = (f) => this.#callbacks.onResetBtnClick = f;
-}
+﻿import Callbacks from "./dom-client/callbacks.mjs";
+import CallbackManager from "./dom-client/callback-manager.mjs";
 
 /**
  * @param { number } i
@@ -150,7 +88,6 @@ export default class DomClient {
                     <select></select>
                 </aside>`;
 
-        // TODO: replace with explicit assignments here
         this.#renderCatalog("#seed-catalog > select", this.#catalog, this.#initialSeed);
         this.#renderThemeBtn();
     }

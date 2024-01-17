@@ -1,29 +1,8 @@
-﻿const deepCopy = (instance) => {
+﻿import {Callbacks} from "./view-controller/callbacks.mjs";
+import {CallbackManager} from "./view-controller/callback-manager.mjs";
+
+const deepCopy = (instance) => {
     return JSON.parse(JSON.stringify(instance));
-}
-
-export class Callbacks {
-    /**
-     * @type { (current: State, isPaused: boolean) => void }
-     */
-    onChanged = (_1, _2) => {
-    };
-}
-
-export class CallbackManager {
-    /**
-     * @type {Callbacks}
-     */
-    #callbacks;
-
-    constructor(callbacks) {
-        this.#callbacks = callbacks;
-    }
-
-    /**
-     * @type { (f: (current: State, isPaused: boolean) => void) => {} }
-     */
-    toChanged = (f) => this.#callbacks.onChanged = f;
 }
 
 export default class ViewController {
