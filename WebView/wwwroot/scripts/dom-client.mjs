@@ -119,111 +119,14 @@ export default class DomClient {
 
     /**
      * @param { State } state
-     * @param { (i: number, j: number) => void } onClick
-     */
-    renderStateElm = (state, onClick) => {
-        const children = state
-            .grid.map((row, i) =>
-                row.map((value, j) =>
-                    createLifeCellElm(i, j, value, onClick))
-            )
-            .flat();
-
-        const stateElm = document.querySelector("#state");
-
-        stateElm.style.gridTemplateColumns = [...Array(state.grid[0].length)]
-            .map(() => "1fr")
-            .join(" ");
-
-        stateElm.replaceChildren(...children);
-    }
-
-    /**
-     * @param {number} turnCount
-     */
-    renderTurnCountElm = (turnCount) => {
-        document
-            .querySelector("#turn > span")
-            .innerText = turnCount;
-    }
-
-    /**
-     * @param { boolean } isPaused
-     */
-    renderTogglePlayBtn = (isPaused) => {
-        const elm = document.getElementById("pause-btn");
-        elm.innerText = isPaused ? "Continue" : "Pause";
-        elm.onclick = this.#subscriptions.onTogglePlayBtnClick;
-    }
-
-    renderResetBtn = () => {
-        const elm = document.getElementById("reset-btn");
-        elm.onclick = this.#subscriptions.onResetBtnClick;
-    }
-
-    /**
-     * @returns { Theme }
-     */
-    getTheme = () => {
-        // NOTE: this is a bit of a simple hack where we store a bit of state in the DOM.
-        // A better way may be to either use the DOM data attributes, or likely best and most consistent, keep an internal state instead.
-        return document.getElementById("state").className.replace("theme-", "");
-    }
-
-    renderThemeBtn = () => {
-        const elm = document.getElementById("theme-btn");
-
-        elm.onclick = () => {
-            const currentTheme = this.getTheme();
-            const newTheme = currentTheme === "binary" ? "color" : "binary"
-            this.#subscriptions.onThemeSelect(newTheme);
-        };
-    }
-
-    /**
-     * @param { string } label
-     * @param { number } value
-     * @returns {HTMLOptionElement}
-     */
-    createOption = (label, value) => {
-        const elm = document.createElement("option");
-        elm.value = value + "";
-        elm.innerText = label;
-        return elm;
-    }
-
-    /**
-     * @param { string } selector
-     * @param { CatalogEntry[] } catalog
-     * @param { CatalogEntry } selected
-     */
-    renderCatalog = (selector, catalog, selected)  => {
-
-        if (!catalog.some(x => x.key === selected.key))
-        {
-            catalog = [selected, ...catalog];
-        }
-
-        const selectElm = document.querySelector(selector);
-
-        catalog
-            .map((entry, i) => this.createOption(entry.key, i))
-            .forEach(optionElm => selectElm.appendChild(optionElm));
-
-        selectElm.selectedIndex = catalog.map(x => x.key).indexOf(selected.key);
-        selectElm.onchange = (event) => this.#subscriptions.onCatalogSelect(event.target.value);
-    }
-
-    /**
-     * @param { State } state
      * @param { boolean } isPaused
      * @returns { DomClient }
      */
     rerender = (state, isPaused) => {
-        this.renderTogglePlayBtn(isPaused);
-        this.renderTurnCountElm(state.turn+1);
-        this.renderStateElm(state, this.#subscriptions.onCellClick);
-        this.renderResetBtn();
+        this.#renderTogglePlayBtn(isPaused);
+        this.#renderTurnCountElm(state.turn+1);
+        this.#renderStateElm(state, this.#subscriptions.onCellClick);
+        this.#renderResetBtn();
     }
 
     /**
@@ -248,7 +151,104 @@ export default class DomClient {
                 </aside>`;
 
         // TODO: replace with explicit assignments here
-        this.renderCatalog("#seed-catalog > select", this.#catalog, this.#initialSeed);
-        this.renderThemeBtn();
+        this.#renderCatalog("#seed-catalog > select", this.#catalog, this.#initialSeed);
+        this.#renderThemeBtn();
+    }
+
+    /**
+     * @param { State } state
+     * @param { (i: number, j: number) => void } onClick
+     */
+    #renderStateElm = (state, onClick) => {
+        const children = state
+            .grid.map((row, i) =>
+                row.map((value, j) =>
+                    createLifeCellElm(i, j, value, onClick))
+            )
+            .flat();
+
+        const stateElm = document.querySelector("#state");
+
+        stateElm.style.gridTemplateColumns = [...Array(state.grid[0].length)]
+            .map(() => "1fr")
+            .join(" ");
+
+        stateElm.replaceChildren(...children);
+    }
+
+    /**
+     * @param {number} turnCount
+     */
+    #renderTurnCountElm = (turnCount) => {
+        document
+            .querySelector("#turn > span")
+            .innerText = turnCount;
+    }
+
+    /**
+     * @param { boolean } isPaused
+     */
+    #renderTogglePlayBtn = (isPaused) => {
+        const elm = document.getElementById("pause-btn");
+        elm.innerText = isPaused ? "Continue" : "Pause";
+        elm.onclick = this.#subscriptions.onTogglePlayBtnClick;
+    }
+
+    #renderResetBtn = () => {
+        const elm = document.getElementById("reset-btn");
+        elm.onclick = this.#subscriptions.onResetBtnClick;
+    }
+
+    /**
+     * @returns { Theme }
+     */
+    #getTheme = () => {
+        // NOTE: this is a bit of a simple hack where we store a bit of state in the DOM.
+        // A better way may be to either use the DOM data attributes, or likely best and most consistent, keep an internal state instead.
+        return document.getElementById("state").className.replace("theme-", "");
+    }
+
+    #renderThemeBtn = () => {
+        const elm = document.getElementById("theme-btn");
+
+        elm.onclick = () => {
+            const currentTheme = this.#getTheme();
+            const newTheme = currentTheme === "binary" ? "color" : "binary"
+            this.#subscriptions.onThemeSelect(newTheme);
+        };
+    }
+
+    /**
+     * @param { string } label
+     * @param { number } value
+     * @returns {HTMLOptionElement}
+     */
+    #createOption = (label, value) => {
+        const elm = document.createElement("option");
+        elm.value = value + "";
+        elm.innerText = label;
+        return elm;
+    }
+
+    /**
+     * @param { string } selector
+     * @param { CatalogEntry[] } catalog
+     * @param { CatalogEntry } selected
+     */
+    #renderCatalog = (selector, catalog, selected)  => {
+
+        if (!catalog.some(x => x.key === selected.key))
+        {
+            catalog = [selected, ...catalog];
+        }
+
+        const selectElm = document.querySelector(selector);
+
+        catalog
+            .map((entry, i) => this.#createOption(entry.key, i))
+            .forEach(optionElm => selectElm.appendChild(optionElm));
+
+        selectElm.selectedIndex = catalog.map(x => x.key).indexOf(selected.key);
+        selectElm.onchange = (event) => this.#subscriptions.onCatalogSelect(event.target.value);
     }
 }
