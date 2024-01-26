@@ -14,7 +14,7 @@ public record Game
     }
 
     public static Game Init(string initialSeed) => 
-        new(1, Functions.Parse(initialSeed));
+        new(1, Functions.Convert(initialSeed));
     
     public static Game Init(int turns, int[][] grid) => 
         new(turns, grid);
