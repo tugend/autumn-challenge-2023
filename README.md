@@ -1,7 +1,6 @@
 ﻿## TODOs
 
 ### Pending refinement
-- Merge to main
 - Simplify github actions steps (multiple runs in one step)
 - TODO: clean up notes and replace with a README file
 
