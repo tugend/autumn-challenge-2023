@@ -164,7 +164,7 @@ export default class DomClient {
         const elm = document.createElement("option");
         elm.value = value + "";
         elm.innerText = label;
-        return elm;
+        return elmn
     }
 
     /**
