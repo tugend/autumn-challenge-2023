@@ -13,6 +13,20 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+
+    - name: Setup Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - name: Install Node modules
+      run: npm install
+      working-directory: WebUi
+
+    - name: Run Eslint
+      run: npm run lint
+      working-directory: WebUi
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:

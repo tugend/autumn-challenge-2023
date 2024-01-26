@@ -7,16 +7,6 @@ const string initialState = """
     0 0 0
     """;
 
-void Print(Game game)
-{
-    if (Console.IsOutputRedirected) Console.WriteLine();
-    else Console.Clear();
-
-    Console.WriteLine("Turns: " + game.Turn);
-    Console.WriteLine("Grid");
-    Console.WriteLine(Stringify(game.Grid));
-}
-
 var main = async (Game game) =>
 {
     foreach (var round in game.Play())
@@ -33,8 +23,19 @@ Console.WriteLine();
 Console.WriteLine("Enter key to quit.");
 Console.ReadLine();
 Console.WriteLine("Thanks for playing. Goodbye.");
+return;
+
+void Print(Game game)
+{
+    if (Console.IsOutputRedirected) Console.WriteLine();
+    else Console.Clear();
+
+    Console.WriteLine("Turns: " + game.Turn);
+    Console.WriteLine("Grid");
+    Console.WriteLine(Stringify(game.Grid));
+}
 
 namespace CommandLineUi
 {
-    public partial class Program { }
+    public class Program { }
 }

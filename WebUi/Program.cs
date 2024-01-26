@@ -1,5 +1,4 @@
 using Domain;
-using Domain.Catalog;
 using WebUi.Models;
 using MvcExtensions;
 
@@ -11,10 +10,10 @@ app.UseStaticFiles("/resources");
 app
     .MapGroup("api")
     .MapGetRoute("health", () => "healthy")
-    .MapGetRoute("catalog", () => StillLife.All.Concat(Oscillators.All).Concat(Spaceships.All))
-    .MapPostRoute("conway", ([AsParameters] Criteria criteria, Seed seed) => Game
+    .MapGetRoute("conway/catalog", () => Domain.Catalog.Index.All)
+    .MapPostRoute("conway/states", ([AsParameters] Criteria criteria, Seed seed) => Game
         .Init(seed.Turn, seed.Grid)
         .Play()
-        .Take(criteria.Turns)); // super duper improvement would be to just send the diffs. ^_^
+        .Take(criteria.Turns));
 
 app.Run();

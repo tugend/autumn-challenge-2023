@@ -11,4 +11,4 @@ public record Coordinate(int X, int Y)
     public bool IsIn(int[][] grid) =>
         0 <= X && X < grid.Length && 
         0 <= Y && Y < grid.FirstOrDefault(Array.Empty<int>()).Length;
-};
+}

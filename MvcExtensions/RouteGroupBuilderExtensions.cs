@@ -11,9 +11,8 @@ public static class RouteGroupBuilderExtensions
         return group;
     }
     
-    public static RouteGroupBuilder MapPostRoute(this RouteGroupBuilder group, string route, Delegate handler)
+    public static void MapPostRoute(this RouteGroupBuilder group, string route, Delegate handler)
     {
         group.MapPost(route, handler);
-        return group;
     }
 }

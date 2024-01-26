@@ -7,7 +7,7 @@ public static class ProcessExtensions
     public static Task<List<string>> AppendOutputBuffer(this Process instance, TimeSpan readUntil)
     {
         var output = new List<string>();
-        instance.OutputDataReceived += (sender, e) =>
+        instance.OutputDataReceived += (_, e) =>
         {
             // Prepend line numbers to each line of the output.
             if (e.Data == null) return;

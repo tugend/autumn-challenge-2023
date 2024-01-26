@@ -3,7 +3,6 @@ using FluentAssertions;
 using TaskExtensions;
 using Tests.UserInterfacesTests.WebUiTests.Tools;
 using Xunit.Abstractions;
-using static Domain.Functions;
 
 namespace Tests.UserInterfacesTests.WebUiTests;
 
@@ -27,7 +26,7 @@ public class GameTests
         
         var state = await GameAfter(input, targetTurn: 10);
 
-        state.Should().BeEquivalentTo(input, because: $"{name} should be a still life");
+        Converter.Convert(state).Should().BeEquivalentTo(input, because: $"{name} should be a still life");
     }
 
     [Theory]
@@ -35,7 +34,7 @@ public class GameTests
     [InlineData(nameof(Oscillators.Toad), 2)]
     [InlineData(nameof(Oscillators.Beacon), 2)]
     [InlineData(nameof(Oscillators.Pulsar), 3)]
-    // [InlineData(nameof(Oscillators.Pentadecathlon), 15)]
+    [InlineData(nameof(Oscillators.Pentadecathlon), 15)]
     public async Task Oscillating(string name, int period)
     {
         var input = Oscillators.Get(name);
@@ -47,19 +46,11 @@ public class GameTests
         state[0].Should().NotBe(state[2], $"because the oscillating period was {period}");
     }
     
-    private async Task<string> GameAfter(string input, int targetTurn)
+    private async Task<string> GameAfter(int[][] input, int targetTurn)
     {
-        var width = input
-            .Split(Environment.NewLine)
-            .First()
-            .Replace(" ", "")
-            .Length;
+        var width = input.First().Length;
         
-        using var _ = _client.StartNewConwaysGame(new
-        {
-            turn = 0,
-            grid = Parse(input)
-        });
+        using var _ = _client.StartNewConwaysGame(input);
 
         await _client
             .Chain()
@@ -69,19 +60,11 @@ public class GameTests
         return _client.GetStateAsString(width: width, padding: 1, onlyOnesAndZeros: true);
     }
     
-    private async IAsyncEnumerable<string> GameAfter(string input, params int[] targetTurns)
+    private async IAsyncEnumerable<string> GameAfter(int[][] input, params int[] targetTurns)
     {
-        var width = input
-            .Split(Environment.NewLine)
-            .First()
-            .Replace(" ", "")
-            .Length;
+        var width = input.First().Length;
         
-        using var _ = _client.StartNewConwaysGame(new
-        {
-            turn = 0,
-            grid = Parse(input)
-        }, turnSpeed: TimeSpan.FromMilliseconds(600));
+        using var _ = _client.StartNewConwaysGame(input, turnSpeed: TimeSpan.FromMilliseconds(600));
 
         foreach (var targetTurn in targetTurns)
         {
