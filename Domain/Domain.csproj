@@ -8,7 +8,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\EnumerableExtensions\EnumerableExtensions.csproj" />
-      <ProjectReference Include="..\NumberExtensions\NumberExtensions.csproj" />
       <ProjectReference Include="..\ObjectExtensions\ObjectExtensions.csproj" />
     </ItemGroup>
 

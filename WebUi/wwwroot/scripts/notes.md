@@ -13,12 +13,14 @@ Introduce a web factory fixture, try catch some more,
 figure out why processes does not shut down correctly
 
 ### Pending refinement
-* TODO: feature    : long running games by automated paging in slices of 1o states
-* TODO: feature    : bigger grids!
-* TODO: feature    : color coding of cell generations
-* TODO: feature    : kill or birth illustration for mouse cell clicks
-* TODO: add        : linting
-
+- Cleanup stringify vs convert
+- Split extensions up consistently in partial files
+- Split tests up into separate projects
+- Align file and solution folder structure to avoid confusion
+- {src/test}/{domain,cli,web,extensions}
+- Fix dotnet folder structure: domain/{src, test}, cli/{src,test}, web/{src,test}, extensions/?
+- Try to simplify github actions steps (multiple runs in one step)
+- TODO: clean up notes and replace with a README file
 
 ## Working Notes Tips
 

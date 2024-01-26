@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
 using System.Text.Encodings.Web;
+using Domain.Catalog;
 using Newtonsoft.Json;
 using ObjectExtensions;
 using OpenQA.Selenium;
@@ -31,16 +32,17 @@ public sealed class WebUiClient
             .ForEach(entry => _output?.WriteLine(entry.ToString()));
     }
 
-    public LogContext StartNewConwaysGame(object? seedObject = null, TimeSpan? turnSpeed = null) =>
-        StartNewConwaysGame(null, seedObject, turnSpeed);
+    public LogContext StartNewConwaysGame(string input, TimeSpan? turnSpeed = null) =>
+        StartNewConwaysGame(Converter.Convert(input), turnSpeed);
+
     
-    public LogContext StartNewConwaysGame(string? context, object? seedObject = null, TimeSpan? turnSpeed = null)
+    public LogContext StartNewConwaysGame(int[][] input, TimeSpan? turnSpeed = null)
     {
-        var seed = EncodeSeed(seedObject);
+        var seed = EncodeSeed(new { key = "Custom", value = input });
         var speed = turnSpeed ?? TimeSpan.FromMilliseconds(200);
         
         var id = Guid.NewGuid().ToString();
-        var url = $"http://localhost:5089/resources/index.html?id={id}&turn-speed={speed.TotalMilliseconds}#{seed}";
+        var url = $"http://localhost:5089/resources/index.html?id={id}&turn-speed={speed.TotalMilliseconds}&seed={seed}";
         
         _driver .Navigate().GoToUrl(url);
         _wait.Until(_ => _driver.ExecuteScript("return window.conway.isMainLoopRunning"));
