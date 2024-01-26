@@ -1,0 +1,7 @@
+﻿main {
+    width: 1200px;
+    text-align: center;
+    height: 350px;
+    margin: auto;
+    user-select: none; /* user should not be able to 'mark select any text' inside game, it looks strange. */
+}

@@ -1,11 +1,15 @@
 ﻿/**
  * @typedef {object} CatalogEntry
  * @property {string} key
- * @property { int[][] } value
+ * @property {int[][]} value
  */
 
 /**
  * @typedef {object} State
  * @property {number} turn
- * @property { int[][]} grid
+ * @property {int[][]} grid
+ */
+
+/**
+ * @typedef {'color'|'binary'} Theme
  */

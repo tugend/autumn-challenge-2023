@@ -40,4 +40,8 @@
         <ProjectReference Include="..\TaskExtensions\TaskExtensions.csproj"/>
         <ProjectReference Include="..\WebView\WebView.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="VisualSmokeTests\" />
+    </ItemGroup>
 </Project>

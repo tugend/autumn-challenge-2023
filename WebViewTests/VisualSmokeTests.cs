@@ -12,8 +12,10 @@ public sealed class VisualSmokeTests
     public VisualSmokeTests(WebViewTestFixture fixture, ITestOutputHelper outputHelper) => 
         _client = fixture.Inject(outputHelper).Client;
 
-    [Fact]
-    public async Task Shotgun()
+    [Theory]
+    [InlineData("color")]
+    [InlineData("binary")]
+    public async Task Shotgun(string theme)
     {
         // Startup
         var seed = """
@@ -22,7 +24,7 @@ public sealed class VisualSmokeTests
             0 0 0
             """;
 
-        using var _ = _client.StartNewConwaysGame(seed, TimeSpan.FromMilliseconds(800));
+        using var _ = _client.StartNewConwaysGame(seed, TimeSpan.FromMilliseconds(800), theme);
 
         // Act
         for (var i = 1; i < 10; i++)
@@ -31,7 +33,7 @@ public sealed class VisualSmokeTests
             await _client.Benchmark($"turn-{i}");
         }
     }
-    
+
     [Fact]
     public async Task Interactions()
     {
@@ -41,7 +43,7 @@ public sealed class VisualSmokeTests
             2 2 2
             """;
         
-        using var _ = _client.StartNewConwaysGame(seed, TimeSpan.FromMilliseconds(800));
+        using var _ = _client.StartNewConwaysGame(seed, TimeSpan.FromMilliseconds(800), "binary");
 
         var count = 0;
         

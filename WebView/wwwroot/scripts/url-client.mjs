@@ -9,7 +9,7 @@ const tryParseSeed = (seedOrUndefined) => seedOrUndefined === undefined
 export default class UrlClient {
     /**
      * @typedef { object } Settings
-     * @property { 'color'|'binary' } color
+     * @property { Theme } theme
      * @property { number } turnSpeedInMs
      * @property { number } turn
      * @property { (CatalogEntry|undefined) } optionalSeedOverride
@@ -19,13 +19,13 @@ export default class UrlClient {
         const turnSpeedInMs = parseInt(urlParams.get("turn-speed") || "1000");
 
         const turn = parseInt(urlParams.get("turn") || "0");
-        const color = urlParams.get("color") || "binary";
+        const theme = urlParams.get("theme") || "color";
         const optionalSeedOverride = tryParseSeed(urlParams.get("seed"));
 
         return {
             turnSpeedInMs,
             turn,
-            color,
+            theme,
             optionalSeedOverride
         }
     }
@@ -40,11 +40,11 @@ export default class UrlClient {
     }
 
     /**
-     * @param {'color'|'binary'} color
+     * @param {Theme} theme
      */
-    static refreshWithNewColor(color) {
+    static refreshWithNewTheme(theme) {
         const params = new URLSearchParams(location.search);
-        params.set("color", color);
+        params.set("theme", theme);
         window.location.search = params.toString();
     }
 }

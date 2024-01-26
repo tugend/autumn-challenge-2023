@@ -16,7 +16,7 @@ public static class WebViewRunner
             CreateNoWindow = true,
             UseShellExecute = false,
             RedirectStandardError = true,
-            RedirectStandardOutput = true,
+            RedirectStandardOutput = true
         })!;
 
         var isHealthy = await IsViewHealthy(targetHealthEndpoint);

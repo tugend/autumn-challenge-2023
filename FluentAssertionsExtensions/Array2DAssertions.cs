@@ -33,8 +33,6 @@ public class Array2DAssertions<T> : ReferenceTypeAssertions<T[][], Array2DAssert
                        {ToString(other)}
 
                        """);
-
-        new AndConstraint<Array2DAssertions<T>>(this);
     }
 
     private static string ToString(T[][] matrix) =>
