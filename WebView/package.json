@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint --ext .js,.html ."
+    "lint": "eslint --ext .js,.html .",
+    "lint:report": "eslint --ext .js,.html . --output-file eslint_report.json --format json"
   },
   "author": "",
   "license": "ISC",

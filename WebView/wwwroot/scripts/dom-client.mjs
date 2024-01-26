@@ -146,7 +146,7 @@ export default class DomClient {
     }
 
     #renderThemeBtn = () => {
-        const elm = document.getElementById("theme-btn");
+        var elm = document.getElementById("theme-btn")
 
         elm.onclick = () => {
             const currentTheme = this.#getTheme();
