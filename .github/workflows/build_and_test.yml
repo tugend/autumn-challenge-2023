@@ -22,7 +22,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          cache: 'npm' # TODO: what can this cache do a d can we get it for dotnet build too?
+          # cache: 'npm' # TODO: what can this cache do a d can we get it for dotnet build too?
           node-version: 20.x
 
       - name: Install Node modules
@@ -30,7 +30,7 @@ jobs:
         working-directory: WebView
 
       - name: Run Eslint
-        run: npm run lint --  --output-file eslint_report.json --format json
+        run: npm run lint
         continue-on-error: true
         working-directory: WebView
 
