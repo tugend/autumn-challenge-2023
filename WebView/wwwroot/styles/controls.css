@@ -1,8 +1,4 @@
-﻿/*// TODO: is the & implicit here?*/
-/*// TODO: input catalog should be part of the controls*/
-/*// TODO: buttons should be classed btn and not targeted as part of the divs*/
-
-#controls {
+﻿#controls {
     margin: auto;
     width: 270px;
     display: grid;

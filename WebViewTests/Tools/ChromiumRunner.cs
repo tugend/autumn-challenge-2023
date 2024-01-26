@@ -20,7 +20,6 @@ public static class ChromiumRunner
             .Manage()
             .Window.Size = new Size(900, 900);
 
-        // TODO: do a graceful shutdown at the composition root
         await Policy
             .Handle<WebDriverException>()
             .WaitAndRetryAsync(10, _ => TimeSpan.FromMilliseconds(10), OnRetry)
