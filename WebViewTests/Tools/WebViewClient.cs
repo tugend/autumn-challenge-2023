@@ -45,7 +45,7 @@ public sealed class WebViewClient
         }
 
         var seed = EncodeSeed(new { key = "Custom", value = input });
-        var speed = turnSpeed ?? TimeSpan.FromMilliseconds(200);
+        var speed = turnSpeed ?? TimeSpan.FromMilliseconds(400);
         
         var id = Guid.NewGuid().ToString();
         var url = $"{_gamePath}?id={id}&turn-speed={speed.TotalMilliseconds}&seed={seed}&theme={theme}";
