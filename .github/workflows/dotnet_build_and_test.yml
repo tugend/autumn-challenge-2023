@@ -21,11 +21,11 @@ jobs:
 
     - name: Install Node modules
       run: npm install
-      working-directory: WebUi
+      working-directory: WebView
 
     - name: Run Eslint
       run: npm run lint
-      working-directory: WebUi
+      working-directory: WebView
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v3

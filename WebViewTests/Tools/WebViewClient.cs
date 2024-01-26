@@ -33,7 +33,7 @@ public sealed class WebViewClient
             .ForEach(entry => _output?.WriteLine(entry.ToString()));
     }
 
-    public LogContext StartNewConwaysGame(string input, TimeSpan? turnSpeed = null, string? theme = null) =>
+    public LogContext StartNewConwaysGame(string input, TimeSpan? turnSpeed = null, string? theme = "color") =>
         StartNewConwaysGame(Domain.Functions.Convert(input), turnSpeed, theme);
 
     
