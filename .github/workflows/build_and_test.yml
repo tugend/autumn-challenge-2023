@@ -43,7 +43,9 @@ jobs:
       - name: Annotate Code Linting Results
         uses: ataylorme/eslint-annotate-action@v2
         with:
-          report-json: "WebView/eslint_report.json"
+          report-json: "eslint_report.json"
+        env:
+          HOME: "WebView"
 
   dotnet:
     name: "Dotnet: Build and Test"

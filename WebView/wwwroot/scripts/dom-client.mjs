@@ -151,8 +151,8 @@ export default class DomClient {
         elm.onclick = () => {
             const currentTheme = this.#getTheme();
             const newTheme = currentTheme === "binary" ? "color" : "binary"
-            this.#subscriptions.onThemeSelect(newTheme);
-        };
+            this.#subscriptions.onThemeSelect(newTheme)
+        }
     }
 
     /**
