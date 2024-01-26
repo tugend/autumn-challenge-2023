@@ -17,7 +17,7 @@ public class ViewCollection : ICollectionFixture<WebViewTestFixture>
 [UsedImplicitly]
 public sealed class WebViewTestFixture : IAsyncLifetime
 {
-    private const string TargetPort = "5002";
+    private const string TargetPort = "5000";
     private static readonly Uri BasePath = new($"http://localhost:{TargetPort}");
     private static readonly Uri GamePath = new(BasePath, "resources/index.html");
     private static readonly Uri TargetHealthEndpoint = new(BasePath, "api/health");

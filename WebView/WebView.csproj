@@ -21,4 +21,10 @@
       <_ContentIncludedByDefault Remove="wwwroot\scripts\dom\callbacks.mjs" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Update="wwwroot\**\*">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
 </Project>
