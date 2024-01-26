@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint --ext .mjs,.js,.html .",
-    "lint:report": "eslint --ext .mjs,.js,.html . --output-file eslint_report.json --format json"
+    "lint:report": "eslint --ext .mjs,.js,.html --output-file ../eslint_report.json --format json ."
   },
   "author": "",
   "license": "ISC",
