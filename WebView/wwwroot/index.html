@@ -5,10 +5,6 @@
     <title>Document</title>
     <link rel="icon" href="data:,">
     <link rel="stylesheet" href="./style.css">
-    <script src="./scripts/game-factory.js" type="application/javascript"></script>
-    <script src="./scripts/backend-client-factory.js" type="application/javascript"></script>
-    <script src="./scripts/dom-client-factory.js" type="application/javascript"></script>
-    <script src="./scripts/initialize.js" type="application/javascript"></script>
 </head>
 <body>
 <main>
@@ -17,28 +13,8 @@
 </main>
 </body>
 
-<script type="application/javascript">
-    (async () => {
-
-        /**
-         * @param { string | undefined } seedOrUndefined
-         * @returns { CatalogEntry | undefined }
-         */
-        const tryParseSeed = (seedOrUndefined) => seedOrUndefined === undefined
-            ? undefined
-            : /** @type CatalogEntry */ JSON.parse(decodeURIComponent(seedOrUndefined));
-
-        const urlParams = new URLSearchParams(location.search);
-        const turnSpeedInMs = parseInt(urlParams.get("turn-speed") || "1000");
-        
-        const turn = parseInt(urlParams.get("turn") || "0");
-        const color = urlParams.get("color") || "binary";
-        const seedOrUndefined = tryParseSeed(urlParams.get("seed"));
-        
-        console.log("Initializing Conway's game of life", { turn, color, seed: seedOrUndefined });
-        const game = await conway.initialize("conway", "/api/conway", turnSpeedInMs, turn, color, seedOrUndefined);
-
-        game.unpause();
-})();
+<script type="module">
+    import main from "./scripts/main.mjs";
+    await main();
 </script>
 </html>

@@ -38,7 +38,7 @@ div {
 }
 
 #controls{
-    margin: auto; 
+    margin: auto;
     width: 270px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -62,11 +62,11 @@ div {
     font-weight: bold;
 }
 
-.binary .life { 
+.binary .life {
     background-color: black;
     color: transparent;
 }
-.binary .life-0 { 
+.binary .life-0 {
     background-color: white;
     color: transparent;
 }
