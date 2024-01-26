@@ -1,11 +1,12 @@
 using Domain;
-using WebUi.Models;
+using WebView.Models;
 using MvcExtensions;
 
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
-app.UseStaticFiles("/resources");
+app
+    .UseStaticFiles("/resources");
 
 app
     .MapGroup("api")

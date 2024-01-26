@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace WebUi.Models;
+namespace WebView.Models;
 
 [UsedImplicitly]
 public record Seed(int Turn, int[][] Grid);

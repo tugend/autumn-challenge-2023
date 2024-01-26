@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace WebUi.Models;
+namespace WebView.Models;
 
 [UsedImplicitly]
 public record Criteria(int Turns = 10);
