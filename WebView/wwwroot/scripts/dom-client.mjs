@@ -20,12 +20,12 @@ export default class DomClient {
     /**
      * @type {CatalogEntry}
      */
-    #initialSeed;
+    #initialSeed
 
     /**
      * @type {CatalogEntry[]}
      */
-    #catalog;
+    #catalog
 
     /**
      * @type {Theme} theme
