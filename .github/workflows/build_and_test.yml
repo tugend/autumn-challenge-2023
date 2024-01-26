@@ -4,8 +4,9 @@ permissions:
   contents: read
   actions: read
   checks: write
+  pull-requests: read
 
-on: 
+on:
   push:
     branches: [ "main" ]
   pull_request:
@@ -42,7 +43,7 @@ jobs:
       - name: Annotate Code Linting Results
         uses: ataylorme/eslint-annotate-action@v2
         with:
-          report-json: "eslint_report.json"
+          report-json: "WebView/eslint_report.json"
 
   dotnet:
     name: "Dotnet: Build and Test"
