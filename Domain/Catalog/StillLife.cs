@@ -48,7 +48,7 @@ public static class StillLife
         (typeof(StillLife)
             .GetField(name)?
             .GetValue(null) as string ?? throw new InvalidOperationException())
-            .Map(Converter.Convert);
+            .Map(Functions.Convert);
     
     public static IEnumerable<KeyValuePair<string, int[][]>> All =>
         new[]
