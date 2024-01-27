@@ -2,31 +2,28 @@
     /**
      * @type { () => void }
      */
-    onTogglePlayBtnClick = () => {
-    };
+    onTogglePlayBtnClick = () => { };
 
     /**
      * @type { (i: number, j: number) => void }
      */
-        // eslint-disable-next-line no-unused-vars
-    onCellClick = (_1, _2) => {
-    };
+    // eslint-disable-next-line no-unused-vars
+    onCellClick = (_1, _2) => { };
 
     /**
      * @type { (catalogIndex: number) => Promise<void> }
      */
-    onCatalogSelect = (_) => {
-    };
+    // eslint-disable-next-line no-unused-vars
+    onCatalogSelect = (_) => { };
 
     /**
      * @type { (theme: Theme) => {} }
      */
-    onThemeSelect = (_) => {
-    };
+    // eslint-disable-next-line no-unused-vars
+    onThemeSelect = (_) => { };
 
     /**
      * @type { () => void }
      */
-    onResetBtnClick = () => {
-    };
+    onResetBtnClick = () => { };
 }

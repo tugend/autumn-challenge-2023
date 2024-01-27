@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint --ext .mjs,.js,.html ."
+    "lint": "eslint --ext .mjs,.js,.html ./wwwroot"
   },
   "author": "",
   "license": "ISC",
