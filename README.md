@@ -2,6 +2,8 @@
 
 ### Pending refinement
 - Simplify github actions steps (multiple runs in one step)
+- Add caching to github actions
+- Add annotations to github actions
 - TODO: clean up notes and replace with a README file
 
 ## Working Notes Tips

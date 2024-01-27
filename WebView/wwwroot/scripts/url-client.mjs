@@ -27,7 +27,7 @@ export default class UrlClient {
             turn,
             theme,
             optionalSeedOverride
-        }
+        };
     }
 
     /**

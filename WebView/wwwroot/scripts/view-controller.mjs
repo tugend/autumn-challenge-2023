@@ -3,7 +3,7 @@ import {CallbackManager} from "./view-controller/callback-manager.mjs";
 
 const deepCopy = (instance) => {
     return JSON.parse(JSON.stringify(instance));
-}
+};
 
 export default class ViewController {
     /**
@@ -72,14 +72,14 @@ export default class ViewController {
         domClient.subscribe.toCellClick(this.seed);
         domClient.subscribe.toResetBtnClick(this.resetToStart);
         domClient.subscribe.toTogglePlayBtnClick(this.togglePause);
-    }
+    };
 
     start = async () => {
         const states = await this.#fetchStates(this.#start);
         this.#startStates = states;
         this.#currentStates = states;
         this.#unpause();
-    }
+    };
 
 
     seed = async (i, j) => {
