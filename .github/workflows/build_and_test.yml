@@ -1,0 +1,56 @@
+name: Build and Test
+
+permissions:
+  contents: read
+  actions: read
+  checks: write
+  pull-requests: read
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  node:
+    name: "Node: Install and Lint"
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          # cache: 'npm' # TODO: what can this cache do a d can we get it for dotnet build too?
+          node-version: 20.x
+
+      - name: Install Node modules
+        run: npm install
+        working-directory: WebView
+
+      - name: Run Eslint
+        run: npm run lint
+        working-directory: WebView
+
+  dotnet:
+    name: "Dotnet: Build and Test"
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.x.x
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --no-restore
+
+    - name: Test
+      run: dotnet test --no-build --verbosity normal"
