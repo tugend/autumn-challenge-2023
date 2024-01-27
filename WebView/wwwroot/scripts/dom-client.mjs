@@ -40,7 +40,7 @@ export default class DomClient {
     /**
      * @type { CallbackManager }
      */
-    subscribe
+    subscribe;
 
     /**
      * @param {CatalogEntry} initialSeed
@@ -65,7 +65,7 @@ export default class DomClient {
         this.#renderTurnCountElm(state.turn+1);
         this.#renderStateElm(state, this.#subscriptions.onCellClick);
         this.#renderResetBtn();
-    }
+    };
 
     /**
      * @param { string } containerId
@@ -90,7 +90,7 @@ export default class DomClient {
 
         this.#renderCatalog("#seed-catalog > select", this.#catalog, this.#initialSeed);
         this.#renderThemeBtn();
-    }
+    };
 
     /**
      * @param { State } state
@@ -111,7 +111,7 @@ export default class DomClient {
             .join(" ");
 
         stateElm.replaceChildren(...children);
-    }
+    };
 
     /**
      * @param {number} turnCount
@@ -120,7 +120,7 @@ export default class DomClient {
         document
             .querySelector("#turn > span")
             .innerText = turnCount;
-    }
+    };
 
     /**
      * @param { boolean } isPaused
@@ -129,12 +129,12 @@ export default class DomClient {
         const elm = document.getElementById("pause-btn");
         elm.innerText = isPaused ? "Continue" : "Pause";
         elm.onclick = this.#subscriptions.onTogglePlayBtnClick;
-    }
+    };
 
     #renderResetBtn = () => {
         const elm = document.getElementById("reset-btn");
         elm.onclick = this.#subscriptions.onResetBtnClick;
-    }
+    };
 
     /**
      * @returns { Theme }
@@ -143,17 +143,17 @@ export default class DomClient {
         // NOTE: this is a bit of a simple hack where we store a bit of state in the DOM.
         // A better way may be to either use the DOM data attributes, or likely best and most consistent, keep an internal state instead.
         return document.getElementById("state").className.replace("theme-", "");
-    }
+    };
 
     #renderThemeBtn = () => {
         const elm = document.getElementById("theme-btn");
 
         elm.onclick = () => {
             const currentTheme = this.#getTheme();
-            const newTheme = currentTheme === "binary" ? "color" : "binary"
+            const newTheme = currentTheme === "binary" ? "color" : "binary";
             this.#subscriptions.onThemeSelect(newTheme);
         };
-    }
+    };
 
     /**
      * @param { string } label
@@ -165,7 +165,7 @@ export default class DomClient {
         elm.value = value + "";
         elm.innerText = label;
         return elm;
-    }
+    };
 
     /**
      * @param { string } selector
@@ -187,5 +187,5 @@ export default class DomClient {
 
         selectElm.selectedIndex = catalog.map(x => x.key).indexOf(selected.key);
         selectElm.onchange = (event) => this.#subscriptions.onCatalogSelect(event.target.value);
-    }
+    };
 }

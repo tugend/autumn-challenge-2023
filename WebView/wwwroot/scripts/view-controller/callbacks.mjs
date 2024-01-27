@@ -2,6 +2,6 @@
     /**
      * @type { (current: State, isPaused: boolean) => void }
      */
-    onChanged = (_1, _2) => {
-    };
+    // eslint-disable-next-line no-unused-vars
+    onChanged = (_1, _2) => { };
 }
