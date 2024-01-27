@@ -44,9 +44,16 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Setup .NET
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.x.x
+
+    - uses: actions/cache@v4
+      with:
+        path: ~/.nuget/packages
+        # Look to see if there is a cache hit for the corresponding requirements file
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+        restore-keys: ${{ runner.os }}-nuget
 
     - name: Restore dependencies
       run: dotnet restore
@@ -55,7 +62,7 @@ jobs:
       run: dotnet build --no-restore
 
     - name: Test
-      run: dotnet test --no-build --verbosity normal  --logger "trx;LogFileName=test-results.trx"
+      run: dotnet test --no-build --verbosity minimal  --logger "trx;LogFileName=test-results.trx"
 
     - name: Report
       uses: dorny/test-reporter@v1
