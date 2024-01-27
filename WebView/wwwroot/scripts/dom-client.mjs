@@ -110,6 +110,8 @@ export default class DomClient {
             .map(() => "1fr")
             .join(" ");
 
+        var john = 2;
+
         stateElm.replaceChildren(...children);
     };
 
