@@ -32,6 +32,6 @@ const main = async () => {
     await controller.start();
 
     window.conway.isMainLoopRunning = true;
-}
+};
 
 export default main;

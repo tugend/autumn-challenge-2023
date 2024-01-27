@@ -2,6 +2,8 @@
 
 ### Pending refinement
 - Simplify github actions steps (multiple runs in one step)
+- Add caching to github actions (dotnet restore takes ~1m 6s, node install takes ~8s)
+- Add annotations to github actions
 - TODO: clean up notes and replace with a README file
 
 ## Working Notes Tips

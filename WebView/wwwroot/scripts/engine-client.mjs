@@ -30,13 +30,13 @@ export default class EngineClient {
     fetchStates = async (seed) => {
         const response = await fetch(this.#baseUrl + "/states", postRequest(seed));
         return response.json();
-    }
+    };
 
     /**
      * @return { Promise<CatalogEntry[]> }
      */
-     getCatalog = async () => {
+    getCatalog = async () => {
         const response = await fetch(this.#baseUrl + "/catalog", getRequest());
         return response.json();
-    }
+    };
 }
