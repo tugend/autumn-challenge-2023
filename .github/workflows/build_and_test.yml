@@ -23,8 +23,8 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          # cache: 'npm' # TODO: what can this cache do a d can we get it for dotnet build too?
           node-version: 20.x
+          cache: 'npm'
 
       - name: Install Node modules
         run: npm ci
