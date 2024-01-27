@@ -23,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Node modules
+      - name: Print working directory
         run: ls
         shell: "bash"
 
@@ -31,7 +31,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20.x
-          cache: 'npm'
+          cache: 'npm',
+          cache-dependency-path: "${ GITHUB_WORKSPACE }/WebView/package-lock.json"
 
       - name: Install Node modules
         run: npm ci
