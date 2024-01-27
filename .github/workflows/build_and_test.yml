@@ -30,9 +30,9 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20.x
+          node-version: 20
           cache: 'npm'
-          working-directory: "WebView"
+          cache-dependency-path: WebView/package-lock.json
 
       - name: Install Node modules
         run: npm ci
