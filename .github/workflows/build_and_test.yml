@@ -32,7 +32,6 @@ jobs:
         with:
           node-version: 20.x
           cache: 'npm'
-          cache-dependency-path: './WebView/package.lock'
 
       - name: Install Node modules
         run: npm ci
