@@ -11,7 +11,7 @@ As the catalyst, I chose the very simple cell simulation 'game' of Conway's Game
 
 You can find the full the prompt [here](https://tugend.github.io/challenges/2023/07/28/autumn-code-challenge.html).
 
-![Game screenshot](./readme-assets/game-screenshot-beacon.png)
+![Game screenshot](./.readme/game-screenshot-beacon.png)
 
 ## Components
 
@@ -117,7 +117,7 @@ backend is started as a separate running process,
 and failed visual tests will save a diff and actual screenshot for comparison.
 I was pleasantly surprised how simple it was possible to bootstrap visual tests compared to prior experiences.,
 
-![mjs-files](./readme-assets/wwwroot-files.png)
+![mjs-files](./.readme/wwwroot-files.png)
 
 Game features includes
   - Pause/unpause
@@ -127,7 +127,7 @@ Game features includes
   - Restart with another seed state from catalog of named seeds
   - Switch between colored cells with generation number and black(dead) and white(live).
 
-![visual-tests](./readme-assets/visual-tests.png)
+![visual-tests](./.readme/visual-tests.png)
         
 ### Github Pipeline
 
