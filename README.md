@@ -11,6 +11,7 @@ As the catalyst, I chose the very simple cell simulation 'game' of Conway's Game
 
 You can find the full the prompt [here](https://tugend.github.io/challenges/2023/07/28/autumn-code-challenge.html).
 
+![Game screenshot](./readme-assets/game-screenshot-beacon.png)
 
 ## Components
 
