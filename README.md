@@ -9,7 +9,8 @@ expressions over statements.
 
 As the catalyst, I chose the very simple cell simulation 'game' of Conway's Game of Life.
 
-You can find the full the prompt [here](https://tugend.github.io/challenges/2023/07/28/autumn-code-challenge.html).
+You can find the full the prompt [here](https://tugend.github.io/challenges/2023/07/28/autumn-code-challenge-prompt.html),
+and the commentary conclusion [here](https://tugend.github.io/challenges/2024/02/01/autumn-code-challenge-conclusion.html).
 
 ![Game screenshot](./.readme/game-screenshot-beacon.png)
 
@@ -24,7 +25,7 @@ You can find the full the prompt [here](https://tugend.github.io/challenges/2023
   - A simpler stepping stone when developing the domain since it's text based.
   - Uses the core domain assembly directly 
   - Has a hardcoded seed
-  - Includes a single smoke test test that starts the program as a separate process and interacts via standard input/output. 
+  - Includes a single smoke test that starts the program as a separate process and interacts via standard input/output. 
 
   ```cmd
     > dotnet run --project .\CliView\CliView.csproj
@@ -136,7 +137,7 @@ Game features includes
 
 ### Working Notes
 
-#### Kill dangling port hugging process
+#### Ways to a kill dangling port hugging process
 
 If tests are force quite via the IDE, they don't get to do their graceful shutdown,
 and may leave a process dangling.
@@ -152,11 +153,9 @@ and may leave a process dangling.
 > npx kill-port 8080
 ```
 
-Windows Resource manager   
+Windows Resource manager  
 -> CPU  
 -> search for the locked file   
--> to lookup the name of the process has it locked e.g. WebView
-
-Windows task manager   
--> WebView   
--> close
+-> lookup the name of the process has it locked  
+-> Windows task manager   
+-> close WebView (name of resource)
